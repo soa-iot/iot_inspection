@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>文本信息框组价</title>
+    <link rel="stylesheet" href="/package/layui-2.2.5/css/layui.css">
+    <link rel="stylesheet" href="/css/listComponent.css">
+    <script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/javaScript/universal.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			/*
+			 *初始化预览区大小
+			 */
+			var $text_content_one = $('#text_content_one');
+			var setHeight = $('input[name=setHeight]').val();
+			var setWidth = $('input[name=setWidth]').val();
+			var originalStyle = $text_content_one.attr('style');
+			if(originalStyle){
+				$text_content_one.attr('style', originalStyle + 'height:' + setHeight + 
+						'px;width:' + setWidth + "px;");
+			}else{
+				$text_content_one.attr('style', 'height:' + setHeight + 
+						'px;width:' + setWidth + "px;");
+			}						
+		})
+	</script>
+</head>
+<body>
+	<div class="layui-fluid"> 		
+		<div class="layui-row">
+			<!-- 布局左侧 -->
+	   		<div class="layui-col-md8 layui-col text-div-left">
+				<div class="layui-row">		
+					<div class="layui-col-md12">
+						<div class="layui-form-item" style="margin: 15px 0px;">
+							<label class="layui-form-label" style="width:100px">预览区大小:</label>
+							<div class="layui-input-inline">
+								<input type="text" name="setWidth" required lay-verify="" 
+									placeholder="格式:10" autocomplete="off" class="layui-input" 
+									value="800" >
+							</div>
+							<div class="layui-input-inline">
+								<input type="text" name="setHeight" required lay-verify="" 
+									placeholder="格式:10" autocomplete="off" class="layui-input" 
+									value="400" >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-row page_father_html" style="overflow:auto;">	
+					<div class="layui-col-md12 page_html"  id="text_content_one" >
+						
+					</div>
+				</div>
+				<div class="layui-row">
+					<div class="layui-col-md6" id="text_content_two">
+						<div class="layui-form-item" id="text_content_two_button">
+							<div class="layui-input-block" >
+								<button class="layui-btn layui-btn-fluid" style="height:60px;font-size: 1.4rem;font-family:'黑体'" >
+									导 出 组 件 HTML
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-col-md6" id="text_content_two_one">
+						<div class="layui-form-item" id="text_content_two_one_button">
+							<div class="layui-input-block" >
+								<button class="layui-btn layui-btn-fluid" style="height:60px;font-size: 1.4rem;font-family:'黑体'" >
+									保 存 组 件 HTML
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 布局右侧 -->
+	   		<div class="layui-col-md4 layui-col text-div-right">
+				<form class="layui-form" action="">
+					<div class="layui-row" id="text_content_three">	
+						<!-- 标题 -->
+						<div class="layui-col-md12"  id="text_content_three_type">	
+							<label style="display:inline-block;padding-top: 5px;">属 性 编 辑 区</label>
+						</div>
+						<!-- 表单 -->
+						<div class="layui-col-md12" id="text_content_three_form" style="overflow:auto">	
+							<div class="layui-tab">
+						  		<ul class="layui-tab-title">
+								    <li class="layui-this">外部位置</li>
+								    <li>内部位置</li>
+								    <li>数据样式</li>
+								    <li>文字样式</li>
+						 		</ul>
+							  	<div class="layui-tab-content">
+							  		<!-- 父tab -->
+								    <div class="layui-tab-item layui-show">
+								    	<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">边框:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="borderLine" required lay-verify="" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input"
+													value="1px #043AD1 solid">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">左边距:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="left" required lay-verify=""
+													placeholder="格式:100%" autocomplete="off" class="layui-input" 
+													value="1%">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">左内边距:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="fatherLeft" required lay-verify="" 
+													placeholder="格式:100%" autocomplete="off" class="layui-input" 
+													value="1%">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">右内边距:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="fatherRight" required lay-verify="" 
+													placeholder="格式:100%" autocomplete="off" class="layui-input" 
+													value="1%">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">上边距:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="top" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%"  autocomplete="off" class="layui-input" 
+													value="2%">
+											</div>
+										</div>	
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">上内边距:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="fatherTop" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="1%">
+											</div> 
+										</div>														
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">宽度:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="fatherWidth" required lay-verify="tagValue" 
+													placeholder="格式：100%" autocomplete="off" class="layui-input" 
+													value="14%">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">高度:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fatherHeight" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="10%">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">底部背景颜色:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fatherbackgroundColor" required lay-verify="" 
+													placeholder="格式：red #666666" autocomplete="off" class="layui-input" 
+													value="">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">前部背景颜色:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="part1BackgroundColor-Arr"  lay-verify="" 
+													placeholder="#001FB7,#D8A903,#8E2CBD" autocomplete="off" 
+													class="layui-input" value="">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">后部背景颜色:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="part2BackgroundColor-Arr"  lay-verify="" 
+													placeholder="" autocomplete="off" class="layui-input" value="">
+											</div>
+										</div>
+									</div>
+									
+									<!-- 子tab -->
+									<div class="layui-tab-item ">
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">前左边距:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonLeft+first" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="3px">
+											</div> 
+										</div>								
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">前右边距:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonRight+first" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="0px">
+											</div> 
+										</div>																						
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">后左边距:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonLeft+second" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="2px">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">后右边距:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonRight+second" required lay-verify="tagValue" 
+													placeholder="格式：80px 100%" autocomplete="off" class="layui-input" 
+													value="0px">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">前宽度:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonWidth+first" required lay-verify="tagValue" 
+													placeholder="格式：100%" autocomplete="off" class="layui-input" 
+													value="70%">
+											</div> 
+										</div>	
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">后宽度:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonWidth+second" required lay-verify="tagValue" 
+													placeholder="格式：100%" autocomplete="off" class="layui-input" 
+													value="30%">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">前文字背景颜色:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonbackgroundColor+first"  lay-verify="" 
+													placeholder="格式：red" autocomplete="off" class="layui-input" 
+													value="">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">后文字背景颜色:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="sonbackgroundColor+second"  lay-verify="" 
+													placeholder="格式：red" autocomplete="off" class="layui-input" 
+													value="">
+											</div> 
+										</div>
+									</div>
+									
+									
+									<!-- 动态数据 -->					
+								    <div class="layui-tab-item">
+								    	<div class="layui-form-item">
+											<label class="layui-form-label">数据链接:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="textUrl" required lay-verify="" 
+													placeholder="" autocomplete="off" class="layui-input" 
+													value="/html/analogData/listComponentsActiveData.html">
+											</div>
+										</div>										
+								    	<div class="layui-form-item">
+											<label class="layui-form-label">前文本内容:</label>
+											<div class="layui-input-inline" style="width:260px">
+												<input type="text" name="text_first" lay-verify="" 
+													placeholder="累计总能耗,当月总能耗,当日总能耗" autocomplete="off" 
+													class="layui-input" value="">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">后文本内容:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="text_second" lay-verify="" 
+													placeholder="动态数据,动态数据,动态数据" autocomplete="off" 
+													class="layui-input" value="">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">状态值:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="text_stateColor" lay-verify="" 
+													placeholder="格式：1,2,4" autocomplete="off" 
+													class="layui-input" value="">
+											</div>
+										</div>									    	
+										<div class="layui-form-item" >
+											<label class="layui-form-label">数据值状态:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="stateValue" required lay-verify="" 
+													placeholder="格式：0,1" autocomplete="off" class="layui-input" 
+													value="0,1">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">颜色状态:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="colorState" required lay-verify="" 
+													placeholder="格式：0,1" autocomplete="off" class="layui-input" 
+													value="0,1,2,3">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">颜色状态值:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="color" required lay-verify="" 
+														placeholder="#0021B8,#D8A903,#FD3100,#8E2CBD" autocomplete="off" 
+														class="layui-input" value="#0021B8,#D8A903,#FD3100,#8E2CBD">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">图片状态值:</label>
+											<div class="layui-input-inline" >
+												<input type="text" name="picture" required lay-verify="" 
+														placeholder="格式：url1,url2,url3" autocomplete="off" 
+														class="layui-input" value="/picture/logo.png,/picture/test.png,/picture/test1.png,/picture/test2.png">
+											</div>
+										</div>
+									</div>		
+								
+									<!-- 文本属性 -->					
+								    <div class="layui-tab-item">
+								    	
+										<div class="layui-form-item">
+											<label class="layui-form-label">前文字大小:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontSize+first" required lay-verify="" 
+													placeholder="格式：80px" autocomplete="off" class="layui-input" 
+													value="14px">
+											</div> 
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">前文字颜色:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontColor+first" required lay-verify="" 
+													placeholder="格式：white" autocomplete="off" class="layui-input" 
+													value="white">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">前文字字体:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontFamily+first" required lay-verify="" 
+													placeholder="格式：宋体" autocomplete="off" class="layui-input" 
+													value="华文仿宋">
+											</div> 
+										</div>												
+										<div class="layui-form-item">
+											<label class="layui-form-label">后文字大小:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontSize+second" required lay-verify="" 
+													placeholder="格式：80px" autocomplete="off" class="layui-input" 
+													value="14px">
+											</div> 
+										</div>										
+										<div class="layui-form-item">
+											<label class="layui-form-label">后文字颜色:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontColor+second" required lay-verify="" 
+													placeholder="格式：white" autocomplete="off" class="layui-input" 
+													value="white">
+											</div>
+										</div>										
+										<div class="layui-form-item">
+											<label class="layui-form-label">后文字字体:</label>
+											<div class="layui-input-inline">
+												<input type="text" name="fontFamily+second" required lay-verify="" 
+													placeholder="格式：宋体 微软雅黑" autocomplete="off" class="layui-input" 
+													value="宋体">
+											</div> 
+										</div>
+									</div>									
+							 	</div>
+							</div>																										
+						</div>
+						<!-- 按钮 -->
+						<div class="layui-col-md12"  id="text_content_three_button" style="display:none;height:0px;">	
+							<div class="layui-form-item">
+								<div class="layui-input-block" >
+									<button class="layui-btn" lay-submit lay-filter="save" id="text_content_three_save">保存</button>
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- js书写 -->
+	<script type="text/javascript" src="/javaScript/listComponentCreate.js"></script>
+</body>
+</html>

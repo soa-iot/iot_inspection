@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>表格组件生成</title>
+    <link rel="stylesheet" href="/package/layui-2.2.5/css/layui.css">
+    <link rel="stylesheet" href="/css/tableCreate.css">
+    <!-- js书写 -->
+	<script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/javaScript/universal.js"></script>
+	<script type="text/javascript" src="/javaScript/tableCreate.js"></script>
+	<script type="text/javascript">
+		$(function(){
+			/*
+			 *初始化预览区大小
+			 */
+			var $text_content_one = $('#text_content_one');
+			var setHeight = $('input[name=setHeight]').val();
+			var setWidth = $('input[name=setWidth]').val();
+			var originalStyle = $text_content_one.attr('style');
+			if(originalStyle){
+				$text_content_one.attr('style', originalStyle + 'height:' + setHeight + 
+						'px;width:' + setWidth + "px;");
+			}else{
+				$text_content_one.attr('style', 'height:' + setHeight + 
+						'px;width:' + setWidth + "px;");
+			}						
+		})
+	</script>
+</head>
+<body>
+	<div class="layui-fluid"> 		
+		<div class="layui-row ">
+			<!-- 布局左侧 -->
+	   		<div class="layui-col-md8 layui-col text-div-left">
+				<div class="layui-row">		
+					<div class="layui-col-md12">
+						<div class="layui-form-item" style="margin: 15px 0px;">
+							<label class="layui-form-label" style="width:100px">预览区大小:</label>
+							<div class="layui-input-inline" style="width:100px">
+								<input type="text" name="setWidth" required lay-verify="" 
+									placeholder="格式:10" autocomplete="off" class="layui-input" 
+									value="800" >
+							</div>
+							<div class="layui-input-inline" style="width:100px">
+								<input type="text" name="setHeight" required lay-verify="" 
+									placeholder="格式:10" autocomplete="off" class="layui-input" 
+									value="400" >
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-row page_father_html" style="overflow:auto;">	
+					<div class="layui-col-md12 page_html"  id="text_content_one" >
+						
+					</div>
+				</div>
+				<div class="layui-row">
+					<div class="layui-col-md6" id="text_content_two">
+						<div class="layui-form-item" id="text_content_two_button">
+							<div class="layui-input-block" >
+								<button class="layui-btn layui-btn-fluid" style="height:60px;font-size: 1.4rem;font-family:'黑体'" >
+									导 出 组 件 HTML
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="layui-col-md6" id="text_content_three">
+						<div class="layui-form-item" id="text_content_three_button">
+							<div class="layui-input-block" >
+								<button class="layui-btn layui-btn-fluid" style="height:60px;font-size: 1.4rem;font-family:'黑体'" >
+									保 存 组 件 HTML
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 布局右侧 -->
+	   		<div class="layui-col-md4 layui-col text-div-right">
+				<form class="layui-form" action="">
+					<div class="layui-row" id="text_content_three">	
+						<!-- 标题 -->
+						<div class="layui-col-md12"  id="text_content_three_type">	
+							<label style="display:inline-block;padding-top: 5px;">属 性 编 辑 区</label>
+						</div>
+						<!-- 表单 -->
+						<div class="layui-col-md12" id="text_content_three_form" style="overflow:auto">	
+							<div class="layui-tab">
+						  		<ul class="layui-tab-title">
+								    <li class="layui-this">表格位置</li>
+								    <li>标题样式</li>
+								    <li>条件样式</li>
+								    <li>表头样式</li>
+								    <li>行样式</li>
+								    <li>列样式</li>
+						 		</ul>
+							  	<div class="layui-tab-content">
+							  		<!-- whole table  -->
+								    <div class="layui-tab-item layui-show">
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">左边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableLeft" required lay-verify="tagValue" 
+													placeholder="10px" autocomplete="off" class="layui-input" 
+													value="0px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">上边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTop" required lay-verify="tagValue" 
+													placeholder="0px" autocomplete="off" class="layui-input" 
+													value="0px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>														
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">宽度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableWidth" required lay-verify="tagValue" placeholder="400px" autocomplete="off" class="layui-input" value="400px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">高度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeight" required lay-verify="tagValue" placeholder="135%" autocomplete="off" class="layui-input" value="135%">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">显示分页:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="isShowPage" required lay-verify="" placeholder="false" 
+														autocomplete="off" class="layui-input" value="false">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：true false</div>
+										</div>
+									</div>
+									
+							  		<!-- table title -->
+								    <div class="layui-tab-item ">
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">是否显示标题:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="isShowTitle" required lay-verify=""
+													 placeholder="true" autocomplete="off" class="layui-input" 
+													 value="true">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：true</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">标题名称:</label>
+											<div class="layui-input-inline" style="width:160px">
+												<input type="text" name="tableTitle" required lay-verify="" 
+													placeholder="设备综合指标" autocomplete="off" class="layui-input" 
+													value="设备综合指标">
+											</div>
+										</div>	
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">标题高度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleHeight" required lay-verify="" 
+													placeholder="8%" autocomplete="off" class="layui-input" 
+													value="8%">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" >格式：20px 60%</div>
+										</div>	
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">标题宽度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart1Width" required lay-verify="" 
+													placeholder="60%" autocomplete="off" class="layui-input" 
+													value="60%">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：60%</div>
+										</div>												
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">上边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleTop" required lay-verify="" 
+													placeholder="12px" autocomplete="off" class="layui-input" 
+													value="12px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">下边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleBottom" required lay-verify="" 
+													placeholder="16px" autocomplete="off" class="layui-input" 
+													value="16px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">左边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart1Left" required lay-verify="" 
+													placeholder="20px" autocomplete="off" class="layui-input" 
+													value="20px">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：20px 60%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleBgcolor" required lay-verify="" 
+													placeholder="#001065" autocomplete="off" class="layui-input" 
+													value="#001065">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：red</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">边框:</label>
+											<div class="layui-input-inline" style="width:160px">
+												<input type="text" name="tableTitlePart1Border" required lay-verify="" 
+													placeholder="2px #02448C solid" autocomplete="off" class="layui-input" 
+													value="2px #02448C solid">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">文字颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart1Color" required lay-verify="" 
+													placeholder="#A832CD" autocomplete="off" class="layui-input" 
+													value="#A832CD">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：#A832CD</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">文字大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart1Size" required lay-verify="" 
+													placeholder="22px" autocomplete="off" class="layui-input" 
+													value="22px">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：22px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">文字类型:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart1Family" required lay-verify="" 
+													placeholder="宋体" autocomplete="off" class="layui-input" 
+													value="宋体">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：宋体</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">表格内容more:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleMore" required lay-verify="" 
+													placeholder="more" autocomplete="off" class="layui-input" 
+													value="more">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">扩展标题高度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleMoreHeight" required lay-verify="" 
+													placeholder="10%" autocomplete="off" class="layui-input" 
+													value="10%">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">扩展标题颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleMoreColor" required lay-verify="" 
+													placeholder="#A832CD" autocomplete="off" class="layui-input" 
+													value="#A832CD">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：#A832CD</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">扩展标题大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleMoreSize" required lay-verify="" 
+													placeholder="15px" autocomplete="off" class="layui-input" 
+													value="15px">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：15px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">扩展标题类型:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleMoreFamily" required lay-verify="" 
+													placeholder="宋体" autocomplete="off" class="layui-input" 
+													value="宋体">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：15px</div>
+										</div>
+									</div>
+									
+									
+									<!-- 条件样式 -->
+									<div class="layui-tab-item ">
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件名称:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitleCondition" required lay-verify="" 
+													placeholder="年,月,日" autocomplete="off" class="layui-input" 
+													value="年,月,日">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：年,月,日</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件宽度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart2Width" required lay-verify="" 
+													placeholder="20%" autocomplete="off" class="layui-input" 
+													value="20%">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：20px 20%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件右边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart2Right" required lay-verify="" 
+													placeholder="20px" autocomplete="off" class="layui-input" 
+													value="20px">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：20px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件边框:</label>
+											<div class="layui-input-inline" style="width:160px">
+												<input type="text" name="tableTitlePart2Border" required lay-verify="" 
+													placeholder="2px #02448C solid" autocomplete="off" class="layui-input" 
+													value="2px #02448C solid">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件文字颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart2Color" required lay-verify="" 
+													placeholder="white" autocomplete="off" class="layui-input" 
+													value="white">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：white</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件文字大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart2Size" required lay-verify="" 
+													placeholder="14px" autocomplete="off" class="layui-input" 
+													value="14px">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：14px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">条件文字类型:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableTitlePart2Family" required lay-verify="" 
+													placeholder="宋体" autocomplete="off" class="layui-input" 
+													value="宋体">
+											</div>
+										    <div class="layui-form-mid layui-word-aux" style="width:130px">格式：宋体</div>
+										</div>
+									</div>
+									
+									<!-- table head -->
+									<div class="layui-tab-item ">
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">数据链接:</label>
+											<div class="layui-input-inline" style="width:250px">
+												<input type="text" name="tableDataUrl" required lay-verify="" placeholder="/html/analogData/tableJsonTest.html" 
+													autocomplete="off" class="layui-input" value="/html/analogData/tableJsonTest.html">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">表头名称:</label>
+											<div class="layui-input-inline" style="width:260px">
+												<input type="text" name="tableHeadTitle" required lay-verify="" placeholder="项目名称,开发日期,截止日期,事件类型,状态" 
+												autocomplete="off" class="layui-input" value="项目名称,开发日期,截止日期,事件类型,状态">
+											</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">数据字段:</label>
+											<div class="layui-input-inline" style="width:260px">
+												<input type="text" name="tableHeadField" required lay-verify="" placeholder="project_name,project_begin_date,project_end_date,project_event_type,project_state" 
+													autocomplete="off" class="layui-input" value="project_name,project_begin_date,project_end_date,project_event_type,project_state">
+											</div>
+										</div>														
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">最小宽度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeadWidth" required lay-verify="" placeholder="150px" 
+														autocomplete="off" class="layui-input" value="150,150,150,150,150">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80,80,80</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">字体大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeadFontSize" required lay-verify="tagValue" placeholder="14px"
+														autocomplete="off" class="layui-input" value="14px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">字体类型:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeadFontFamily" required lay-verify="" placeholder="华文仿宋"
+														 autocomplete="off" class="layui-input" value="华文仿宋">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">文字颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeadFontColor" required lay-verify="" placeholder="#60D4F5" 
+														autocomplete="off" class="layui-input" value="#60D4F5">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #666666</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableHeadBackgroundColor" required lay-verify="" placeholder="#00104E" 
+														autocomplete="off" class="layui-input" value="#00104E">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #666666</div>
+										</div>
+									</div>		
+									
+									<!-- table row  -->					
+								    <div class="layui-tab-item">
+								    	<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">行高:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableRowHeight" required lay-verify="tagValue" placeholder="20px"
+														autocomplete="off" class="layui-input" value="20px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px</div>								    	
+										</div>
+								    	<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">各行字体大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableBodyFontSize" required lay-verify="tagValue" placeholder="14px" 
+														autocomplete="off" class="layui-input" value="14px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">各行字体类型:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableBodyFontFamily" required lay-verify="" placeholder="华文仿宋" 
+														autocomplete="off" class="layui-input" value="华文仿宋">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：华文仿宋</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">各行文字颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableBodyFontColor" required lay-verify="" placeholder="#FFFFFF" 
+														autocomplete="off" class="layui-input" value="#FFFFFF">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #666666</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:120px">奇数行背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableBodyEvenBackgroundColor" required lay-verify="" placeholder="#00104E" 
+														autocomplete="off" class="layui-input" value="#00104E">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #FFFFFF</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:120px">偶数行背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="tableBodyOddBackgroundColor" required lay-verify="" placeholder="#051958" 
+														autocomplete="off" class="layui-input" value="#051958">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #FFFFFF</div>
+										</div>
+									</div>
+									
+									<!-- table col -->					
+								    <div class="layui-tab-item">
+								    	<div class="layui-form-item">
+    										<label class="layui-form-label">列样式字段:</label>
+											<div class="layui-input-block" id="checkboxStyle">
+											</div>
+										</div>										
+									</div>
+							 	</div>
+							</div>																										
+						</div>
+						<!-- 按钮 -->
+						<div class="layui-col-md12"  style="height:0px;display:none;">	
+							<div class="layui-form-item">
+								<div class="layui-input-block" >
+									<button class="layui-btn" lay-submit lay-filter="save" id="text_content_three_save">保存</button>
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	
+</body>
+</html>

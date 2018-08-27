@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>文本信息框组价</title>
+    <link rel="stylesheet" href="/package/layui-2.2.5/css/layui.css">
+    <style type="text/css">
+		body {
+			margin: 0,
+			padding: 0,
+			background-color: #45B4D1
+		}
+		
+		.layui-col {
+			height: 100vh
+		}
+		
+		.text-div-left {
+			background-color: #D2D2D2
+		}
+		
+		.text-div-right {
+			margin: 0;
+			padding: 0;
+			background-color: #FFFFFF
+		}
+		
+		#text_content_one {
+			width: 90%;
+			height: calc(100vh - 200px);
+			background-color: #FFFFFF;
+			margin-left: 5%;
+			margin-top: 5%;
+			margin-bottom: 3%;
+			margin-right: 3%;
+		}
+		
+		#text_content_two_button {
+			margin: 0;
+			text-align: center;
+			margin-top: 3%;
+		}
+		
+		#text_content_two_button > div {
+			margin: auto 0;
+			margin-left: 5%;
+			margin-bottom: 3%;
+			margin-right: 5%;
+			font-size: 1.6rem;
+		}
+		
+		#text_content_two_button > div > div {		
+			padding-top: 20px;
+			line-height: 80px;
+		}
+		
+		#text_content_two_button > div button{		
+			font-size: 1.6rem;
+			font-family: "黑体";
+		}				
+		
+		#text_content_three_button {
+			height: 40px;
+		}
+		
+		#text_content_three_form {			
+			padding: 0;
+			text-align: center;
+			height: calc(100vh - 150px);		
+		}
+		
+		#text_content_three_type {
+			margin: 0;
+			padding: 0;
+			height: 60px;
+			text-align: center;
+			background-color: #FBFBFB;			
+		}
+		
+		#text_content_three_type > label {
+			font-size: 1.6rem;
+			line-height: 60px;
+			
+		}
+
+    </style>
+</head>
+<body>
+	<div class="layui-fluid"> 		
+		<div class="layui-row layui-col-space20">
+			<!-- 布局左侧 -->
+	   		<div class="layui-col-md8 layui-col text-div-left">
+				<div class="layui-row">		
+					<div class="layui-col-md12 page_html" id="text_content_one" style="overflow:auto">
+						<div style="margin-left:{{d.fatherLeft}};margin-right:{{d.fatherRight}};margin-top:{{d.fatherTop}};text-align:{{d.textAlign}};
+									width:{{d.fatherWidth}};height:{{d.fatherHeight}};background-color:{{d.fatherbackgroundColor}}">							
+								<span data-url="{{d.textUrl}}" style="color:{{d.fontColor}};margin-left:{{d.sonLeft}};margin-right:{{d.sonLeft}};line-height:{{d.fatherHeight}};
+										width:{{d.sonWidth}};height:{{d.sonHeight}};background-color:{{d.sonbackgroundColor}}">
+										{{d.text}}
+								</span>						
+						</div>
+					</div>
+					<div class="layui-col-md12" id="text_content_two">
+						<div class="layui-form-item" id="text_content_two_button">
+							<div class="layui-input-block" >
+								<button class="layui-btn layui-btn-fluid" style="height:60px;font-size: 1.4rem;
+									font-family: "黑体"; >
+									导 出 组 件 HTML
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- 布局右侧 -->
+	   		<div class="layui-col-md4 layui-col text-div-right">
+				<form class="layui-form" action="">
+					<div class="layui-row" id="text_content_three">	
+						<!-- 标题 -->
+						<div class="layui-col-md12"  id="text_content_three_type">	
+							<label style="display:inline-block;padding-top: 5px;">属 性 编 辑 区</label>
+						</div>
+						<!-- 表单 -->
+						<div class="layui-col-md12" id="text_content_three_form" style="overflow:auto">	
+							<div class="layui-tab">
+						  		<ul class="layui-tab-title">
+								    <li class="layui-this">位置大小</li>
+								    <li>文字样式</li>
+						 		</ul>
+							  	<div class="layui-tab-content">
+								    <div class="layui-tab-item layui-show">
+										<div class="layui-form-item">
+											<label class="layui-form-label" style="width:100px">左边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fatherLeft" required lay-verify="tagValue" placeholder="35%" autocomplete="off" class="layui-input" value="35%">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">上边距:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fatherTop" required lay-verify="tagValue" placeholder="0px" autocomplete="off" class="layui-input" value="0px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>														
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">宽度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fatherWidth" required lay-verify="tagValue" placeholder="400px" autocomplete="off" class="layui-input" value="400px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">高度:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fatherHeight" required lay-verify="tagValue" placeholder="40px" autocomplete="off" class="layui-input" value="40px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px 100%</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">容器背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fatherbackgroundColor" required lay-verify="" placeholder="" autocomplete="off" class="layui-input" value="">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #666666</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label"  style="width:100px">文字背景颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="sonbackgroundColor" required lay-verify="" placeholder="" autocomplete="off" class="layui-input" value="">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #666666</div>
+										</div>
+									</div>
+								    <div class="layui-tab-item">
+								    	<div class="layui-form-item">
+											<label class="layui-form-label">文本内容:</label>
+											<div class="layui-input-inline" style="width:300px">
+												<input type="text" name="text" required lay-verify="" placeholder="2018 重庆斯欧信息技术股份有限公司" 
+													autocomplete="off" class="layui-input" value="2018 重庆斯欧信息技术股份有限公司">
+											</div>
+											<!-- <div class="layui-form-mid layui-word-aux" style="width:130px">格式：组件类型</div> -->
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">文字大小:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fontSize" required lay-verify="" placeholder="12px" autocomplete="off" class="layui-input" value="12px">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：80px</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">文字颜色:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fontColor" required lay-verify="" placeholder="#92D3F6" autocomplete="off" class="layui-input" value="#92D3F6">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：red #FFFFFF</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">文字字体:</label>
+											<div class="layui-input-inline" style="width:100px">
+												<input type="text" name="fontFamily" required lay-verify="" placeholder="宋体" autocomplete="off" class="layui-input" value="宋体">
+											</div>
+											<div class="layui-form-mid layui-word-aux" style="width:130px">格式：宋体 微软雅黑</div>
+										</div>
+										<div class="layui-form-item">
+											<label class="layui-form-label">数据链接:</label>
+											<div class="layui-input-inline" style="width:300px">
+												<input type="text" name="textUrl" required lay-verify="" placeholder="http://127.0.0.1:8080/" autocomplete="off" class="layui-input" value="">
+											</div>
+											<!-- <div class="layui-form-mid layui-word-aux" style="width:130px">格式：http://blog.csdn.net/</div>-->
+										</div>
+									</div>
+							 	</div>
+							</div>																										
+						</div>
+						<!-- 按钮 -->
+						<div class="layui-col-md12"  id="text_content_three_button" style="margin-top:10px">	
+							<div class="layui-form-item">
+								<div class="layui-input-block" >
+									<button class="layui-btn" lay-submit lay-filter="save" id="text_content_three_save">保存</button>
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- js书写 -->
+	<script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/javaScript/universal.js"></script>
+	<script type="text/javascript">
+		/*
+		 * 初始化参数
+		 */
+		var element = layui.element;
+		var $container = $('#text_content_one');//组件容器对象
+		var renderData = {                     //组件配置数据			
+			"fatherLeft": "35%",
+			"fatherTop": "0px",
+			"fatherRight": "0px",
+			"fatherWidth": "400px",
+			"fatherHeight": "40px",
+			"fatherbackgroundColor": "",
+			"sonLeft": "10px",
+			"sonRight": "",
+			"sonWidth": "180px",
+			"sonHeight": "30px",
+			"sonbackgroundColor": "",
+			
+			"text": "2018 重庆斯欧信息技术股份有限公司",
+			"textAlign": "center",
+			"fontSize": "12px",
+			"fontColor": "#92D3F6",
+			"fontFamily": "宋体",
+			"textUrl": ""
+		}
+		var templateUrl = "/javaScript/templateJs/textComponent.js";//模板地址
+		
+		/*
+		 * html页面初始化
+		 */
+		$(function(){
+			//html初始化渲染
+			htmlRender(renderData);
+		});
+		
+		/*
+		 * 事件绑定
+		 */
+		$(function(){	 
+			//所有输入框blur事件绑定
+			$('input[type=text]').on('blur', inputBlurEvent);
+			
+			//导出html按钮单击事件绑定
+			$('#text_content_two_button button').on('click', buttonClickEvent);
+			
+			//表单提交验证事件绑定
+			layui.form.on('submit(save)', function(data){			
+				$.each($('input[type=text]'), function(index, item){
+					var tempType = $(item).attr('name');
+					renderData[tempType] = $(item).val();
+				})
+				console.log(renderData);
+				//获取组件模板\
+				$.ajax({ 
+					type: "get",
+					url: templateUrl, 
+					cache: true, //默认 
+					dataType: "html",//必须指定，否则根据后端判断 
+					success: function(html){ 
+						$container.html(html);
+						htmlRender(renderData);
+					},
+				})
+				return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+			});
+			
+			//重置按钮事件绑定
+			$('button[type=reset]').on('click', resetButtonClickEvent);
+		});
+		
+		
+		/*
+		 * html数据渲染
+		 */
+		var htmlRender = function(renderData){ 
+			layui.laytpl($container.html()).render(renderData, function(html){
+				$container.html(html); 
+			});
+		}
+		
+		/*
+		 * input框blur事件函数
+		 */
+		var inputBlurEvent = function(){
+			//提交验证
+			$('#text_content_three_save').click();	
+		}
+		
+		/*
+		 * 导出html按钮click事件函数
+		 */
+		var buttonClickEvent = function(){		
+			generateHTML($container.html(), "textInstance_" + getNowTime('-','-') + ".html");
+		}
+		
+		/*
+		 * 重置按钮按钮click事件函数
+		 */
+		var resetButtonClickEvent = function(){		
+			window.location.reload();
+		}
+		
+    </script>
+</body>
+</html>

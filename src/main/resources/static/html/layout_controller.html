@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>controller布局</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="/package/layui-2.2.5/css/layui.css">
+	<link rel="stylesheet" href="/css/layui_controller.css" media="all">
+	<script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/package/own/common.js"></script>
+	<style type="text/css">
+
+	</style>
+	<script type="text/javascript">
+		var global = {};//全局变量
+		var table = layui.table;
+		var layer = layui.layer;
+		var templ = layui.laytpl;
+		var componentInit = function( $component,  componentUrl, componentDataUrl ){
+			//同步请求模板、模板数据
+			$.ajax({ 
+		    	type: "get",
+		     	url: componentUrl,
+			    data: {},
+			    async: true, //默认
+			    cache: true, //默认
+			    contentType: "application/x-www-form-urlencoded",//默认
+			    dataType: "html",//必须指定，否则根据后端判断
+			    beforeSend:  function(XMLHttpRequest){//在beforeSend中如果返回false可以取消本次ajax请求
+			        //this;   //调用本次ajax请求时传递的options参数
+			    },
+			    complete:   function(XMLHttpRequest, textStatus){//请求完成后调用的回调函数（请求成功或失败时均调用）
+			       //this;    //调用本次ajax请求时传递的options参数
+			    },
+			    success: function(html){ 				    	
+			    	//异步请求数据
+						$.ajax({
+				    	type: "get",
+				    	url: componentDataUrl,
+				     	data: {},
+				    	async: true, //默认
+				     	cache: true, //默认
+				     	contentType: "application/x-www-form-urlencoded",//默认
+				     	dataType: "json",//必须指定，否则根据后端判断
+				     	beforeSend:  function(XMLHttpRequest){//在beforeSend中如果返回false可以取消本次ajax请求
+				        	//this;   //调用本次ajax请求时传递的options参数
+				     	},
+				     	complete:   function(XMLHttpRequest, textStatus){//请求完成后调用的回调函数（请求成功或失败时均调用）
+				        	//this;    //调用本次ajax请求时传递的options参数
+				     	},
+				     	success: function(jsonData){ 
+				     		global[$component.attr('id')] = jsonData;
+				     		$component.html('');
+				     		$.each($(html).not('script[layType=onlyJs]'), function(index, item){
+				     			console.log($(item).prop("outerHTML"));
+				     			if($component.html()){
+				     				templ($(item).prop("outerHTML")).render(jsonData, function(html){
+										$component.append(html);
+									});	
+				     			}else{
+				     				templ($(item).prop("outerHTML")).render(jsonData, function(html){
+										$component.html(html);
+									});
+				     			}	
+				     		})	
+				     		
+				     		//加载script内容
+				     		$.each($(html).filter('script[layType=onlyJs]'), function(index, item){
+				     			if($component.html()){
+				     				$component.append(item);
+				     			}else{
+				     				$component.html(item);
+				     			}	
+				     		})				 		    					    								
+				     	},
+				     	error:function(){
+				    		layer.msg('模板数据请求异常');
+				     	}		       
+				 	});
+			    },
+			    error:function(){
+			    	layer.msg('模板请求异常');
+			    }		       
+			}) 
+		};
+	</script>
+</head>
+<body>
+	<div class="layui-fluid"> 
+		<!-- 头部 -->
+		<div class="layui-row layui-col-space" style="background-color:#010F4E">
+	   		<div class="layui-col-md12 " style="background-color:#010F4E">
+	   			<div class="layui-main-header" id="main_header_one" style="float:left">
+	   				<script type="text/javascript">	
+	   					componentInit(
+   							$('#main_header_one'), 
+   							"/javaScript/templateJs/imgComponent.js",
+   							"/html/analogData/imgJsonTest.html"	   												     							
+   						);	   					
+					</script>
+	   			</div>
+	   			
+	   			<!-- header右侧部分(登录、注册) -->
+				<div id="main_header_two" style="float:right" >				
+					<script type="text/javascript">	
+						componentInit(
+   							$('#main_header_two'),
+   							"/javaScript/templateJs/textComponent.js", 												  
+   							"/html/analogData/inputJsonTest.html"
+   						);	  			
+					</script>
+				</div>
+				<!-- header右侧部分(中间分割线) -->
+				<div style="float:right;color:#5E8DBB;margin-top:8px">|</div>
+				<!-- header右侧部分(身份) -->
+				<div id="main_header_three" style="float:right">	
+					<script type="text/javascript">				
+						componentInit(
+							$('#main_header_three'), 
+							"/javaScript/templateJs/textComponent.js", 												  
+   							"/html/analogData/inputJsonTest2.html"
+						);
+					</script>
+				</div>		
+			</div>
+	   	</div>
+	   	
+	   	<!-- 内容区 -->
+	   	<div class="layui-row layui-col-space25" style="background-color:#000E39">
+	   		<div class="layui-col-md12" style="height: calc(100vh - 92px);">
+	   			<div class="layui-main-content" id="main_content_one">	   				
+					<script type="text/javascript">
+						componentInit(
+							$('#main_content_one'), 
+							"/javaScript/templateJs/sideNavComponent.js",	   												  
+							"/html/analogData/sideNavJsonTest.html"
+						);																
+					</script>			
+				</div>
+	   		</div>
+	   	</div>
+	   	
+	   	<!-- 底部 -->
+	   	<div class="layui-row layui-col-space" style="background-color:#010F4E">
+	   		<div class="layui-col-md12 ">
+	   			<div class="layui-main-footer" id="main_foot_one">
+					<script type="text/javascript">
+						componentInit(
+							$('#main_foot_one'), 
+							"/javaScript/templateJs/textComponent.js", 												  
+   							"/html/analogData/inputJsonTest3.html"
+						);
+					</script>
+				</div>
+	   		</div>
+	   	</div>
+	</div>
+</body>
+</html>

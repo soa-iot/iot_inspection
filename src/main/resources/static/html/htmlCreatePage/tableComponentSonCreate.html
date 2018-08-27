@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>表格组件生成</title>
+    <link rel="stylesheet" href="/package/layui-2.2.5/css/layui.css">
+    <link rel="stylesheet" href="/css/tableCreate.css">	
+</head>
+<body>
+	<div class="layui-fluid" style="overflow:hidden"> 		
+		<div class="layui-row layui-col-space20">
+	   		<div class="layui-col-md12 layui-col">
+	   			<form class="layui-form" action="">
+			    	<div class="layui-form-item">
+						<label class="layui-form-label">列字段选择:</label>
+						<div class="layui-input-block" id="chooseTableheadField">
+															
+						</div>
+					</div>	
+					<div class="layui-form-item" style="display:none;height:0px;">
+						<label class="layui-form-label">列名称选择:</label>
+						<div class="layui-input-block" id="chooseTableheadName" >
+															
+						</div>
+					</div>	
+					<div class="layui-form-item" >
+						<label class="layui-form-label">列名称书写:</label>
+						<div class="layui-input-block" id="showTableheadName">
+							<input type="text" name="" required lay-verify="" placeholder="" 
+									autocomplete="off" class="layui-input" value="">								
+						</div>
+					</div>									
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<!-- js书写 -->
+	<script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/javaScript/universal.js"></script>	
+	<script type="text/javascript">
+		/*		 
+		 * 初始化参数定义
+		 */
+		var form = layui.form;
+		var tableNameStr = ''; //父页面-表格头名称
+		var tableFieldStr = ''; //父页面-表格头字段
+			 
+		 /*		 
+		  * 初始化页面
+		  */
+		$(function(){
+			console.log('数据链接页面初始化……');
+			var tableDataUrl = parent.tableDataUrl; 
+			var showTableName = '';
+			ajaxByGet($.trim(tableDataUrl), {}, function(jsonData){
+				if(jsonData != null && jsonData.state == 0){
+					var data = jsonData.data;
+					if(data != null && $.trim(data) != ''){
+						$.each(Object.keys(data[0]), function(index, item){
+							$('#chooseTableheadField').append(
+									'<input type="checkbox" lay-filter=""  name="tableheadField" value="' + item + '" title="' + item + '" checked> ');
+							$('#chooseTableheadName').append(
+									'<input type="radio" lay-filter="tableheadNameRadio"  name="tableheadName" value="' + item + '" title="' + item + '"> ');
+						})								
+						form.render();
+						
+						//表格表头名称单选事件绑定
+						form.on('radio(tableheadNameRadio)',function(thisData){
+							console.log('数据链接页面数据名称单击事件……');
+							showTableName = '';
+							var thisRadioValue = thisData.value;
+							var tempArray = [];  
+							$.each(data, function(index, item){	 
+								if($.inArray(item[thisRadioValue], tempArray) < 0){
+									console.log(tempArray);
+									tempArray.push(item[thisRadioValue]);
+									showTableName = showTableName + ',' + item[thisRadioValue];								
+								}								
+							}) 
+							$('#showTableheadName').find('input').val(showTableName.substr(1));
+						})
+					}else {
+						layer.msg('数据链接请求数据为空', {icon: 6});
+					}
+				}else{
+					layer.msg('数据链接请求失败', {icon: 6});
+				}							
+			});
+		})
+		
+		/*		 
+		 * 获取表格表头名称
+		 */
+		var getTableHeadName = function(){
+			return $('#showTableheadName').find('input').val();
+		} 
+		 
+		/*		 
+		 * 获取表格表头字段
+		 */
+		 var getTableHeadField = function(){
+			var tableFieldStr = '';
+			var $tempFieldObj = 
+				$('#chooseTableheadField').find('.layui-form-checked').find('span');
+			$.each($tempFieldObj, function(index, item){
+				tableFieldStr = tableFieldStr + ',' + $(item).text();
+			})
+			console.log(tableFieldStr.substr(1));
+			return tableFieldStr.substr(1);
+		}
+		
+		
+	</script>	
+</body>
+</html>

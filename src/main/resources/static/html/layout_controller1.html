@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>controller布局1</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="../package/layui-2.2.5/css/layui.css">
+	<link rel="stylesheet" href="/css/tableCreate.css"> 
+	<script type="text/javascript" src="/package/layui-2.2.5/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/package/own/universal.js"></script>	
+	<script type="text/javascript" src="/package/echarts.min.js"></script>    
+    <script type="text/javascript" src="/javaScript/tableCreate.js"></script>
+	<style type="text/css">
+		.layui-fluid {
+			width: 100%;
+			height:100%;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+		}
+
+		.layui-event > div {
+			border: 1px red solid;
+		}
+
+		.controller_content_one_one {
+			min-height: calc(100vh - 451px);
+		}
+
+		.controller_content_one_two {
+			min-height: calc(100vh - 451px);
+		}
+
+		.controller_content_one_three {
+			min-height: calc(100vh - 451px);	
+		}
+
+		.controller_content_two_one {
+			height: 140px;
+		}
+
+		.controller_content_two_two {
+			height: 140px;
+		}
+
+		.controller_content_three_one {
+			height: 130px;
+		}
+
+		.controller_content_three_two {
+			height: 130px;
+		}
+
+		.controller_content_three_three {
+			height: 130px;
+		}
+
+		.controller_content_four_one {
+			height: 130px;
+			overflow: hidden;
+		}
+
+		.controller_content_four_two {
+			height: 130px;
+			overflow: hidden;
+		}
+	</style>
+	<script type="text/javascript">
+		
+	</script>
+</head>
+<body>
+	<div class="layui-fluid" style="background-color:#000E39"> 
+		<!-- 头部 
+		<div class="layui-row layui-event">
+	   		<div class="layui-col-md12 layui-main-header"> </div>
+	   	</div>
+	   	-->
+	   	
+	   	<!-- 内容区 -->
+		<div class="layui-row layui-col-space10">
+	   		<div class="layui-col-md3 layui-event controller_content_one">
+	   			<div class="controller_content_one_one  "></div>
+	   		</div>
+	   		<div class="layui-col-md6 layui-event">
+	   			<div class="controller_content_one_two  "></div>
+	   		</div>
+	   		<div class="layui-col-md3 layui-event">
+	   			<div class="controller_content_one_three  "></div>
+	   		</div>
+	   	</div>
+		<div class="layui-row layui-col-space10">
+	   		<div class="layui-col-md6 layui-event">
+	   			<div class="controller_content_two_one  ">
+	   				<div class="chart-container2"
+		style="background-color:#010F4E;width: 100%;height: 100%" id="my_canv"></div>
+	<script type="text/javascript">
+		$(function() {
+			var myChart = echarts.init($(".chart-container2")[0]);
+			var tableData;
+			function getCategory(base_data, mark) {
+				var orig_category = [];
+				for (var i = 0; i < base_data.length; i++) {
+					orig_category.push(base_data[i][mark]);
+				}
+				;
+				var count = 0;
+				for ( var i in orig_category) {
+					for ( var b in orig_category) {
+						if (orig_category[i] == orig_category[b] && i != b) {
+							delete orig_category[b];
+							count++;
+						}
+					}
+					;
+				}
+				;
+				var category = orig_category.sort().slice(0,
+						orig_category.length - count);
+				return category;
+			}
+			;
+			function changToStandData(base_data, category, Xseries, value) {
+				var cate = getCategory(base_data, category);
+				var Xser = getCategory(base_data, Xseries);
+				var data = [];
+				for ( var i in Xser) {
+					var series = [];
+					series.push(Xser[i]);
+					for (var a = 0; a < base_data.length; a++) {
+						if (base_data[a][Xseries] == Xser[i]) {
+							for (var c = 0; c < cate.length; c++) {
+								if (base_data[a][category] == cate[c]) {
+									series[c + 1] = base_data[a][value]
+								}
+							}
+						}
+					}
+					;
+					data.push(series);
+				}
+				;
+				cate.unshift("product");
+				data.unshift(cate);
+				var length = cate.length;
+				for (var i = 0; i < data.length; i++) {
+					for (var a = 0; a < length; a++) {
+						data[i][a] = data[i][a] ? data[i][a] : 0;
+					}
+				}
+				return data;
+			}
+			;
+			$.ajax({
+				url : "http://localhost:8080/ssmTest/json/table.json",
+				dataType : "json",
+				success : function(jsonData) {
+					tableData = jsonData.data;
+					data = changToStandData(tableData, "city", "year", "age");
+					implOption.dataset = {};
+					implOption.dataset["source"] = data;
+				}
+			});
+			var implOption = {
+				"color" : [ "#A763CA", "#4BB8F3" ],
+				"grid" : {
+					borderColor: '#ffffff',
+					backgroundColor:'#010F4E',
+				    left: 30,
+				    right:10,
+				    bottom:20,
+				    top:22,
+					"show" : false,
+				},
+				"title" : {
+					"show" : true,
+					"text" : "MTIR平均故障间隔时间",
+					"textStyle" : {
+						"fontSize" : "10",
+						"color" : "#ffffff"
+					}
+				},
+				"tooltip" : {
+					"trigger" : "axis"
+				},
+				"legend" : {
+					"show" : false
+				},
+				"toolbox" : {
+					"show" : true
+				},
+				"xAxis" : {
+			         axisLabel:{ //调整x轴的lable  
+		                  textStyle:{
+		                      fontSize:10,
+		                      color: '#FFFFFF',// 让字体变大
+		                  }},
+					 splitLine:{show: false},//去除网格线
+					"type" : "category"
+				},
+				"yAxis" : {
+			         axisLabel:{ //调整x轴的lable  
+		                  textStyle:{
+		                      fontSize:10,
+		                      color: '#FFFFFF',// 让字体变大
+		                  }},
+					 splitLine:{show: false},//去除网格线
+					"type" : "value"
+				},
+				"dataset" : {
+					"source" : [ [ "product", "Group-0", "Group-1" ],
+							[ "0", 0, 0 ], [ "1", 2, 0 ], [ "2", 3, 0 ],
+							[ "3", 0, 1 ], [ "4", 0, 3 ], [ "5", 0, 0 ],
+							[ null, 0, 0 ], [ null, 0, 0 ] ]
+				},
+				"series" : [ {
+					"type" : "line",
+					"markPoint" : {},
+					"smooth" : true,
+					"areaStyle" : {}
+				}, {
+					"type" : "line",
+					"markPoint" : {},
+					"smooth" : true,
+					"areaStyle" : {}
+				} ]
+			};
+			var data;
+			myChart.setOption(implOption, true);
+		})
+	</script>
+	   			</div>
+	   		</div>
+	   		<div class="layui-col-md6 layui-event">
+	   			<div class="controller_content_two_two  ">
+	   				<div class="chart-container3"
+		style="background-color:#010F4E;width: 100%;height: 100%" id="my_canv"></div>
+	<script type="text/javascript">
+		$(function() {
+			var myChart = echarts.init($(".chart-container3")[0]);
+			var tableData;
+			function getCategory(base_data, mark) {
+				var orig_category = [];
+				for (var i = 0; i < base_data.length; i++) {
+					orig_category.push(base_data[i][mark]);
+				}
+				;
+				var count = 0;
+				for ( var i in orig_category) {
+					for ( var b in orig_category) {
+						if (orig_category[i] == orig_category[b] && i != b) {
+							delete orig_category[b];
+							count++;
+						}
+					}
+					;
+				}
+				;
+				var category = orig_category.sort().slice(0,
+						orig_category.length - count);
+				return category;
+			}
+			;
+			function changToStandData(base_data, category, Xseries, value) {
+				var cate = getCategory(base_data, category);
+				var Xser = getCategory(base_data, Xseries);
+				var data = [];
+				for ( var i in Xser) {
+					var series = [];
+					series.push(Xser[i]);
+					for (var a = 0; a < base_data.length; a++) {
+						if (base_data[a][Xseries] == Xser[i]) {
+							for (var c = 0; c < cate.length; c++) {
+								if (base_data[a][category] == cate[c]) {
+									series[c + 1] = base_data[a][value]
+								}
+							}
+						}
+					}
+					;
+					data.push(series);
+				}
+				;
+				cate.unshift("product");
+				data.unshift(cate);
+				var length = cate.length;
+				for (var i = 0; i < data.length; i++) {
+					for (var a = 0; a < length; a++) {
+						data[i][a] = data[i][a] ? data[i][a] : 0;
+					}
+				}
+				return data;
+			}
+			;
+			$.ajax({
+				url : "http://localhost:8080/ssmTest/json/table.json",
+				dataType : "json",
+				success : function(jsonData) {
+					tableData = jsonData.data;
+					data = changToStandData(tableData, "city", "year", "age");
+					implOption.dataset = {};
+					implOption.dataset["source"] = data;
+				}
+			});
+			var implOption = {
+				"color" : [ "#A763CA", "#4BB8F3" ],
+				"grid" : {
+					borderColor: '#ffffff',
+					backgroundColor:'#010F4E',
+				    left: 30,
+				    right:10,
+				    bottom:20,
+				    top:22,
+					"show" : false,
+				},
+				"title" : {
+					"show" : true,
+					"text" : "MTIR平均故障间隔时间",
+					"textStyle" : {
+						"fontSize" : "10",
+						"color" : "#ffffff"
+					}
+				},
+				"tooltip" : {
+					"trigger" : "axis"
+				},
+				"legend" : {
+					"show" : false
+				},
+				"toolbox" : {
+					"show" : true
+				},
+				"xAxis" : {
+			         axisLabel:{ //调整x轴的lable  
+		                  textStyle:{
+		                      fontSize:10,
+		                      color: '#FFFFFF',// 让字体变大
+		                  }},
+					 splitLine:{show: false},//去除网格线
+					"type" : "category"
+				},
+				"yAxis" : {
+			         axisLabel:{ //调整x轴的lable  
+		                  textStyle:{
+		                      fontSize:10,
+		                      color: '#FFFFFF',// 让字体变大
+		                  }},
+					 splitLine:{show: false},//去除网格线
+					"type" : "value"
+				},
+				"dataset" : {
+					"source" : [ [ "product", "Group-0", "Group-1" ],
+							[ "0", 0, 0 ], [ "1", 2, 0 ], [ "2", 3, 0 ],
+							[ "3", 0, 1 ], [ "4", 0, 3 ], [ "5", 0, 0 ],
+							[ null, 0, 0 ], [ null, 0, 0 ] ]
+				},
+				"series" : [ {
+					"type" : "line",
+					"markPoint" : {},
+					"smooth" : true,
+					"areaStyle" : {}
+				}, {
+					"type" : "line",
+					"markPoint" : {},
+					"smooth" : true,
+					"areaStyle" : {}
+				} ]
+			};
+			var data;
+			myChart.setOption(implOption, true);
+		})
+	</script>
+	   			</div>
+	   		</div>
+	   	</div>
+	   	<div class="layui-row  layui-col-space10">
+	   		<div class="layui-col-md4 layui-event">
+	   			<div class="controller_content_three_one  "></div>
+	   		</div>
+	   		<div class="layui-col-md5 layui-event">
+	   			<div class="controller_content_three_two  "></div>
+	   		</div>
+	   		<div class="layui-col-md3 layui-event">
+	   			<div class="controller_content_three_three" id="controller_content_three_three">
+					<ul style="width:100%;">  <li style="float: left;width:100%;"> <div style="margin-left:2%;margin-right:2%;margin-top:10px; width:95%;height:30px;background-color:#081870; border:1px #043AD1 solid"> <div style="width:40%;text-align:center;display:inline-block;background-color:"> <span data-url="" style="color:white;margin-left:10px; margin-right:10px;line-height:30px;font-size:14px; width:40%;height:30px;background-color:; font-family:华文仿宋;vertical-align:top;"> 累计总能耗 </span> </div> <div style="width:58%;text-align:center;display:inline-block;background-color:"> <span data-url="/html/analogData/listComponentsActiveData.html" style="color:#17FF36;margin-left:20px; margin-right:0px;line-height:30px;font-size:22px; width:58%;height:30px;background-color:; font-family:宋体;vertical-align:top;"> 12.56KW </span> </div> </div> </li>  <li style="float: left;width:100%;"> <div style="margin-left:2%;margin-right:2%;margin-top:10px; width:95%;height:30px;background-color:#081870; border:1px #043AD1 solid"> <div style="width:40%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="" style="color:white;margin-left:10px; margin-right:10px;line-height:30px;font-size:14px; width:40%;height:30px;background-color:; font-family:华文仿宋;vertical-align:top;"> 当月总能耗 </span> </div> <div style="width:58%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="/html/analogData/listComponentsActiveData.html" style="color:#17FF36;margin-left:20px; margin-right:0px;line-height:30px;font-size:22px; width:58%;height:30px;background-color:; font-family:宋体;vertical-align:top;"> 42.56KW </span> </div> </div> </li>  <li style="float: left;width:100%;"> <div style="margin-left:2%;margin-right:2%;margin-top:10px; width:95%;height:30px;background-color:#081870; border:1px #043AD1 solid"> <div style="width:40%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="" style="color:white;margin-left:10px; margin-right:10px;line-height:30px;font-size:14px; width:40%;height:30px;background-color:; font-family:华文仿宋;vertical-align:top;"> 当日总能耗 </span> </div> <div style="width:58%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="/html/analogData/listComponentsActiveData.html" style="color:#17FF36;margin-left:20px; margin-right:0px;line-height:30px;font-size:22px; width:58%;height:30px;background-color:; font-family:宋体;vertical-align:top;"> 122.56KW </span> </div> </div> </li>  </ul>
+				</div>
+	   		</div>
+	   	</div>
+	   	<div class="layui-row  layui-col-space10">
+	   		<div class="layui-col-md9 layui-event">
+	   			<div class="controller_content_four_one " id='controller_content_four_one' >
+	   				<table class="layui-hide" id="table" lay-filter="table"></table>
+	   					<div class="layui-form layui-border-box layui-table-view" lay-filter="LAY-table-2" style="height: 150px; border: 0px solid yellow; margin-left: 0px; margin-right: 0px; margin-top: 0px;"><div class="layui-table-box"><div class="layui-table-header" style="border-width: 0px;"><table style="width:100%" cellspacing="0" cellpadding="0" border="0" class="layui-table" lay-skin="nob" lay-even=""><thead><tr style="background-color: rgb(0, 16, 78); color: rgb(96, 212, 245);"><th data-field="0" data-minwidth="80" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" align="center" style="height: 20px; line-height: 20px;"><span>序号</span></div></th><th data-field="project_name" data-minwidth="150" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" align="center" style="height: 20px; line-height: 20px;"><span>项目名称</span></div></th><th data-field="project_begin_date" data-minwidth="150" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" align="center" style="height: 20px; line-height: 20px;"><span>开发日期</span></div></th><th data-field="project_end_date" data-minwidth="150" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" align="center" style="height: 20px; line-height: 20px;"><span>截止日期</span></div></th><th data-field="project_event_type" data-minwidth="150" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" align="center" style="height: 20px; line-height: 20px;"><span>事件类型</span></div></th><th data-field="project_state" data-minwidth="150" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" align="center" style="height: 20px; line-height: 20px;"><span>状态</span></div></th></tr></thead></table></div><div class="layui-table-body layui-table-main" style="height: 112px;"><table style="width:100%" cellspacing="0" cellpadding="0" border="0" class="layui-table" lay-skin="nob" lay-even=""><tbody><tr data-index="0" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">1</div></td><td data-field="project_name" align="center" data-content="devbus管理系统" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" style="height: 20px; line-height: 20px;">devbus管理系统</div></td><td data-field="project_begin_date" align="center" data-content="2018-7-2" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" style="height: 20px; line-height: 20px;">2018-7-2</div></td><td data-field="project_end_date" align="center" data-content="2018-7-6" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" style="height: 20px; line-height: 20px;">2018-7-6</div></td><td data-field="project_event_type" align="center" data-content="告警事件" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" style="height: 20px; line-height: 20px;">   <span style="color:#D1960B"> 告警事件 </span>       </div></td><td data-field="project_state" align="center" data-content="发布" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" style="height: 20px; line-height: 20px;">   <span style="background-color:#C28914; color: #FFFFFF;padding:5px 10px 5px 10px;"> 发布 </span>         </div></td></tr><tr data-index="1" style="color: rgb(255, 255, 255); background-color: rgb(0, 16, 78);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">2</div></td><td data-field="project_name" align="center" data-content="sts管理系统" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" style="height: 20px; line-height: 20px;">sts管理系统</div></td><td data-field="project_begin_date" align="center" data-content="2018-7-2" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" style="height: 20px; line-height: 20px;">2018-7-2</div></td><td data-field="project_end_date" align="center" data-content="2018-7-6" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" style="height: 20px; line-height: 20px;">2018-7-6</div></td><td data-field="project_event_type" align="center" data-content="故障事件" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" style="height: 20px; line-height: 20px;">     <span style="color:#EA2D15"> 故障事件 </span>     </div></td><td data-field="project_state" align="center" data-content="维护" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" style="height: 20px; line-height: 20px;">     <span style="background-color:#048C33; color: #FFFFFF;padding:5px 10px 5px 10px;"> 维护 </span>       </div></td></tr><tr data-index="2" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">3</div></td><td data-field="project_name" align="center" data-content="devbus管理系统" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" style="height: 20px; line-height: 20px;">devbus管理系统</div></td><td data-field="project_begin_date" align="center" data-content="2018-7-2" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" style="height: 20px; line-height: 20px;">2018-7-2</div></td><td data-field="project_end_date" align="center" data-content="2018-7-6" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" style="height: 20px; line-height: 20px;">2018-7-6</div></td><td data-field="project_event_type" align="center" data-content="告警事件" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" style="height: 20px; line-height: 20px;">   <span style="color:#D1960B"> 告警事件 </span>       </div></td><td data-field="project_state" align="center" data-content="发布" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" style="height: 20px; line-height: 20px;">   <span style="background-color:#C28914; color: #FFFFFF;padding:5px 10px 5px 10px;"> 发布 </span>         </div></td></tr><tr data-index="3" style="color: rgb(255, 255, 255); background-color: rgb(0, 16, 78);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">4</div></td><td data-field="project_name" align="center" data-content="sts管理系统" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" style="height: 20px; line-height: 20px;">sts管理系统</div></td><td data-field="project_begin_date" align="center" data-content="2018-7-2" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" style="height: 20px; line-height: 20px;">2018-7-2</div></td><td data-field="project_end_date" align="center" data-content="2018-7-6" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" style="height: 20px; line-height: 20px;">2018-7-6</div></td><td data-field="project_event_type" align="center" data-content="故障事件" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" style="height: 20px; line-height: 20px;">     <span style="color:#EA2D15"> 故障事件 </span>     </div></td><td data-field="project_state" align="center" data-content="维护" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" style="height: 20px; line-height: 20px;">     <span style="background-color:#048C33; color: #FFFFFF;padding:5px 10px 5px 10px;"> 维护 </span>       </div></td></tr><tr data-index="4" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">5</div></td><td data-field="project_name" align="center" data-content="esb管理系统" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_name" style="height: 20px; line-height: 20px;">esb管理系统</div></td><td data-field="project_begin_date" align="center" data-content="2018-7-2" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_begin_date" style="height: 20px; line-height: 20px;">2018-7-2</div></td><td data-field="project_end_date" align="center" data-content="2018-7-6" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_end_date" style="height: 20px; line-height: 20px;">2018-7-6</div></td><td data-field="project_event_type" align="center" data-content="消息事件" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_event_type" style="height: 20px; line-height: 20px;">       <span style="color:#07A22A"> 消息事件 </span>   </div></td><td data-field="project_state" align="center" data-content="更新" data-minwidth="150" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-project_state" style="height: 20px; line-height: 20px;">       <span style="background-color:#D92B15; color: #FFFFFF;padding:5px 10px 5px 10px;"> 更新 </span>     </div></td></tr></tbody></table></div><div class="layui-table-fixed layui-table-fixed-l"><div class="layui-table-header" style="border-width: 0px;"><table cellspacing="0" cellpadding="0" border="0" class="layui-table" lay-skin="nob" lay-even=""><thead><tr style="background-color: rgb(0, 16, 78); color: rgb(96, 212, 245);"><th data-field="0" data-minwidth="80" data-unresize="true" style="font-size: 14px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" align="center" style="height: 20px; line-height: 20px;"><span style="color: rgb(96, 212, 245);">序号</span></div></th></tr></thead></table></div><div class="layui-table-body" style="height: 112px;"><table cellspacing="0" cellpadding="0" border="0" class="layui-table" lay-skin="nob" lay-even=""><tbody><tr data-index="0" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">1</div></td></tr><tr data-index="1" style="color: rgb(255, 255, 255); background-color: rgb(0, 16, 78);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">2</div></td></tr><tr data-index="2" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">3</div></td></tr><tr data-index="3" style="color: rgb(255, 255, 255); background-color: rgb(0, 16, 78);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">4</div></td></tr><tr data-index="4" style="background-color: rgb(5, 25, 88); color: rgb(255, 255, 255);" class=""><td data-field="0" align="center" data-minwidth="80" style="font-size: 10px; font-family: 华文仿宋;"><div class="layui-table-cell laytable-cell-2-0 laytable-cell-numbers" style="height: 20px; line-height: 20px;">5</div></td></tr></tbody></table></div></div></div><style>.laytable-cell-2-0{ width: 40px; }.laytable-cell-2-project_name{ width: 150px; }.laytable-cell-2-project_begin_date{ width: 150px; }.laytable-cell-2-project_end_date{ width: 150px; }.laytable-cell-2-project_event_type{ width: 150px; }.laytable-cell-2-project_state{ width: 150px; }</style></div>
+						<script type="text/javascript" id="tableScriptTemplate" laytype="onlyJs">	
+							console.log(global);
+							var tempData = global[$('#tableScript').parent().attr('id')];
+							console.log(tempData);
+							console.log(global[$('#tableScript').parent().attr('id')]);
+							//动态生成表格列的样式模板
+							$.each(global[$('#tableScript').parent().attr('id')].tableClosContentType, function(index, item){
+								if(item == '1'){ 
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', tempData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(tempData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + tempData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn();	  ' +	
+											'	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + tempData.tableHeadField[index] + ' == item1) { }}	  ' +	
+									    	'		<span style="color:{{tempData.tableClosContentColor[num].value[index1]}}">	  ' +	
+											'			 {{ d.' + tempData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +	
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($('#tableScript').parent());
+								} else if(item == '2'){
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', tempData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(tempData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + tempData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn(); ' +	
+											'	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + tempData.tableHeadField[index] + ' == item1) { }}	  ' +	
+											'		<span style="background-color:{{ tempData.tableClosContentColor[num].value[index1] }};	  ' +
+											'			 color: {{ tempData.tableBodyFontColor }};padding:5px 10px 5px 10px;">	  ' +	
+											'			 {{ d.' + tempData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($('#tableScript').parent());
+								}
+							});
+						</script><script id="project_event_type" type="text/html">{{#    	var fn = function(){         		var returnValue = 0;     		$.each(tempData.tableClosContentJudge, function(index, item){    			if(item.name == "project_event_type"){		  				returnValue = index;	                  			}	              		});		              		return returnValue;	  	};	                      }}	                          {{# 	  	var num = fn();	  	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  }}	      	{{#   if(d.project_event_type == item1) { }}	  		<span style="color:{{tempData.tableClosContentColor[num].value[index1]}}">	  			 {{ d.project_event_type}}	  		</span>	  	{{#  }  }}	  {{#  }) }}	  </script><script id="project_state" type="text/html">{{#    	var fn = function(){         		var returnValue = 0;     		$.each(tempData.tableClosContentJudge, function(index, item){    			if(item.name == "project_state"){		  				returnValue = index;	                  			}	              		});		              		return returnValue;	  	};	                      }}	                          {{# 	  	var num = fn(); 	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  }}	      	{{#   if(d.project_state == item1) { }}	  		<span style="background-color:{{ tempData.tableClosContentColor[num].value[index1] }};	  			 color: {{ tempData.tableBodyFontColor }};padding:5px 10px 5px 10px;">	  			 {{ d.project_state}}	  		</span>	  	{{#  }  }}	  {{#  }) }}	  </script>
+					<table class="layui-hide" id="table" lay-filter="table"></table><script id="project_event_type" type="text/html" style="border: 0px solid yellow; margin-left: 0px; margin-right: 0px; margin-top: 0px;">        </script><script id="project_state" type="text/html">          </script><script type="text/javascript" id="tableScript" laytype="onlyJs">		
+							$('<table class="layui-hide" id="table" lay-filter="table"></table>')
+								.appendTo($('#tableScript').parent());
+							
+							$(function(){
+								//动态生成table的cols属性
+								var col = [{type: 'numbers',title: '序号', fixed: 'left',  minWidth: 80, align:'center'}];
+								$.each(global[$('#tableScript').parent().attr('id')].tableHeadField, function(index, item){ 
+									var tempJson = {
+											field: item, title: global[$('#tableScript').parent().attr('id')].tableHeadTitle[index], unresize:true,
+											minWidth: global[$('#tableScript').parent().attr('id')].tableHeadWidth[index], sort: false,
+											align:global[$('#tableScript').parent().attr('id')].tableHeadAlign[index], templet: '#'+item
+									}
+									col.push(tempJson);
+								})
+								console.log(col); 
+								
+								//发送请求加载表格
+								var options = table.render({
+								    elem: '#table',
+								    url: global[$('#tableScript').parent().attr('id')].tableDataUrl,
+								    method: 'get',
+								    //width: '100%',
+								    height: 150,
+								    where: {}, 
+								    request: {
+							    		pageName: 'curr', //页码的参数名称，默认：page
+							    		limitName: 'size' //每页数据量的参数名，默认：limit
+							    	},
+							    	response: {
+										statusName: 'state', //数据状态的字段名称，默认：code
+										statusCode: 0 ,//成功的状态码，默认：0
+										msgName: 'message', //状态信息的字段名称，默认：msg
+										countName: 'total', //数据总数的字段名称，默认：count
+										dataName: 'data'//数据列表的字段名称，默认：data
+									},      				
+								    cols: [ col ],
+						            done: function (res, curr, count) { 
+						            	var $current = $('#tableScript').parent().find('table').next();
+						            	$current.css({ 'border': '0px yellow solid' });//去掉表格边框线
+						            	$current.css({'margin-left': global[$('#tableScript').parent().attr('id')].tableLeft, 'margin-right': global[$('#tableScript').parent().attr('id')].tableRight, 'margin-top': global[$('#tableScript').parent().attr('id')].tableTop});//表格左右边距
+						            	$current.find('.layui-table-cell').css( {'height': global[$('#tableScript').parent().attr('id')].tableRowHeight , 'line-height': global[$('#tableScript').parent().attr('id')].tableRowHeight });//修改行高	            	
+						            	$current.find('thead th').css( {'font-size':global[$('#tableScript').parent().attr('id')].tableHeadFontSize, 'font-family':global[$('#tableScript').parent().attr('id')].tableHeadFontFamily});//修改表头字体大小类型	
+						            	$current.find('tr:even:not(:first)').css({ 'color': global[$('#tableScript').parent().attr('id')].tableBodyFontColor});//修改奇数背景色、字体颜色				
+						            	$current.find('tr:even').css({'background-color': global[$('#tableScript').parent().attr('id')].tableBodyEvenBackgroundColor});//修改奇数背景色
+						            	$current.find('tr:odd').css({'background-color': global[$('#tableScript').parent().attr('id')].tableBodyOddBackgroundColor, 'color': global[$('#tableScript').parent().attr('id')].tableBodyFontColor});//修改偶数行背景色、字体颜色
+						            	$current.find('td').css({'font-size': global[$('#tableScript').parent().attr('id')].tableBodyFontSize, 'font-family': global[$('#tableScript').parent().attr('id')].tableBodyFontFamily});//修改表格内容的字体类型和大小
+						            	$current.find('.layui-table-fixed .layui-table-header span').css( {'color':  global[$('#tableScript').parent().attr('id')].tableHeadFontColor});//修改编号的颜色
+						            	$current.find('.layui-table-box .layui-table-header').css({'border-width' : '0 0 0px'});//取消表头分割线
+						            	$current.find('thead tr').css( {'background-color': global[$('#tableScript').parent().attr('id')].tableHeadBackgroundColor, 'color':global[$('#tableScript').parent().attr('id')].tableHeadFontColor });//修改表头字体颜色
+						            	$current.find('.layui-table-page').css({'background-color':global[$('#tableScript').parent().attr('id')].tableBodyEvenBackgroundColor, 'border': '0px yellow solid' });
+						            },
+								    skin: 'nob' ,//表格风格
+								   	even: true,//开启隔行背景
+								    loading: true,
+								    page: global[$('#tableScript').parent().attr('id')].isShowPage, //是否显示分页
+								    limits: [3, 4, 5, 6, 8, 10],
+								    limit: 5 //每页默认显示的数量
+								});	
+							});		
+						</script><table class="layui-hide" id="table" lay-filter="table"></table><script type="text/javascript" id="tableScriptTemplate" laytype="onlyJs" style="border: 0px solid yellow; margin-left: 0px; margin-right: 0px; margin-top: 0px;">	
+							console.log(global);
+							var tempData = global[$('#tableScript').parent().attr('id')];
+							console.log(tempData);
+							console.log(global[$('#tableScript').parent().attr('id')]);
+							//动态生成表格列的样式模板
+							$.each(global[$('#tableScript').parent().attr('id')].tableClosContentType, function(index, item){
+								if(item == '1'){ 
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', tempData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(tempData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + tempData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn();	  ' +	
+											'	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + tempData.tableHeadField[index] + ' == item1) { }}	  ' +	
+									    	'		<span style="color:{{tempData.tableClosContentColor[num].value[index1]}}">	  ' +	
+											'			 {{ d.' + tempData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +	
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($('#tableScript').parent());
+								} else if(item == '2'){
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', tempData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(tempData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + tempData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn(); ' +	
+											'	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + tempData.tableHeadField[index] + ' == item1) { }}	  ' +	
+											'		<span style="background-color:{{ tempData.tableClosContentColor[num].value[index1] }};	  ' +
+											'			 color: {{ tempData.tableBodyFontColor }};padding:5px 10px 5px 10px;">	  ' +	
+											'			 {{ d.' + tempData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($('#tableScript').parent());
+								}
+							});
+						</script><script id="project_event_type" type="text/html">{{#    	var fn = function(){         		var returnValue = 0;     		$.each(tempData.tableClosContentJudge, function(index, item){    			if(item.name == "project_event_type"){		  				returnValue = index;	                  			}	              		});		              		return returnValue;	  	};	                      }}	                          {{# 	  	var num = fn();	  	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  }}	      	{{#   if(d.project_event_type == item1) { }}	  		<span style="color:{{tempData.tableClosContentColor[num].value[index1]}}">	  			 {{ d.project_event_type}}	  		</span>	  	{{#  }  }}	  {{#  }) }}	  </script><script id="project_state" type="text/html">{{#    	var fn = function(){         		var returnValue = 0;     		$.each(tempData.tableClosContentJudge, function(index, item){    			if(item.name == "project_state"){		  				returnValue = index;	                  			}	              		});		              		return returnValue;	  	};	                      }}	                          {{# 	  	var num = fn(); 	$.each(tempData.tableClosContentJudge[num].value, function(index1, item1){  	  }}	      	{{#   if(d.project_state == item1) { }}	  		<span style="background-color:{{ tempData.tableClosContentColor[num].value[index1] }};	  			 color: {{ tempData.tableBodyFontColor }};padding:5px 10px 5px 10px;">	  			 {{ d.project_state}}	  		</span>	  	{{#  }  }}	  {{#  }) }}	  </script>  
+	   			</div>
+	   		</div>
+	   		<div class="layui-col-md3 layui-event">
+	   			<div class="controller_content_four_two" id="controller_content_four_two">
+	   				<ul style="width:100%;">  <li style="float: left;width:100%;"> <div style="margin-left:2%;margin-right:2%;margin-top:10px; width:95%;height:46px;background-color:#081870; border:1px #043AD1 solid"> <div style="width:40%;text-align:center;display:inline-block;background-color:"> <span data-url="" style="color:white;margin-left:10px; margin-right:10px;line-height:46px;font-size:20px; width:40%;height:50px;background-color:; font-family:华文仿宋;vertical-align:top;"> 故障事件 </span> </div> <div style="width:58%;text-align:center;display:inline-block;background-color:"> <span data-url="/html/analogData/listComponentsActiveData.html" style="color:#17FF36;margin-left:20px; margin-right:0px;line-height:46px;font-size:28px; width:58%;height:30px;background-color:; font-family:宋体;vertical-align:top;"> 12 </span> </div> </div> </li>  <li style="float: left;width:100%;"> <div style="margin-left:2%;margin-right:2%;margin-top:10px; width:95%;height:46px;background-color:#081870; border:1px #043AD1 solid"> <div style="width:40%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="" style="color:white;margin-left:10px; margin-right:10px;line-height:46px;font-size:20px; width:40%;height:50px;background-color:; font-family:华文仿宋;vertical-align:top;"> 告警事件 </span> </div> <div style="width:58%;text-align:center;display:inline-block;background-color:undefined"> <span data-url="/html/analogData/listComponentsActiveData.html" style="color:#17FF36;margin-left:20px; margin-right:0px;line-height:46px;font-size:28px; width:58%;height:30px;background-color:; font-family:宋体;vertical-align:top;"> 122 </span> </div> </div> </li>  </ul>
+				</div>
+				
+	   		</div>
+	   	</div>
+	   	
+	   	<!-- 底部 
+	   	<div class="layui-row layout1-footer-img">
+	   		<div class="layui-col-md12 layout1-footer">6/12</div>
+	   	</div>
+	   	-->	   	
+	</div>
+</body>
+</html>			
