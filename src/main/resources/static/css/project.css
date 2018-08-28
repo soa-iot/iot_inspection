@@ -1,0 +1,21 @@
+.layui-fluid {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	background-color: #F3F3F3;
+}
+
+.layui-row {
+	margin-left: 10px;	
+	margin-right: 10px;
+	background-color: #F3F3F3;
+}
+
+.layui-row > div > div {
+	/*border: 1px red solid;*/	
+	background-color: white;
+}
+
+.head-text {
+	font-size: 16px;
+}
