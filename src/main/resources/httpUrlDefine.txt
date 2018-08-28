@@ -1,4 +1,4 @@
-
+公司本项目gitlab地址： http://192.168.18.21/zhugang/EnergyManage.git
 
 第一模块：驾驶舱driveModule
 	1、年度能耗驾驶舱：/driveModule/years/customUrl
