@@ -1,8 +1,11 @@
 /**
  * 参数定义
  */
-var laydate = layui.laydate;
-var paramJson = {time: '2018'};
+var laydate = layui.laydate,
+	nowDateStr = new Date().toLocaleString(),
+	paramJson = {
+	time: nowDateStr.substr( 0 , nowDateStr.lastIndexOf( '/' ) ).replace( '/' , '-' )
+};
 
 /**
  * 页面初始化
@@ -13,30 +16,45 @@ $(function(){
 	 */
 	laydate.render({
 		elem: '#timeConponent', 
-		type: 'year',
-		value: new Date(),
+		type: 'month',
+		value: paramJson.time,
 	});
+	
+	/*
+	 * 标题加时间
+	 */
+	addTimeNoteToTitle();
 })
 
 /**
  * 事件绑定
  */
-$(function(){
+$( function(){
 	/*
 	 * 查询按钮单击事件
 	 */
-	$('#search_button_search').on('click', searchButtonClickEvent);
+	$( '#search_button_search' ).on( 'click' , searchButtonClickEvent);
 	/*
 	 * 导出报表按钮单击事件
 	 */
-	$('#search_button_export').on('click', exportExcelBCE);
+	$( '#search_button_export' ).on( 'click' , exportExcelBCE);
 })
+
+/**
+ * 标题加时间
+ */
+function addTimeNoteToTitle(){
+	var timeNote = $( '#timeConponent' ).val().replace( '-' , '年') + '月',
+		stableTitle = $( '#search_rangeWater_title' ).find( 'div' ).text();
+	console.log( timeNote );
+	$( '#search_rangeWater_title' ).find( 'div' ).text( timeNote + stableTitle );
+}
 
 /**
  * 查询按钮单击事件执行函数
  */
 function searchButtonClickEvent(){
-	console.log('查询按钮单击事件触发……');
+	console.log( '查询按钮单击事件触发……' );
 	
 	/*
 	 * 更新时间参数

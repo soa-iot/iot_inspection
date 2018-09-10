@@ -1,0 +1,25 @@
+#search_rangeWater_title {
+	height: 60px;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+	font-family: "宋体";
+}
+
+#search_rangeWater_title div{
+	height: 60px;
+	line-height: 60px;
+}
+
+#search_rangeWater_graph1 {
+	height: 360px;
+}
+
+#search_rangeWater_graph2 {
+	height: 360px;
+}
+
+#search_yearTotal_table {
+	height: calc(100vw - 560px);
+}

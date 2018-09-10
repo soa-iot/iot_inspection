@@ -1,8 +1,11 @@
 /**
  * 参数定义
  */
-var laydate = layui.laydate;
-var paramJson = {time: '2018'};
+var laydate = layui.laydate,
+	nowDateStr = new Date().toLocaleString(),
+	paramJson = {
+	time: nowDateStr.substr( 0 , nowDateStr.lastIndexOf( '/' ) ).replace( '/' , '-' )
+};
 
 /**
  * 页面初始化
@@ -13,8 +16,8 @@ $(function(){
 	 */
 	laydate.render({
 		elem: '#timeConponent', 
-		type: 'year',
-		value: new Date(),
+		type: 'month',
+		value: paramJson.time,
 	});
 })
 

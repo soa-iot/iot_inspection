@@ -1,4 +1,4 @@
-/*
+/**
     一、js目录
 		1.layui验证扩展方法
 		2.生成html方法
@@ -6,9 +6,9 @@
 		4.js获取当前日期
  */
 
-/*
+/**
  *layui表单验证
- */
+ 
 layui.form.verify({
 	tagValue: function(value, item){
 		if(!/^(0|[1-9]+[0-9]*)(px|%)?$/.test(value)){
@@ -16,8 +16,9 @@ layui.form.verify({
 		}
 	}
 })
+*/
 
-/*
+/**
  * js生成html(重写)
  * wholePageHtml--输出全部的html代码
  */
@@ -34,29 +35,42 @@ var generateHTML = function(wholePageHtml, pageName){
     save_link.dispatchEvent(ev);
 }
 
-/*
+/**
  * 获取当前时间
  * seperator1日期分割符号
  * seperator2时间分割符号
  */
-var getNowTime = function(seperator1, seperator2){
+var getNowTime = function( seperator1 , seperator2 ){ 
 	var nowDate = new Date();
-	return nowDate.getFullYear() + seperator1 + (nowDate.getMonth() + 1) + seperator1 + nowDate.getDate() +
-		   " " + 
-		   nowDate.getHours() + seperator2 + nowDate.getMinutes() + seperator2 + nowDate.getSeconds();
+	return  nowDate.getFullYear() + seperator1 + ( nowDate.getMonth() + 1 ) +
+			seperator1 + nowDate.getDate() +
+			" " + 
+		    nowDate.getHours() + seperator2 + nowDate.getMinutes() + seperator2 + 
+		    nowDate.getSeconds();
 }
 
-/*
- 获取当前日期
- seperator1日期分割符号
+/**
+ * 获取当前日期
+ * seperator日期分割符号
  */
-var getNowDate = function(seperator1){
+var getFullNowDate = function getNowDate(seperator){
 	var nowDate = new Date();
-	return nowDate.getFullYear() + seperator1 + (nowDate.getMonth() + 1) + seperator1 + nowDate.getDate();
+	return  nowDate.getFullYear() + seperator + 
+			(nowDate.getMonth() + 1) + seperator + nowDate.getDate();
+}
+
+/**
+ * 获取当前日期的前一个月
+ * seperator日期分割符号
+ */
+var getFullLastMonthDate = function(seperator){
+	var nowDate = new Date();
+	return  nowDate.getFullYear() + seperator + 
+			nowDate.getMonth() + seperator + nowDate.getDate();
 }
 
 
-/*
+/**
  * 获得coolie 的值
  */
 function cookie(name){    

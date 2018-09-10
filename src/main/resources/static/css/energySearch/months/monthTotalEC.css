@@ -5,24 +5,8 @@
 	height: 80px;
 }
 
-#search_yearTotal_table {
-	height: 160px;
-}
-
-#search_yearTotal_graph {
-	height: 380px;
-}
-
-#search_electric_graph {
-	height: 380px;
-}
-
-#search_gas_graph {
-	height: 380px;
-}
-
-#search_yearTotal_detailtable {
-	height: 480px;
+#search_monthWater_table {
+	height: 1180px;
 }
 
 

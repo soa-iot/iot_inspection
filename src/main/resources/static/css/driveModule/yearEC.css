@@ -1,0 +1,48 @@
+div[class^="col-"] {
+	border: 1px red solid;
+}
+
+
+/* 布局高度设置  */
+.dm_logo {
+	height: 50px;
+}
+
+.dm_time > div {
+	height: 30px;
+}
+
+.dm_dash1 {
+	height: 280px;
+}
+
+.dm_dash2 {
+	height: 280px;
+}
+
+.dm_line {
+	height: 450px;
+}
+
+.dm_pie {
+	height: 350px;
+}
+
+/* logo样式  */
+
+
+/* 时间条件样式  */
+.dm_time {
+	padding: 0px;
+}
+
+.dm_time_condition {
+	text-align: center;
+	line-height: 30px;
+	background-color: #F9F9F9;
+	font-size: 18px;	
+}
+
+.dm_time_condition:hover {
+	background-color: #AAE5ED;
+}

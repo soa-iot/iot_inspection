@@ -1,0 +1,10 @@
+{
+	"state": 0,
+	"message": "成功返回数据",
+	"total": 30,
+	"data": [
+		{"month": "2017-01", "useUnitEC": "锅炉单元", "waterEC": "1660.54", "checkedstatus": "34.3456", "waterUnitEC":"21.365"},
+		{"month": "2017-01", "useUnitEC": "循环水单元", "waterEC": "1660.54", "checkedstatus": "34.3456", "waterUnitEC":"21.365"},
+		{"month": "2017-01", "useUnitEC": "其他", "waterEC": "1660.54", "checkedstatus": "34.3456", "waterUnitEC":"21.365"}			
+	]
+}

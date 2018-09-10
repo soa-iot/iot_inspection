@@ -2,7 +2,9 @@
  * 参数定义
  */
 var laydate = layui.laydate;
-var paramJson = {time: '2018'};
+var paramJson = {
+		time: new Date().toLocaleString().substr(0,4)
+	};
 
 /**
  * 页面初始化

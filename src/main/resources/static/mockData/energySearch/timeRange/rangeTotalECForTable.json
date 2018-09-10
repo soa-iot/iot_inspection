@@ -1,0 +1,25 @@
+{
+	"state": 0,
+	"message": "成功返回数据",
+	"total": 17,
+	"data": [
+		{"range": "2017-01-02", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-03", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-04", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-05", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-06", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-07", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-08", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-09", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-10", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-11", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-12", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-13", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-14", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-15", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-16", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-17", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-18", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"},
+		{"range": "2017-01-19", "waterGLEC": "2315.24756", "waterXHSEC": "1654.48213", "otherEC": "5698.1458624"}
+	]
+}

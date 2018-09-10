@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>能耗分时段查询</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="/package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="/css/energySearch/timeRange/rangeTotalEC.css">
+	<link rel="stylesheet" href="/css/project.css">
+	<script type="text/javascript" src="/package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/package/own/universal.js"></script>
+	<script type="text/javascript" src="/javaScript/project.js"></script>
+	<script type="text/javascript" src="/javaScript/devbus/table.js"></script>
+	<script type="text/javascript" src="/javaScript/energySearch/timeRange/rangeTotalEC.js"></script>
+</head>
+<body>
+	<div class="layui-fluid" style="overflow:hidden"> 	   	
+	   	<!-- 搜索条件 -->
+	   	
+			<div class="layui-row layui-col-space15">
+		   		<div class="layui-col-md12" > 	
+		   			<fieldset >
+ 						<legend>查询条件</legend>		   	
+		   				<div id="search_searchcondition">			   				
+					   		<div class="layui-inline" >
+						    	<label class="layui-form-label head-text" >时段选择：</label>
+						      	<div class="layui-input-inline">
+						        	<input type="text" class="layui-input" id="timeConponent"
+						        		placeholder="yyyy" >
+						      	</div>
+						    </div>
+					   		<div class="layui-inline" id="search_button_search">
+								<button class="layui-btn">
+				  					<i class="layui-icon">&#xe615;</i> 查询
+								</button>
+					   		</div>
+					   		<div class="layui-inline" id="search_button_export">
+								<button class="layui-btn">
+				  					<i class="layui-icon">&#xe60a;</i>打印页面
+								</button>
+					   		</div>				   	
+				   		</div>	
+				   	</fieldset>				   			
+			   	</div>
+		   	</div>
+
+		   	
+	   	<!-- 图表 -->
+	   	<div class="layui-row" >
+	   		<div class="layui-col-md12  layui-col-space15" > 
+				<div class="component_container" id="search_yearTotal_table">
+					<script type="text/javascript" >
+						(function(){ 
+							var renderData={
+									"tableID":"",
+									"isShowTotal":"true",
+									"toolbar":"true",
+									"tableDataUrl":"/mockData/energySearch/months/monthTotalECDataForTable1.json",
+									"tableDataParam":[],
+									"tableLeft":"0px",
+									"tableRight":"0px",
+									"tableTop":"0px",
+									"isShowPage":false,
+									"tableRowHeight":"20px",
+									"isShowTitle":true,
+									"tableTitle":"净化厂综合能耗月度明细查询",
+									"tableTitleHeight":"5%",
+									"tableTitleTop":"34px",
+									"tableTitleFontWeight":"bold",
+									"tableTitleBottom":"1px",
+									"tableTitleBgcolor":"white",
+									"tableTitlePart1Width":"96%",
+									"tableTitlePart1Left":"",
+									"tableTitlePart1Border":"",
+									"tableTitlePart1Color":"blank",
+									"tableTitlePart1Size":"28px",
+									"tableTitlePart1Family":"宋体",
+									"tableTitleMore":"",
+									"tableTitleMoreHeight":"10%",
+									"tableTitleMoreColor":"#A832CD",
+									"tableTitleMoreSize":"15px",
+									"tableTitleMoreFamily":"宋体",
+									"tableTitleCondition":[""],
+									"tableTitlePart2Width":"0%",
+									"tableTitlePart2Right":"20px",
+									"tableTitlePart2Border":"2px #02448C solid",
+									"tableTitlePart2Color":"white",
+									"tableTitlePart2Size":"14px",
+									"tableTitlePart2Family":"宋体",
+									"tableHeadFontSize":"16px",
+									"tableHeadFontFamily":"宋体",
+									"tableHeadFontColor":"#5DA2ED",
+									"tableHeadFontWeight":"bold",
+									"tableHeadBackgroundColor":"white",
+									"tableHeadField":["date","totalEC","gasEC","elecEC"],
+									"tableHeadTitle":["日期","综合能源消耗量(kg标煤)","天然气消耗量(万m³)","电耗量(万kWh)"],
+									"tableHeadWidth":["120","150","150","150","150"],
+									"tableHeadFixed":["","","","","","","",""],
+									"tableHeadAlign":["center","center","center","center","center","center","center","center"],
+									"tableBodyFontSize":"14px",
+									"tableBodyFontFamily":"宋体",
+									"tableBodyFontColor":"blank",
+									"tableBodyEvenBackgroundColor":"#F9F9F9",
+									"tableBodyOddBackgroundColor":"#F9F9F9",
+									"isShowOrder":"false",
+									"tableClosContentType":["0","0","0","0"],
+									"tableClosContentJudge":[{"name":"year","value":[]},
+															{"name":"waterEC","value":['1660'],"style":">"},
+															{"name":"waterECStatus","value":[]},
+															{"name":"unitEC","value":["告警事件","故障事件","消息事件"]}],
+									"tableClosContentColor":[{"name":"year","value":[]},
+															{"name":"waterEC","value":"red"},
+															{"name":"waterECStatus","value":[]},
+															{"name":"unitEC","value":["#D1960B","#EA2D15","#07A22A"]}],
+									"tableWidth":"400px",
+									"tableHeight":"100%"
+								}; 
+							var tableObj = new TableObject(renderData, {}); 
+							var $currentObj = $($("script")[$("script").length -1]);
+							$currentObj.parent().append(tableObj.getWholeHtml());  	
+							/*
+							 * 设置父元素溢出样式
+							 */
+							var originalStyle = $currentObj.parent().attr('style');
+							if(originalStyle){
+								$currentObj.parent().attr('style', 'overflow:hidden;' + originalStyle);
+							}else{
+								$currentObj.parent().attr('style', 'overflow:hidden');
+							}	
+							/*
+							 * 页面初始化
+							 */
+							//去重（生成html中重复）
+							$currentObj.parent().find('table').next('div').remove();
+							$currentObj.parent().find('table').remove();
+							var temp = $('<table class="layui-hide" lay-filter="table"></table>')
+							.appendTo($currentObj.parent());
+							//动态生成table的cols属性
+							console.log(renderData.isShowOrder);
+							if(renderData.isShowOrder == 'true'){
+								var col = [{type: 'numbers',title: '序号', fixed: 'left',  minWidth: 80, align:'center'}];
+							}else{
+								var col = [];
+							}
+							$.each(renderData.tableHeadField, function(index, item){ 
+								var tempJson ;
+								if( renderData.tableHeadTitle[index] == '日期'){
+									tempJson = {
+											field: item, title: renderData.tableHeadTitle[index], unresize:true,
+											minWidth: renderData.tableHeadWidth[index],style:"border:3px white solid", sort: true,
+											align:renderData.tableHeadAlign[index], totalRowText: "总计", templet: '#'+item
+									}
+								}else {
+									tempJson = {
+											field: item, title: renderData.tableHeadTitle[index], unresize:true,
+											minWidth: renderData.tableHeadWidth[index],style:"border:3px white solid" , sort: true,
+											align:renderData.tableHeadAlign[index], totalRow: true, templet: '#'+item
+									}
+								}
+								col.push(tempJson);
+							})
+							
+							/*
+							 * 表格渲染成功后回调函数
+							 */
+							var tableCallBack = function($current){
+								$current.css({ 'border': '0px white solid' });//去掉表格边框线
+				            	$current.find('.layui-table-body').css({ 'overflow': 'hidden'});//去掉表格滚动条
+				            	$current.css({'margin-left': renderData.tableLeft, 'margin-right': renderData.tableRight, 'margin-top': renderData.tableTop});//表格左右边距
+				            	$current.find('.layui-table-tool').css({'line-height': '20px','min-height': '20px', 'background-color': 'white', 'border': '0'});//设置表格工具栏
+				            	$current.find('.layui-table-tool .layui-table-tool-self').css({'top': '0px'});//设置表格工具栏
+				            	$current.find('.layui-table-tool .layui-table-tool-self .layui-inline').css({'width': '16px', 'height':'16px','padding':'0px','margin-right':'10px'});//设置表格工具栏
+								$current.find('.layui-table-total tr').css({'background-color': '#199ED8'});//设置表格工具栏
+				            	$current.find('.layui-table-cell').css( {'height': renderData.tableRowHeight , 'line-height': renderData.tableRowHeight });//修改行高	            	
+				            	$current.find('thead th').css( {'font-size':renderData.tableHeadFontSize, 'font-family':renderData.tableHeadFontFamily, 'font-weight': renderData.tableHeadFontWeight});//修改表头字体大小类型	
+				            	$current.find('.layui-table-main tr:even').css({ 'color': renderData.tableBodyFontColor});//修改奇数行字体颜色				
+				            	$current.find('.layui-table-main tr:even').css({'background-color': renderData.tableBodyEvenBackgroundColor});//修改除序号外表格内容奇数背景色
+				            	$current.find('.layui-table-main tr:odd').css({'background-color': renderData.tableBodyOddBackgroundColor, 'color': renderData.tableBodyFontColor});//修改除序号外表格内容偶数行背景色、字体颜色           				
+				            	$current.find('.layui-table-fixed tr:odd').css({'background-color': renderData.tableBodyEvenBackgroundColor});//修改序号奇数背景色
+				            	$current.find('.layui-table-fixed tr:even').css({'background-color': renderData.tableBodyOddBackgroundColor, 'color': renderData.tableBodyFontColor});//修改序号偶数行背景色、字体颜色
+				            	$current.find('.layui-table-fixed tr').css({ 'color': renderData.tableBodyFontColor});//修改序号列字体颜色	
+				            	$current.find('td').css({'font-size': renderData.tableBodyFontSize, 'font-family': renderData.tableBodyFontFamily});//修改表格内容的字体类型和大小
+				            	$current.find('.layui-table-fixed .layui-table-header span').css( {'color':  renderData.tableHeadFontColor});//修改编号的颜色
+				            	$current.find('.layui-table-box .layui-table-header').css({'border-width' : '0 0 0px'});//取消表头分割线
+				            	$current.find('thead tr').css( {'background-color': renderData.tableHeadBackgroundColor, 'color':renderData.tableHeadFontColor });//修改表头字体颜色
+				            	$current.find('.layui-table-page').css({'background-color':renderData.tableBodyEvenBackgroundColor, 'border': '0px yellow solid' });
+				            	
+							} 
+							
+							//发送请求加载表格
+							var options = table.render({
+							    elem: $currentObj.parent().find('table')[0],
+							    url: renderData.tableDataUrl,
+							    method: 'get',							    
+							    //width: '100%',
+							    //height:'full-20',
+							    where: paramJson, 
+							    totalRow: true,
+							    toolbar: true,
+							    request: {
+						    		pageName: 'curr', //页码的参数名称，默认：page
+						    		limitName: 'size' //每页数据量的参数名，默认：limit
+						    	},
+						    	response: {
+									statusName: 'state', //数据状态的字段名称，默认：code
+									statusCode: 0 ,//成功的状态码，默认：0
+									msgName: 'message', //状态信息的字段名称，默认：msg
+									countName: 'total', //数据总数的字段名称，默认：count
+									dataName: 'data'//数据列表的字段名称，默认：data
+								},      				
+							    cols: [ col ],
+					            done: function (res, curr, count) { 
+					            	var $current = $currentObj.parent().find('table').next();
+					            	tableCallBack($current);
+					            	
+					            	//绑定排序单击事件
+					            	$current.find('.layui-table-header').on('click',function(){
+					            		tableCallBack($current);
+					            	})
+					            	$current.find('.layui-edge').on('click',function(){
+					            		tableCallBack($current);
+					            	})
+					            },
+							    skin: 'nob' ,//表格风格
+							   	even: true,//开启隔行背景
+							    loading: true,
+							    page: renderData.isShowPage, //是否显示分页
+							    limits: [3, 4, 5, 6, 8, 10],
+							    limit: 5 //每页默认显示的数量
+							});	
+											
+							
+							/*
+							 * 列样式
+							 */
+							//动态生成表格列的样式模板
+							$.each(renderData.tableClosContentType, function(index, item){
+								if(item == '1'){  //修改列字体颜色
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', renderData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(renderData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + renderData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn();	  ' +	
+											'	$.each(renderData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + renderData.tableHeadField[index] + ' == item1) { }}	  ' +	
+									    	'		<span style="color:{{renderData.tableClosContentColor[num].value[index1]}}">	  ' +	
+											'			 {{ d.' + renderData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +	
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($currentObj.parent());
+								} else if(item == '2'){  //修改列背景颜色
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', renderData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{#    ' +	
+											'	var fn = function(){         ' +
+											'		var returnValue = 0;     ' +
+											'		$.each(renderData.tableClosContentJudge, function(index, item){    ' +
+											'			if(item.name == "' + renderData.tableHeadField[index] + '"){		  ' +		
+											'				returnValue = index;	                  ' +					
+											'			}	              ' +			
+											'		});		              ' +	
+											'		return returnValue;	  ' +	
+									  		'	};	                      ' +	 
+											'}}	                          ' +	
+											'{{# 	  ' +	
+											'	var num = fn(); ' +	
+											'	$.each(renderData.tableClosContentJudge[num].value, function(index1, item1){  	  ' +	
+											'}}	      ' +	
+											'	{{#   if(d.' + renderData.tableHeadField[index] + ' == item1) { }}	  ' +	
+											'		<span style="background-color:{{ renderData.tableClosContentColor[num].value[index1] }};	  ' +
+											'			 color: {{ renderData.tableBodyFontColor }};padding:5px 10px 5px 10px;">	  ' +	
+											'			 {{ d.' + renderData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +
+											'	{{#  }  }}	  ' +	
+											'{{#  }) }}	  ' 	
+									).appendTo($currentObj.parent());
+								}else if(item == '3'){  //两列对比修改列字体颜色
+									var tempScriptObj = document.createElement('script');
+									$(tempScriptObj).attr('id', renderData.tableHeadField[index]);
+									$(tempScriptObj).attr('type', 'text/html');
+									$(tempScriptObj).html(
+											'{{# ' +
+											'   if(d.' + renderData.tableHeadField[index]  + renderData.tableClosContentJudge[index].style + renderData.tableClosContentJudge[index].value + ') { }}	  ' +	
+											'		<span style="color:' + renderData.tableClosContentColor[index].value  + '">	  ' +	
+											'			 {{ d.' + renderData.tableHeadField[index] + '}}	  ' +	
+											'		</span>	  ' +
+											'	{{#  } else{ }}	  ' + 
+											'   		<span>{{ d.' + renderData.tableHeadField[index] + '}} </span>   ' +
+											'	{{#  } }}	  ' 
+									).appendTo($currentObj.parent());
+								}
+							});
+							
+							/*
+							 * 表格高度自适应
+							 */
+							var fatherHeight = parseInt($currentObj.parent()[0].offsetHeight);
+							var brotherHeight = parseInt($currentObj.parent().find('div :first')[0].offsetHeight);
+							var oldThisDivStyle = $currentObj.parent().find('div:first').next('div').attr('style');
+							$currentObj.parent().find('div:first').next('div').attr(
+								'style', oldThisDivStyle + ";height:" + (fatherHeight - brotherHeight) + 'px'
+							);
+						}(paramJson))   
+					</script>
+				</div>
+	   		</div>
+	   	</div>
+	   	
+	   	<!-- 表格展示1
+	   	<div class="layui-row layui-col-space15">
+	   		<div class="layui-col-md12"> 
+				<div class="component_container" id="search_monthWater_table">				
+				</div>
+	   		</div>
+	   	</div>	  -->
+	</div>
+</body>
+</html>			

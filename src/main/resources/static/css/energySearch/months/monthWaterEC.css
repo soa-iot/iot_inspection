@@ -1,0 +1,29 @@
+/*   
+ *设置布局宽高  
+ */
+#search_searchcondition {
+	height: 80px;
+}
+
+/* 
+ * 标题样式
+ */
+#search_WaterEC_title {
+	height: 60px;
+	margin-top: 20px;
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+	font-family: "宋体";
+}
+
+#search_WaterEC_title div{
+	height: 60px;
+	line-height: 60px;
+}
+
+
+#search_monthWater_table {
+	height: calc( 100vh - 150px );
+}
+
