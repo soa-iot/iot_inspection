@@ -45,9 +45,11 @@ $( function(){
  */
 function addTimeNoteToTitle(){
 	var timeNote = $( '#timeConponent' ).val().replace( '-' , '年') + '月',
-		stableTitle = $( '#search_rangeWater_title' ).find( 'div' ).text();
-	console.log( timeNote );
-	$( '#search_rangeWater_title' ).find( 'div' ).text( timeNote + stableTitle );
+		$title = $( '#search_waterEC_title' ).find( 'div' ),
+		stableTitle = $title.text();
+	$title.html( timeNote + stableTitle );
+	$title.parent().addClass( 'search_waterEC_title' );
+	$title.addClass( 'search_waterEC_title_div' );
 }
 
 /**

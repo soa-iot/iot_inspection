@@ -2,6 +2,18 @@ div[class^="col-"] {
 	border: 1px red solid;
 }
 
+/* logo区 */
+figure img {
+	display: inline-block;
+}
+
+figure figcaption {
+	display: inline-block;	
+}
+
+figure figcaption h4 {
+	font-weight: bold;
+}
 
 /* 布局高度设置  */
 .dm_logo {
