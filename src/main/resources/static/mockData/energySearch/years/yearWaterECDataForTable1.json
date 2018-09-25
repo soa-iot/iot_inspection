@@ -1,8 +1,0 @@
-{
-	"state": 0,
-	"message": "成功返回数据",
-	"total": 1,
-	"data": [
-		{"year": "2017", "waterEC": "2315.24756", "waterECStatus": "1660", "unitEC": "34"}
-	]
-}
