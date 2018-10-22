@@ -1,10 +1,73 @@
-公司本项目gitlab地址： http://192.168.18.21/zhugang/EnergyManage.git
+公司本项目gitlab地址： http://192.168.18.21/zhugang/InternetOfThings.git
 
-1、动态生成表格表头url：/productionReport/purificationScheme/tableHead
-2、请求表格数据url：/productionReport/purificationScheme/tableData
+#####################################################################################################
+http访问链接
+#####################################################################################################
+1、生产报表：
+ 	1.1  动态生成表格表头
+		/productionReport/purificationScheme/tableHead
+	1.2  请求表格数据url：
+		/productionReport/purificationScheme/tableData
+		
+		
+2、登录：
+	2.1   登录
+		process/employee/{userPassword} - get
+		
+		
+3、 主页：
+    3.1  主页地址：
+    		/html/process/index.html
+    	  问题上报页面：
+    	 	/html/process/problemReport.html
+    	   问题历史处理页面：
+    	   	/html/process/problemHistoryDeal.html
+    3.2  查询代办事项：
+    	 	/process/runtimeTask/{userName} - get
+    	   查询历史已办事项：
+    	   	/process/historyTask/{userName} - get
+    	   	
+    	   	
+4、流程各节点处理：
+	4.1     问题评估页面：
+			/html/process/problemNodeDeal/problemEstimate.html
+		  净化分配页面：
+			/html/process/problemNodeDeal/pureAssign.html
+		  维修分配页面：
+			/html/process/problemNodeDeal/repairAssign.html
+		  作业安排页面：
+			/html/process/problemNodeDeal/jobArrange.html
+		  作业处理页面：
+			/html/process/problemNodeDeal/jobDeal.html
+		  作业验收页面：
+			/html/process/problemNodeDeal/jobCheck.html
+		  问题处理页面：
+			/html/process/problemNodeDeal/problemDeal.html
+	4.2    节点处理api：
+		问题上报：
+			process/problemDealInfo/problemReport - post
+		问题评估：
+			process/problemDealInfo/problemEstimate - post
+		净化分配：
+			process/problemDealInfo/pureAssign - post
+		维修分配：
+			process/problemDealInfo/repairAssign - post
+		作业安排：
+			process/problemDealInfo/jobArrange - post
+		作业处理：
+			process/problemDealInfo/jobDeal - post
+		作业检查：
+			process/problemDealInfo/jobCheck - post
+		问题处理：
+			process/problemDealInfo/problemDeal - post
 
 
+
+
+#####################################################################################################
 数据库（mysql）
+#####################################################################################################
+
 1、方案和巡检点表：
 	create table SCHEMEPOSITION (
 		ID CHAR(36) primary Key,
@@ -21,3 +84,114 @@
 		DATARANGE  VARCHAR(20) NOT NULL DEFAULT '' ,
 		FIVTHCOLSPAN INT(2) NOT NULL DEFAULT 2
 	)
+	
+2、流程人员相关表：
+	2.1  人员表：
+		create table PROCESS_EMPLOYEE
+		(
+			EMP_ID CHAR(36) PRIMARY KEY,
+			EMP_NAME VARCHAR(10) NOT NULL DEFAULT '',
+			EMP_PASSWORD VARCHAR(20) NOT NULL DEFAULT '',
+			EMP_TELEPHONE_NUM CHAR(11) NOT NULL DEFAULT '',
+			EMP_SEX Bit NOT NULL DEFAULT 1
+		)
+		
+	2.2  组织表
+		create table PROCESS_ORGANIZATION
+		(
+			ORG_ID CHAR(36) PRIMARY KEY,
+			ORG_NAME VARCHAR(20) NOT NULL DEFAULT '',
+			ORG_PARENTID CHAR(36) NOT NULL DEFAULT ''
+		)
+		
+	2.3  人员组织关系表
+		create table PROCESS_EMPLOYEE_ORGANIZATION
+		(
+			EMP_ORG_ID CHAR(36) PRIMARY KEY,
+			EMP_ID CHAR(36) NOT NULL UNIQUE,
+			ORG_ID CHAR(36) NOT NULL UNIQUE
+		)
+		
+	2.4  角色表
+		create table PROCESS_ROLE
+		(
+			ROL_ID CHAR(36) PRIMARY KEY,
+			ROL_NAME VARCHAR(20) NOT NULL DEFAULT ''
+		)
+	
+	2.5  人员角色关系表
+		create table PROCESS_EMPLOYEE_ROLE
+			(
+				EMP_ROL_ID CHAR(36) PRIMARY KEY,
+				EMP_ID CHAR(36) NOT NULL UNIQUE,
+				ROL_ID CHAR(36) NOT NULL UNIQUE
+			)
+		
+	2.6 权限表
+		create table PROCESS_AUTHORITY
+		(
+			AUT_ID CHAR(36) PRIMARY KEY,
+			AUT_NAME VARCHAR(20) NOT NULL DEFAULT '',
+			AUT_URL VARCHAR(200) NOT NULL DEFAULT '',
+			AUT_NOTE VARCHAR(20) NOT NULL DEFAULT ''
+		)
+	
+	2.5 角色权限关系表
+		create table PROCESS_ROLE_AUTHORITY
+		(
+			ROL_AUT_ID CHAR(36) PRIMARY KEY,
+			ROL_ID CHAR(36) NOT NULL UNIQUE,
+			AUT_ID CHAR(36) NOT NULL UNIQUE
+		)	
+		
+3 流程业务表
+	3.1  检维修问题表
+		create table PROCESS_INSPECTION_PROBLEM
+		(
+			PIID CHAR(36) PRIMARY KEY,                     //流程实例ID
+  			REPORTER VARCHAR(10) NOT NULL DEFAULT ''  ,    //上报人
+  			REPORTTIME timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP, //上报时间
+		 	AREA VARCHAR(16) DEFAULT ''  ,                 //问题区域
+		  	POSITIONUNIT VARCHAR(16) DEFAULT ''  ,         //属地单位
+		  	PROFESSION  VARCHAR(16) DEFAULT ''  ,          //所属专业
+		  	PROBLEMTYPE  VARCHAR(16) DEFAULT ''  ,         //问题类型
+		  	DEPARTMENT  VARCHAR(16) DEFAULT ''  ,          //问题部门
+		  	PROBLEMCLASS VARCHAR(16) DEFAULT ''  ,         //问题类别
+		  	PROBLEMPOSITION VARCHAR(16) DEFAULT ''  ,      //问题定位
+		  	UNSAFETYACTION  VARCHAR(28) DEFAULT ''  ,      //不安全行为
+		  	UNSAFETYSTATE  VARCHAR(16) DEFAULT ''  ,       //不安全状态
+		  	DETAILACTION  VARCHAR(28) DEFAULT ''  ,        //具体行为
+		  	PROBLEMDESCRIBE VARCHAR(226) DEFAULT ''  ,            //问题描述
+		  	MEASURES VARCHAR(226) DEFAULT ''  ,            //问题处理措施
+		  	PREVENTMEASURES  VARCHAR(226) DEFAULT ''  ,    //预防措施
+		  	PLANFINISHEDDATE  DATE ,      //计划完成时间
+		  	ACTUALFINISHEDDATE  DATE ,    //实际完成时间
+		  	ISACCIDENTEVENT CHAR(1) DEFAULT '否'  ,        //是否为事故事件
+		  	ISHIDDENEVENT CHAR(1) DEFAULT '否',            //是否为隐患事件
+		  	PROBLEMSTATE VARCHAR(8) DEFAULT '未完成'  ,    //问题状态
+		  	CURRENTPROGRESS  VARCHAR(16) DEFAULT '问题上报'  ,   //当前进度
+		  	RESPONSERS VARCHAR(8) DEFAULT ''  ,                  //负责人
+		  	EMERGENCE VARCHAR(8) DEFAULT ''   ,             //紧急程度
+		  	RFID  VARCHAR(28) DEFAULT ''   ,             //唯一标示rfid
+		  	EQUIPMENTPOSITIONNUM  VARCHAR(28) DEFAULT ''   ,//rfid对应设备位号
+		  	REMARK1 VARCHAR(28) DEFAULT ''   ,              //备注1
+		  	REMARK2 VARCHAR(18) DEFAULT ''   ,              //备注2
+		  	REMARK3 VARCHAR(8) DEFAULT ''   ,               //备注3
+		  	REMARK4 VARCHAR(6) DEFAULT ''   ,               //备注4
+		  	REMARK5 CHAR(2) DEFAULT ''                      //备注5
+		)
+		create unique index INSPECTION_PROBLEM_UNINDEX ON PROCESS_INSPECTION_PROBLEM(PIID)
+		
+	3.2  事故事件表
+		create table PROCESS_INSPECTION_ACCIDENT
+		(
+			ACC_ID CHAR(36) PRIMARY KEY,
+		)
+	
+	3.3  隐患时间表
+		create table PROCESS_INSPECTION_HIDDENDANGER
+		(
+			HID_ID CHAR(36) PRIMARY KEY,
+		)
+		
+	

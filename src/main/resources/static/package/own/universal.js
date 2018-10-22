@@ -1,3 +1,8 @@
+/*
+ * 引入其他插件
+ */
+//引入layui插件
+document.write('<script type="text/javascript" src="/package/layui-v2.4.2/layui.all.js"></script>');
 /**
     一、js目录
 		1.layui验证扩展方法
@@ -69,11 +74,42 @@ var getFullLastMonthDate = function(seperator){
 			nowDate.getMonth() + seperator + nowDate.getDate();
 }
 
+/*-----------------------------------
+      url相关方法
+-----------------------------------*/
+/**
+ * 根据浏览器urlf的参数名，获取参数值
+ */
+function getUrlParamValueByName ( name ) {
+    var reg = new RegExp( "(^|&)" + name + "=([^&]*)(&|$)", "i" );
+    var r = window.location.search.substr( 1 ).match( reg ); //获取url中"?"符后的字符串并正则匹配
+    var context = "";
+    if ( r != null )
+    context = r[2];
+    reg = null;
+    r = null;
+    return context == null || context == "" || context == "undefined" ? "" : context;
+}
 
+/**
+ * 根据浏览器urlf的参数名，获取中文参数值
+ */
+function getQueryUrlString( name ) {
+    var reg = new RegExp( '(^|&)' + name + '=([^&]*)(&|$)', 'i' );
+    var r = window.location.search.substr( 1 ).match( reg );
+    if( r != null ) {
+        return decodeURI( r[2] );
+    }
+    return "请选择";
+}
+
+/*-----------------------------------
+      cookie相关方法
+-----------------------------------*/
 /**
  * 获得coolie 的值
  */
-function cookie(name){    
+function getCookie1(name){    
 
    var cookieArray=document.cookie.split("; "); //得到分割的cookie名值对    
 
@@ -81,7 +117,7 @@ function cookie(name){
 
       var arr=cookieArray[i].split("=");       //将名和值分开    
 
-      if(arr[0]==name)return unescape(arr[1]); //如果是指定的cookie，则返回它的值    
+      if(arr[0]==name)return decodeURI(arr[1]); //如果是指定的cookie，则返回它的值    
 
    } 
 
@@ -142,40 +178,25 @@ function addCookie(objName,objValue,objHours){
 /*
  * 两个参数，一个是cookie的名子，一个是值
  */
-function SetCookie(name,value)
-
-{
-
+function SetCookie( name, value){
     var Days = 30; //此 cookie 将被保存 30 天
-
     var exp = new Date();    //new Date("December 31, 9998");
-
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
-
     document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
-
 }
 
 /*
  * 取cookies函数     
  */
-function getCookie(name)   
-
-{
-
+function getCookie( name ){
     var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
-
-     if(arr != null) return unescape(arr[2]); return null;
-
- 
-
+	if(arr != null) return unescape(arr[2]); return null;
 }
 
 /*
  * 删除cookie  
  */  
-function delCookie(name)
-{
+function delCookie( name ){
     var exp = new Date();
     exp.setTime(exp.getTime() - 1);
     var cval=getCookie(name);
@@ -187,9 +208,9 @@ function delCookie(name)
 /**
  * 获取json对象的长度
  */
-var getJsonLength = function(jsonData){
+var getJsonLength = function( jsonData ){
 	var length = 0;
-	for(var i in jsonData){
+	for( var i in jsonData ){
 		length++;
 	}
 	return length;

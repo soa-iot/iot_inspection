@@ -3,6 +3,7 @@ package cn.zg.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.zg.entity.dataExchange.ResultJson; 
+import cn.zg.entity.dataExchange.ResultJson;
+import cn.zg.utils.globalUtils.GlobalUtil; 
 
 /**
  * @ClassName: GlobalExceptionHandler
@@ -31,7 +33,7 @@ public class GlobalExceptionHandler {
 	 * @return: void        
 	 */  
 	@InitBinder
-	public void initBinder(WebDataBinder binder) {}
+	public void initBinder( WebDataBinder binder ) {}
 	
 	/**   
 	 * @Title: addAttributes   
@@ -40,8 +42,35 @@ public class GlobalExceptionHandler {
 	 * @return: void        
 	 */  
 	@ModelAttribute
-	public void addAttributes(Model model) {
+	public void addAttributes( Model model ) {
 		model.addAttribute("author", "Magical Sam");
+	}
+	
+	/**   
+	 * @Title: handlerException   
+	 * @Description: 全局RuntimeException异常处理  
+	 * @param: @param e
+	 * @param: @return      
+	 * @return: ResultJson<Object>        
+	 */  
+	@ExceptionHandler( RuntimeException.class )
+	ResultJson<Object> handlerRuntimeException( RuntimeException e ){
+		logger.debug( e.getMessage() );
+		GlobalUtil.throwRuntimeException( e.getMessage() );
+		return new ResultJson<Object>( 1, e.getMessage(), "运行时异常" );
+	}
+	
+	/**   
+	 * @Title: handlerMethodArgumentNotValidException   
+	 * @Description: 参数校验异常处理  
+	 * @param: @param e
+	 * @param: @return      
+	 * @return: ResultJson<Object>        
+	 */  
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	ResultJson<Object> handlerMethodArgumentNotValidException( MethodArgumentNotValidException e ){
+		logger.debug( e.getMessage() );
+		return new ResultJson<Object>( 1, e.getMessage(), "控制层参数校验异常" );
 	}
 	 
 	/**   
@@ -51,23 +80,11 @@ public class GlobalExceptionHandler {
 	 * @param: @return      
 	 * @return: ResultJson<Object>        
 	 */  
-	@ExceptionHandler
-	ResultJson<Object> handlerException(Exception e){
+	@ExceptionHandler(Exception.class)
+	ResultJson<Object> handlerException( Exception e ){
 		logger.debug(e.getMessage());
-		return new ResultJson<Object>(1, e.getMessage(), null);
+		return new ResultJson<Object>(1, e.getMessage(), "未捕捉异常");
 	}
 	
-	/**   
-	 * @Title: handleMethodArgumentNotValidException   
-	 * @Description: 处理所有接口数据验证异常  
-	 * @param: @param e
-	 * @param: @return      
-	 * @return: ResultJson<Object>        
-	 */  
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	@ResponseBody
-	ResultJson<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e){
-		logger.error(e.getMessage(), e);
-		return new ResultJson<Object>(e);
-	}
+
 }

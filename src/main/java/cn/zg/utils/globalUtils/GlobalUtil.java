@@ -5,32 +5,66 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import com.google.gson.Gson;
+
 public class GlobalUtil {
 	/**
 	 * 工具类方法说明：
-	 * 	1、运行时异常生成方法
+	 * 	1、异常相关
+	 * 		1.1 运行时异常生成方法
+	 *  2、字符串相关
+	 *  	2.1
+	 *  3、集合类
+	 *  	3.1 控制台显示map的key和value
+	 *  
+	 *  
+	 *  
+	 *  5、cookie相关
+	 *  	5.1 cookie获取
+	 *  	5.2 cookie获取重载
+	 *  	5.3 cookie新增
+	 *  	5.4 cookie删除
+	 *  	5.5 cookie修改
+	 *  	5.6 cookie展示
 	 */
 	
+	
+	///////////////////////////////////////////////////////////////////
+	//    1、异常相关
+	///////////////////////////////////////////////////////////////////
 	/**   
 	 * @Title: throwRuntimeException   
-	 * @Description: 生成运行时异常信息   
+	 * @Description: 生成运行时异常信息 (包括父类类名、行数……)
 	 * @param: @param exceptionMessage      
 	 * @return: void        
 	 */  
-	public static void throwRuntimeException(String exceptionMessage) {
+	public static void throwRuntimeException( String exceptionMessage ) {
 		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 		StackTraceElement fatherElement = stackTraceElements[2];
 		String message = "异常信息：" +
 				fatherElement.getClassName() + "-" + fatherElement.getLineNumber() + "行" + 
 				fatherElement.getMethodName() + "-" + exceptionMessage ; 
-		throw new RuntimeException(message);
+		throw new RuntimeException( message);
 	}
 	
+	
+	///////////////////////////////////////////////////////////////////
+	//    2、字符串相关
+	///////////////////////////////////////////////////////////////////
 	/**   
 	 * @Title: splitStrByTwoSymbol   
 	 * @Description: 一个字符串转化为一个hashmap  
@@ -67,7 +101,7 @@ public class GlobalUtil {
 	 * @param: @return      
 	 * @return: Map<String,String>        
 	 */  
-	public static Map<String, String> changeEntityIntoMap(Object object){		
+	public static Map<String, String> changeEntityIntoMap( Object object ){		
 		Map<String, String> map = new HashMap<String, String>();
 		try {   
 			BeanInfo  beanInfo= Introspector.getBeanInfo(object.getClass());    
@@ -224,5 +258,214 @@ public class GlobalUtil {
 	}
 	
 	
+	///////////////////////////////////////////////////////////////////
+	//    3、集合类相关
+	///////////////////////////////////////////////////////////////////
+	public static void showMapKeyValue( Map<String,Object> map ) {
+		for( Map.Entry<String,Object> entry : map.entrySet() ) {
+			String key = entry.getKey();
+			String value = entry.getValue().toString();
+			System.out.println( "key-value:" + key + "-" + value );
+		}
+	}
 	
+	
+	///////////////////////////////////////////////////////////////////
+	//    cookie操作
+	///////////////////////////////////////////////////////////////////
+	/**   
+	 * @Title: getCookie   
+	 * @Description: 获取cookie
+	 * @param: @param cookieName
+	 * @param: @return      
+	 * @return: String        
+	 */  
+	public static String getCookie( String cookieName ){
+		/*
+		 * 获取request
+		 */
+		ServletRequestAttributes attributes = 
+				(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = attributes.getRequest();
+		
+		/*
+		 * 获取cookie
+		 */
+		try {
+			Cookie[] cookies = request.getCookies();
+			for ( int i = 0; i < (cookies == null ? 0 : cookies.length); i++) {
+				if ( (cookieName).equalsIgnoreCase( cookies[i].getName() ) ) {
+					return URLDecoder.decode( cookies[i].getValue(), "UTF-8" );
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(" --------获取String cookie 失败--------   " + e.getMessage());
+		}
+		return null;
+	}
+	
+	/**   
+	 * @Title: getCookie   
+	 * @Description: 获取cookie重载  
+	 * @param: @param cookieName
+	 * @param: @param clazz
+	 * @param: @return      
+	 * @return: T        
+	 */  
+	public static <T>T getCookie( String cookieName, Class<T> clazz ) {
+		/*
+		 * 获取request
+		 */
+		ServletRequestAttributes attributes = 
+				(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = attributes.getRequest();
+		
+		/*
+		 * 获取cookie
+		 */
+		try {
+			Cookie[] cookies = request.getCookies();
+			String v = null;
+			for ( int i = 0; i < (cookies == null ? 0 : cookies.length); i++ ) {
+				if ( ( cookieName ).equalsIgnoreCase( cookies[i].getName() ) ) {
+					v = URLDecoder.decode( cookies[i].getValue(), "UTF-8" );
+				}
+			}
+			if (v != null) {
+				return new Gson().fromJson( v, clazz);
+			}
+		} catch (Exception e) {
+			System.out.println("------获取 clazz Cookie 失败----- " + e.getMessage());
+		}
+		return null;
+	}
+	
+	/**   
+	 * @Title: addCookie   
+	 * @Description: 新增cookie   
+	 * @param: @param cookieName
+	 * @param: @param object      
+	 * @return: void        
+	 */  
+	public static void addCookie( String cookieName, Object object) {
+		/*
+		 * 获取response
+		 */
+		ServletRequestAttributes attributes = 
+				( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes();
+		HttpServletResponse response = attributes.getResponse();
+		HttpServletRequest request = attributes.getRequest();
+		
+		/*
+		 * 新增cookie
+		 */
+		try {
+			String v = URLEncoder.encode( new Gson().toJson( object ), "UTF-8");
+			Cookie cookie = new Cookie( cookieName, v );
+			cookie.setPath( "/" );
+			cookie.setMaxAge( Integer.MAX_VALUE );// 设置保存cookie最大时长
+			response.addCookie( cookie );
+		} catch (Exception e) {
+			System.out.println(" -------添加cookie 失败！--------" + e.getMessage());
+		}
+	}
+	
+	/**   
+	 * @Title: removeCookie   
+	 * @Description: 删除cookie  
+	 * @param: @param cookieName      
+	 * @return: void        
+	 */  
+	public static void removeCookie( String cookieName ) {
+		/*
+		 * 获取request、response
+		 */
+		ServletRequestAttributes attributes = 
+				( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes();
+		HttpServletResponse response = attributes.getResponse();
+		HttpServletRequest request = attributes.getRequest();
+		
+		/*
+		 * 删除cookie
+		 */
+		try {
+			Cookie[] cookies = request.getCookies();
+			for ( int i = 0; i < ( cookies == null ? 0 : cookies.length ); i++ ) {
+				if ( ( cookieName ).equalsIgnoreCase( cookies[i].getName() ) ) {
+
+					Cookie cookie = new Cookie( cookieName, "");
+					cookie.setPath( "/" );
+					cookie.setMaxAge( 0 );// 设置保存cookie最大时长为0，即使其失效
+					response.addCookie( cookie );
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(" -------删除cookie失败！--------" + e.getMessage());
+		}
+	}
+	
+	/**   
+	 * @Title: updateCookie   
+	 * @Description: 修改cookie值  
+	 * @param: @param cookieName
+	 * @param: @param cookieValue      
+	 * @return: void        
+	 */  
+	public static void updateCookie( String cookieName, String cookieValue ) {
+		/*
+		 * 获取request、response
+		 */
+		ServletRequestAttributes attributes = 
+				( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes();
+		HttpServletResponse response = attributes.getResponse();
+		
+		/*
+		 * 修改cookie值
+		 */
+		Cookie cookie = new Cookie( cookieName, cookieValue );
+		response.addCookie( cookie );	
+	}
+	
+	/**   
+	 * @Title: showCookie   
+	 * @Description: 展示cookie  
+	 * @param:       
+	 * @return: void        
+	 */  
+	public static void showCookie() {
+		/*
+		 * 获取request、response
+		 */
+		ServletRequestAttributes attributes = 
+				( ServletRequestAttributes ) RequestContextHolder.getRequestAttributes();
+		HttpServletRequest request = attributes.getRequest();
+		/*
+		 * 展示cookie
+		 */
+		System.out.println(  request.getCookies() );
+		Cookie[] cookies = request.getCookies();
+		for( int i=0; i<(cookies == null?0:cookies.length); i++ ) {
+			System.out.println(  cookies[i].getName() + "=" + cookies[i].getValue() );
+		}	
+//		for( Cookie c : cookies ) {
+//			System.out.println(  c.getName() + "=" + c.getValue() );
+//		}
+	}
+	
+	
+	///////////////////////////////////////////////////////////////////
+	//   
+	///////////////////////////////////////////////////////////////////
+	
+	
+	
+	///////////////////////////////////////////////////////////////////
+	//   
+	///////////////////////////////////////////////////////////////////
+	
+	
+	
+	///////////////////////////////////////////////////////////////////
+	//   
+	///////////////////////////////////////////////////////////////////
 }

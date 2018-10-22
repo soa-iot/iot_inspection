@@ -1,5 +1,6 @@
 package cn.zg.start;
 
+import org.activiti.spring.boot.SecurityAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //@MapperScan("cn.zg.dao.inter") 
 
 //spring注解扫描
-@SpringBootApplication(scanBasePackages = "cn.zg")
+@SpringBootApplication(scanBasePackages = "cn.zg",exclude = SecurityAutoConfiguration.class)
 
 //开启spring-data-JPA
 @EnableJpaRepositories( "cn.zg.dao.inter" )
@@ -23,11 +24,10 @@ public class H5PageGenerateApplication extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
 		SpringApplication.run(H5PageGenerateApplication.class, args);
-	}		
-	
+	}			
 
 	 @Override
-	    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+	 protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 	        // 注意这里要指向原先用main方法执行的Application启动类
 	        return builder.sources(H5PageGenerateApplication.class); 
 	 }

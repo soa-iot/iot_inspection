@@ -2,6 +2,7 @@ package cn.zg.controller.mobile;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.zg.entity.dataExchange.ResultJson;
 import cn.zg.entity.dataExchange.mobile.ActiveDataTable;
@@ -12,6 +13,7 @@ import cn.zg.entity.dataExchange.mobile.ActiveDataTable;
  * @author zhugang
  * @date 2018年9月25日
  */
+@RestController
 @RequestMapping( "/mobile" )
 public class ActiveOpertateDataBaseController {
 	
@@ -19,6 +21,7 @@ public class ActiveOpertateDataBaseController {
 	public ResultJson<String> activeOperateDataTable( 
 			@RequestBody ActiveDataTable activeDataTable) {
 		String result = "";
+		System.out.println("1111111111");
 		return new ResultJson<String>( 0 , "操作成功" , result );
 	}
 }

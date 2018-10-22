@@ -1,0 +1,12 @@
+.container-fluid {
+	background-color: #E1E6F6;
+}
+
+.row {
+	margin-top: 20px;
+}
+
+#titleProblemReport {
+	text-align: center;
+}
+
