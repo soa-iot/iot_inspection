@@ -11,10 +11,15 @@ import java.util.regex.Pattern;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
+import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.impl.pvm.process.ActivityImpl;
+import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +32,7 @@ import cn.zg.entity.daoEntity.Emploee;
 import cn.zg.entity.daoEntity.Organization;
 import cn.zg.entity.daoEntity.ProblemInspection;
 import cn.zg.service.inter.ProcessServiceInter;
+import cn.zg.utils.globalUtils.GlobalUtil;
 
 /**
  * @ClassName: ProcessServiceImpl
@@ -234,6 +240,100 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 		String businessKey = pi.getBusinessKey();
 		return businessKey;
 	}
+	
+	public ActivityImpl findActivitiImpl(String taskId, String activityId)  
+            throws Exception {
+		
+		return null;
+	}
+	
+	/**   
+	 * @Title: findProcessDefinitionByTaskId   
+	 * @Description: 根据任务id查询流程定义
+	 * @param: @param taskId
+	 * @param: @return      
+	 * @return: ProcessDefinition        
+	 */  
+	public ProcessDefinition findProcessDefinitionByTaskId( String taskId ) {
+		if( StringUtils.isBlank( taskId ) ) {
+			logger.debug( "findProcessDefinitionByTaskId方法传入参数为空" );
+			return null;
+		}	
+		
+		Task task = findTaskById( taskId );
+		String pdid = task.getProcessDefinitionId();
+		ProcessDefinition processDefinition = repositoryService
+				.getProcessDefinition( pdid );
+		
+		if( taskService == null) {
+			logger.debug( "findProcessDefinitionByTaskId查询ProcessDefinition不存在" );
+			return null;
+		}		
+		return processDefinition;
+	}
+	
+	/**   
+	 * @Title: findProcessDefinitionEntityByTaskId   
+	 * @Description: 根据任务id查询流程定义实现  
+	 * @param: @param taskId
+	 * @param: @return      
+	 * @return: ProcessDefinitionEntity        
+	 */  
+	public ProcessDefinitionEntity findProcessDefinitionEntityByTaskId( String taskId ) {
+		if( StringUtils.isBlank( taskId ) ) {
+			logger.debug( "findProcessDefinitionEntityByTaskId方法传入参数taskId为空或null" );
+			return null;
+		}	
+		
+		Task task = findTaskById( taskId );
+		String pdid = task.getProcessDefinitionId();
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)
+				repositoryService.getProcessDefinition( pdid );
+		
+		if( processDefinitionEntity == null) {
+			logger.debug( "findProcessDefinitionByTaskId查询ProcessDefinition不存在" );
+			return null;
+		}		
+		return processDefinitionEntity;
+	}
+	
+	/**   
+	 * @Title: findTaskById   
+	 * @Description: 根据任务ID查询任务  
+	 * @param: @param taskId
+	 * @param: @return      
+	 * @return: Task        
+	 */  
+	public Task findTaskById( String taskId ) {
+		if( StringUtils.isBlank( taskId ) ) {
+			logger.debug( "findTaskById方法传入参数为空" );
+			return null;
+		}	
+		
+		Task task= taskService.createTaskQuery()
+				.taskId( taskId )
+				.singleResult();
+		
+		if( taskService == null) {
+			logger.debug( "findTaskById查询Task任务不存在" );
+			return null;
+		}
+		return task;
+	}
+	
+	public ActivityImpl findActivityImplByTaskId( String taskId, String activityId ) {
+//		ProcessDefinition processDefinition = 
+//				findProcessDefinitionByTaskId( taskId );
+		ProcessDefinitionEntity processDefinition = 
+				findProcessDefinitionEntityByTaskId( taskId );
+		
+		
+		
+		ActivityImpl activityImpl = ((ProcessDefinitionImpl) processDefinition)  
+                .findActivity(activityId);
+		return null;
+	}
+	
 	
 	/**   
 	 * @Title: getMonitor   
