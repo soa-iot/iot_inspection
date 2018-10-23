@@ -13,6 +13,7 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
 import org.activiti.engine.impl.persistence.entity.TaskEntity;
+import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.pvm.process.ProcessDefinitionImpl;
 import org.activiti.engine.repository.Deployment;
@@ -326,13 +327,31 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 //				findProcessDefinitionByTaskId( taskId );
 		ProcessDefinitionEntity processDefinition = 
 				findProcessDefinitionEntityByTaskId( taskId );
-		
-		
-		
+		//验证参数taskId
+		if( StringUtils.isBlank( taskId ) ) {
+			logger.debug( "findActivityImplByTaskId方法传入参数taskId为空或null" );
+			return null; 			
+		}
+		//验证参数activityId为null和空
+		if( StringUtils.isBlank( activityId ) ) {
+			activityId = findTaskById( taskId ).getTaskDefinitionKey(); 		
+		}
+		//验证参数activityId = END
+		if ( activityId.toUpperCase().equals( "END" ) ) {  
+            for ( ActivityImpl activityImpl : processDefinition.getActivities() ) {  
+                List<PvmTransition> pvmTransitionList = activityImpl  
+                        .getOutgoingTransitions();  
+                if ( pvmTransitionList.isEmpty() ) {  
+                    return activityImpl;  
+                }  
+            }  
+        }  		
 		ActivityImpl activityImpl = ((ProcessDefinitionImpl) processDefinition)  
-                .findActivity(activityId);
-		return null;
+                .findActivity(activityId);	
+		return activityImpl;
 	}
+	
+	
 	
 	
 	/**   
