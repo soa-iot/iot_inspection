@@ -95,7 +95,22 @@
 /**
  * 参数定义
  */
-var formUrl = "http://localhost:8080/processBusiness/problemDealInfo/problemReport";
+var problemEstimateInitformUrl = 
+		"http://localhost:8080/processBusiness/problemDealInfo/problemEstimate/problemReportInfo",
+	//当前流程问题piid
+	currentDealPiid = "",
+	//表单控件类型
+	inputTypePE = {
+		"reporter" : "输入框",
+		"area" : "单选框",
+		"positionUnit" : "单选框",
+		"profession" : "单选框",
+		"problemType" : "单选框",
+		"unsafetyAction" : "单选框",
+		"detailAction" : "单选框",
+		"equipmentPositionNum" : "多选框",
+		"problemDescribe" : "输入框"
+	};
 	
 
 
@@ -103,7 +118,13 @@ var formUrl = "http://localhost:8080/processBusiness/problemDealInfo/problemRepo
  * 页面初始化
  */
 $(function(){
-	console.log( '问题上报页面初始化……' );	
+	console.log( '问题评估页面初始化……' );	
+	/*
+	 * 获取url上的参数
+	 */
+	currentDealPiid = $.getUrlParam( "currentDealTsid" );
+	console.log( '问题上报页面初始化……currentDealTsid:' + currentDealPiid );	
+	
 	/*
 	 * 初始化文件上传控件
 	 */
@@ -125,9 +146,9 @@ $(function(){
 	 */
 	$( '#pictureProblemReport' ).find( 'input' ).attr( 'name' , 'picture');
 	$( 'input[aria-label=Search' ).attr( 'name' , 'igore');
-	/*
-	 * 初始化下拉多选框控件
 	
+	/*
+	 * 初始化下拉多选框控件	
 	$('#sel').bootstrapSelect({
 	    url:'',
 	    data: {},
@@ -136,15 +157,13 @@ $(function(){
 	}); */
 	
 	/*
-	 * 初始化姓名
+	 * 初始化问题上报信息
 	 */
-	var userNameTemp = getCookie1( 'userName' ) ,
-		userName = userNameTemp.substr( 1, userNameTemp.length - 2 ),
-		userOrganizationTemp = getCookie1( 'userOrganization' ) ,
-		userOrganization = userOrganizationTemp.substr( 1, userOrganizationTemp.length - 2 ),
-		userRoleTemp = getCookie1( 'userRole' ) ,
-		userRole = userRoleTemp.substr( 1, userRoleTemp.length - 2 );
-	$( 'input[name=reporter]' ).val( userName );
+	var initReportInfoUrl = problemEstimateInitformUrl + "/" + currentDealPiid
+	ajaxByGet( 
+		problemEstimateInitformUrl + currentDealPiid, {}, initReportInfoSuccessFunction 
+	);
+	
 })
 
 
@@ -237,54 +256,7 @@ $(function(){
             }
         }   
 	})
-	
-	/*
-	 * 提交按钮-单击事件
-	 */
-	$( '#submitProblemReport' ).on( 'click', function(){
-		console.log( '提交按钮-单击事件' );
-		//提交前验证
-		if( !$( '#formProblemReport' ).valid() ){
-			console.log( '提交前验证问题上报表单未通过' );
-			return;
-		}
-		//设置cookie-nextNodeExecutor
-		$.cookie( 'nextNodeExecutor', currentUser );
 		
-		//请求
-		var data = 
-			formToJson( decodeURIComponent( $( '#formProblemReport' ).serialize(), true ) );
-		data.problemDescribe = $.trim( data.problemDescribe );
-		
-    	$.ajax({
-	   	     type: "POST",
-	   	     url: formUrl,
-	   	     data: data,
-	   	     async: true, //默认
-	   	     cache: false, //默认
-	   	     contentType: "application/json",//默认
-	   	     dataType: "json",//必须指定，否则根据后端判断
-	   	     beforeSend:  function(XMLHttpRequest){//在beforeSend中如果返回false可以取消本次ajax请求
-	   	         //this;   //调用本次ajax请求时传递的options参数
-	   	     },
-	   	     complete:   function(XMLHttpRequest, textStatus){//请求完成后调用的回调函数（请求成功或失败时均调用）
-	   	        //this;    //调用本次ajax请求时传递的options参数
-	   	     },
-	   	     success: problemReportSucessFunction,
-	   	     error:function(){
-	   	    	 layer.msg('请求失败');
-	   	     }		       
-	   	});
-		return false;
-	} )
-	
-	/*
-	 * 重置按钮单击事件
-	 */
-	
-	/*
-	 * 取消按钮单击事件
-	 */
 })
 
 /**
@@ -337,4 +309,38 @@ function problemReportSucessFunction( jsonData ){
 //            }]
 //		})
 	}	
+}
+
+/**
+ * 问题评估-问题上报信息初始化
+ */
+function initReportInfoSuccessFunction( jsonData ){
+	console.log( '问题评估-问题上报信息初始化……' );
+	if( jsonData != null ){
+		var data = jsonData.data;
+		if( jsonData.state == 0 && data !=null ){			
+			//赋值
+			$.map( data, function( value, key ){
+				var inputTypeValue = inputTypePE[key],
+					$currentObj = $( 'input[name' + key + ']' );
+				console.log( '问题评估-问题上报信息初始化……inputTypeValue:' + inputTypeValue );
+				if( inputTypeValue == '输入框' ){
+					$currentObj.val( value );
+				}else if( inputTypeValue == '单选框' || inputTypeValue == '多选框' ){
+					$.each( $currentObj.find( 'option' ), function( index, item ){
+						if( $.trim( $( this ).text() ) == $.trim( value ) ){
+							$( this ).prop( 'checked', true );
+						}
+					})
+				}else {
+					console.log( '问题评估-问题上报信息初始化……其余输入类型' );
+				}
+			})
+		}else{
+			layer.msg( '查询代办任务失败', {icon : 2} )
+		}
+	}else{
+		layer.msg( '请求失败', {icon : 2} )
+	}
+	
 }

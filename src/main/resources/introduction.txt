@@ -46,8 +46,9 @@ http访问链接
 	4.2    节点处理api：
 		问题上报：
 			process/problemDealInfo/problemReport - post
-		问题评估：
-			process/problemDealInfo/problemEstimate - post
+		问题评估api：
+			process/problemDealInfo/problemEstimate - post    -初始化查询
+			process/problemDealInfo/problemEstimate/problemReportInfo - get    -初始化获取问题上报信息
 		净化分配：
 			process/problemDealInfo/pureAssign - post
 		维修分配：
@@ -148,15 +149,17 @@ http访问链接
 	3.1  检维修问题表
 		create table PROCESS_INSPECTION_PROBLEM
 		(
+			CURRENT_PROCESS_PRID VARCHAR(16) NOT NULL UNIQUE DEFAULT '' ,     //对应流程表实例ID
+			CURRENT_PROCESS_TSID VARCHAR(16) NOT NULL UNIQUE DEFAULT '' ,     //对应流程表任务ID
 			PIID CHAR(36) PRIMARY KEY,                     //流程实例ID
   			REPORTER VARCHAR(10) NOT NULL DEFAULT ''  ,    //上报人
-  			REPORTTIME timestamp  NOT NULL DEFAULT CURRENT_TIMESTAMP, //上报时间
+  			REPORTTIME TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP, //上报时间
 		 	AREA VARCHAR(16) DEFAULT ''  ,                 //问题区域
 		  	POSITIONUNIT VARCHAR(16) DEFAULT ''  ,         //属地单位
 		  	PROFESSION  VARCHAR(16) DEFAULT ''  ,          //所属专业
 		  	PROBLEMTYPE  VARCHAR(16) DEFAULT ''  ,         //问题类型
 		  	DEPARTMENT  VARCHAR(16) DEFAULT ''  ,          //问题部门
-		  	PROBLEMCLASS VARCHAR(16) DEFAULT ''  ,         //问题类别
+		  	PROBLEMCLASS VARCHAR(16) DEFAULT '机电仪流程'  ,         //问题类别 (机电仪流程、)
 		  	PROBLEMPOSITION VARCHAR(16) DEFAULT ''  ,      //问题定位
 		  	UNSAFETYACTION  VARCHAR(28) DEFAULT ''  ,      //不安全行为
 		  	UNSAFETYSTATE  VARCHAR(16) DEFAULT ''  ,       //不安全状态

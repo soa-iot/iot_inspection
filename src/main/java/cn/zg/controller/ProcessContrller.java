@@ -15,7 +15,7 @@ import cn.zg.entity.daoEntity.ProblemInspection;
 import cn.zg.entity.dataExchange.ResultJson;
 import cn.zg.service.impl.MechatronicsProcessServiceImpl;
 import cn.zg.service.impl.PurificationSchemeService;
-import cn.zg.service.inter.ProcessInspectionServiceInter;
+import cn.zg.service.inter.MechatronicsProcessServiceInter;
 
 /**
  * @ClassName: ProcessContrller

@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+	<meta charset="UTF-8">
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 	<title>流程主页</title>
-	<link href="/package/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/package/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" 
+			type="text/css" />
+	<link href="/package/layui-v2.4.2/css/layui.css" rel="stylesheet" type="text/css"  />
 	<link href="/css/process/index.css" rel="stylesheet" type="text/css"  />
 	<link title="blue" href="/css/indexTheme/dermadefault.css" rel="stylesheet" type="text/css"/>
 	<link title="green" href="/css/indexTheme/dermagreen.css" rel="stylesheet" type="text/css" 
 			disabled="disabled"/>
 	<link title="orange" href="/css/indexTheme/dermaorange.css" rel="stylesheet" type="text/css" 
 			disabled="disabled"/>
-			<link href="/css/indexTheme/templatecss.css" rel="stylesheet" title="" type="text/css" />
+	<link href="/css/indexTheme/templatecss.css" rel="stylesheet" type="text/css" />
+	<link href="/css/process/mechatronicsProblemNode/problemIndex.css" rel="stylesheet" 
+			type="text/css" />
 	<script src="/package/jquery-3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>
 	<script src="/package/jquery-3.3.1/jquery.cookie.js" type="text/javascript"></script>
-	<script src="/package/bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="/javaScript/process/mechatronicsProblemNode/problemIndex.js" 
-			type="text/javascript"></script>
+	<script src="/package/layui-v2.4.2/layui.all.js" type="text/javascript"></script>	
+	<script src="/package/bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>	
+	<script src="/javaScript/project.js" type="text/javascript"></script>			
+	<script src="/package/own/universal.js" type="text/javascript"></script>
 </head>
-<body>
+<body >
 	<!-- <div class="right-product my-index right-full"> -->
-	<div class=" my-index right-full">
-     	<div class="container-fluid">
+	<div class=" my-index right-full" id="body">
+     	<div class="container-fluid problemIndex" >
 			<div class="info-center">
        
        			<!---title----->
@@ -51,87 +56,92 @@
 				</div>
 			
 	           	<!----content-list----> 
-	            <div class="content-list">
-					<div class="row">
+	            <div class="content-list" id="problemInfoTotal">
+					<div class="row" id="problemIndexTotalUnfinished" >
 	                 	<div class="col-md-3">
 	                    	<div class="content">
 	                       		<div class="w30 left-icon pull-left">
 	                          		<span class="glyphicon glyphicon-file blue"></span>
 	                       		</div>
-							<div class="w70 right-title pull-right">
-	                       		<div class="title-content">
-	                           		<p>机电仪问题</p>
-	                           		<h3 class="number">90</h3>
+								<div class="w70 right-title pull-right">
+		                       		<div class="title-content" id="mechanicProblemCalcul">
+		                           		<p>机电仪问题</p>
+		                           		<h3 class="number"></h3>
+			                           	<button class="btn btn-default">
+			                           		待我处理
+			                           		<span style="color:red;"></span>
+			                           	</button>
+		                       		</div>
+		                       </div>
+		                       <div class="clearfix"></div>
+							</div>
+						</div>
+						<div class="col-md-3">
+		                    <div class="content">
+		                       <div class="w30 left-icon pull-left">
+		                          <span class="glyphicon glyphicon-file violet"></span>
+		                       </div>
+		                       <div class="w70 right-title pull-right">
+		                       <div class="title-content">
+		                           	<p>净化问题</p>
+		                           	<h3 class="number"></h3>
+									<button class="btn btn-default">
+		                           		待我处理
+		                           		<span style="color:red;">12</span>
+		                           	</button>
+		                       </div>
+		                       </div>
+		                       <div class="clearfix"></div>
+		                    </div>
+						</div>
+						<div class="col-md-3">
+							<div class="content">
+								<div class="w30 left-icon pull-left">
+		                        	<span class="glyphicon glyphicon-file orange"></span>
+		                       	</div>
+		                       	<div class="w70 right-title pull-right">
+		                       	<div class="title-content">
+		                        	<p>其他问题</p>
+		                           	<h3 class="number"></h3>
 		                           	<button class="btn btn-default">
 		                           		待我处理
 		                           		<span style="color:red;">12</span>
 		                           	</button>
-	                       		</div>
-	                       </div>
-	                       <div class="clearfix"></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-	                    <div class="content">
-	                       <div class="w30 left-icon pull-left">
-	                          <span class="glyphicon glyphicon-file violet"></span>
-	                       </div>
-	                       <div class="w70 right-title pull-right">
-	                       <div class="title-content">
-	                           <p>待办事项</p>
-	                           <h3 class="number">90</h3>
-	                           <button class="btn btn-default">待我处理<span style="color:red;">12</span></button>
-	                       </div>
-	                       </div>
-	                       <div class="clearfix"></div>
-	                    </div>
-					</div>
-					<div class="col-md-3">
-						<div class="content">
-							<div class="w30 left-icon pull-left">
-	                        	<span class="glyphicon glyphicon-file orange"></span>
-	                       	</div>
-	                       	<div class="w70 right-title pull-right">
-	                       	<div class="title-content">
-	                        	<p>待办事项</p>
-	                           	<h3 class="number">90</h3>
-	                           	<button class="btn btn-default">
-	                           		待我处理<span style="color:red;">12</span>
-	                           	</button>
-	                       	</div>
-	                       	</div>
-	                       	<div class="clearfix"></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-	                	<div class="content">
-	                    	<div class="w30 left-icon pull-left">
-	                        	<span class="glyphicon glyphicon-file green"></span>
-	                       	</div>
-	                       	<div class="w70 right-title pull-right">
-		                       	<div class="title-content">
-		                        	<p>待办事项</p>
-		                           	<h3 class="number">90</h3>
-		                           	<button class="btn btn-default">
-		                           		待我处理<span style="color:red;">12</span>
-		                           	</button>
 		                       	</div>
+		                       	</div>
+		                       	<div class="clearfix"></div>
 							</div>
-	                       	<div class="clearfix"></div>
 						</div>
-					</div>
+						<div class="col-md-3">
+		                	<div class="content">
+		                    	<div class="w30 left-icon pull-left">
+		                        	<span class="glyphicon glyphicon-file green"></span>
+		                       	</div>
+		                       	<div class="w70 right-title pull-right">
+			                       	<div class="title-content">
+			                        	<p>事故隐患问题</p>
+			                           	<h3 class="number"></h3>
+			                           	<button class="btn btn-default">
+			                           		待我处理<span style="color:red;">12</span>
+			                           	</button>
+			                       	</div>
+								</div>
+		                       	<div class="clearfix"></div>
+							</div>
+						</div>
 	               	</div>
 	               	
 	               	<!-------信息列表------->
 	               	<div class="row newslist" style="margin-top:20px;">
 	                 	<div class="col-md-8">
-	                   	<div class="panel panel-default">
-	                      	<div class="panel-heading">
+	                   	<div class="panel panel-default" >
+	                      	<div class="panel-heading" id="userUnfinishedTasdList">
 	                       		我的事务<div class="caret"></div>
 	                       		<a href="#" class="pull-right">
 	                       			<span class="glyphicon glyphicon-refresh"></span>
 	                       		</a>
-	                      	</div>     
+	                      	</div>   
+	                      	<!-- 例子   
 	                      	<div class="panel-body">
 	                        	<div class="w15 pull-left">
 	                             	<img src="/picture/noavatar_middle.gif" width="25"
@@ -143,71 +153,8 @@
 	                          	<div class="w10 pull-left text-center">
 	                          		<span class="text-green-main">处理中</span>
 	                          	</div>
-	                     	</div>
-	                      
-	                      	<div class="panel-body">
-	                        	<div class="w15 pull-left">
-	                             	<img src="/picture/noavatar_middle.gif" width="25" height="25" 
-	                             			alt="图片" class="img-circle">
-	                             		安妮
-	                           	</div>
-	                           	<div class="w55 pull-left">系统需要升级</div>
-	                           	<div class="w20 pull-left text-center">2016年8月23日</div>
-	                          	<div class="w10 pull-left text-center">
-	                          		<span class="text-green-main">处理中</span>
-	                          	</div>
-	                      	</div>
-	                      
-	                      	<div class="panel-body">
-	                        	<div class="w15 pull-left">
-	                             	<img src="/picture/noavatar_middle.gif" width="25" height="25" 
-	                             			alt="图片" class="img-circle">
-	                             		安妮
-	                           	</div>
-	                           	<div class="w55 pull-left">系统需要升级</div>
-	                           	<div class="w20 pull-left text-center">2016年8月23日</div>
-	                           	<div class="w10 pull-left text-center">
-	                           		<span class="text-gray">已关闭</span>
-	                           	</div>
-	                      	</div>
-	                      
-	                      	<div class="panel-body">
-	                        	<div class="w15 pull-left">
-	                             	<img src="/picture/noavatar_middle.gif" width="25" height="25" 
-	                             			alt="图片" class="img-circle">
-	                             		安妮
-	                           	</div>
-	                          	<div class="w55 pull-left">系统需要升级</div>
-	                           	<div class="w20 pull-left text-center">2016年8月23日</div>
-	                           	<div class="w10 pull-left text-center">
-	                           		<span>处理中</span>
-	                           	</div>
-	                      	</div>
-	                      	<div class="panel-body">
-	                        	<div class="w15 pull-left">
-	                             	<img src="/picture/noavatar_middle.gif" width="25" height="25" 
-	                             		alt="图片" class="img-circle">
-	                             		安妮
-	                           	</div>
-	                           	<div class="w55 pull-left">系统需要升级</div>
-	                           	<div class="w20 pull-left text-center">2016年8月23日</div>
-	                           	<div class="w10 pull-left text-center">
-	                           		<span>处理中</span>
-	                           	</div>
-	                      	</div>
-	                      	<div class="panel-body">
-	                        	<div class="w15 pull-left">
-	                             	<img src="/picture/noavatar_middle.gif" width="25" height="25"
-	                             		 alt="图片" class="img-circle">
-	                            		 安妮
-	                           	</div>
-	                           	<div class="w55 pull-left">系统需要升级</div>
-	                           	<div class="w20 pull-left text-center">2016年8月23日</div>
-	                           	<div class="w10 pull-left text-center">
-	                           		<span>处理中</span>
-	                           	</div>
-	                      	</div>
-	                      
+	                     	</div> -->
+	                
 	                      	<div class="panel-body text-center">
 	                        	<a href="#" style="color:#5297d6;">查看全部</a>
 	                      	</div>                   
@@ -229,6 +176,9 @@
 				</div>      			
        		</div>			
 		</div>
+		
+		<!-- 引入js -->
+		<script src="/javaScript/process/mechatronicsProblemNode/problemIndex.js" type="text/javascript"></script>
 	</div>
 </body>
 </html>

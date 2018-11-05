@@ -24,10 +24,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import cn.zg.dao.inter.EmployeeRepository;
 import cn.zg.dao.inter.OrganizationRepository;
+import cn.zg.dao.inter.ProcessInsectionRepository;
 import cn.zg.dao.inter.RoleRepository;
 import cn.zg.entity.daoEntity.Emploee;
 import cn.zg.entity.daoEntity.Organization;
@@ -62,6 +64,9 @@ public class ProcessServiceImpl implements ProcessServiceInter {
     
     @Autowired
     private RoleRepository roleRepository;
+    
+    @Autowired
+    private ProcessInsectionRepository processInsectionRepository;
 	/**   
 	 * @Title: deployMechatronicsProcess   
 	 * @Description: 部署机电仪流程定义  
@@ -69,15 +74,13 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @return: Deployment        
 	 * @throws FileNotFoundException 
 	 */  
-	public Deployment deployMechatronicsProcess() throws FileNotFoundException {
+	public Deployment deployMechatronicsProcess()  {
 		//获取资源相对路径
 //		String pngPath = "process/repairProcess.png";	
 //		String bpmnPath = "process/repairProcess.bpmn";					
 		//读取资源作为一个输入流
 //		FileInputStream pngfileInputStream = new FileInputStream( pngPath );
 //		FileInputStream bpmnfileInputStream = new FileInputStream( bpmnPath );
-		
-		
 		Deployment deployment = repositoryService.createDeployment()
 				 .name( "净化厂机电仪检维修流程")
 //				 .addInputStream( "repairProcess.bpmn",  bpmnfileInputStream )
@@ -122,6 +125,18 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 						problemInspection.getPiid() , 
 						vars );
         String processId = processInstance.getId();
+        logger.debug( "流程实例ID" + processId );
+        
+        /*
+         * 保存流程实例ID到业务表
+         */
+        try {
+        	problemInspection.setCurrentPrid( processId ); 
+        	processInsectionRepository.saveAndFlush( problemInspection );
+		} catch (Exception e) {
+			logger.debug( "保存流程实例ID的prid失败" );
+		}
+        
         return processId;
 	}
 	
@@ -139,7 +154,7 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 		runtimeService.startProcessInstanceByKey( 
 				mechatronicsProcesskey, 
 				problemInspection.getPiid(), 
-				vars);
+				vars );
 	}
 	
 	/**   
@@ -148,11 +163,22 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @param: @param processId      
 	 * @return: void        
 	 */  
-	public void executeCurrentProcessNode( String processId ) {
+	public void executeCurrentProcessNode( String processId,
+			ProblemInspection problemInspection ){
 		Task task = taskService.createTaskQuery()
 						.processInstanceId( processId )
 						.singleResult();
 		taskService.complete( task.getId() );
+		
+		/*
+		 * 更新流程最新节点ID，到上报表中
+		 */
+		//获取当前流程实例任务节点
+		Task activeTask = 
+				taskService.createTaskQuery().taskId( task.getId() ).active().singleResult();
+		String activeTaskId = activeTask.getId();
+		//根据流程实例id获取业务主键id
+		problemInspection.setCurrentTsid( activeTaskId );
 	}
 	
 	/**   
@@ -162,11 +188,12 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @param: @param vars      
 	 * @return: void        
 	 */  
-	public void executeCurrentProcessNode( String processId , Map<String,Object> vars  ) {
+	public void executeCurrentProcessNode( String processId , 
+			Map<String,Object> vars, ProblemInspection problemInspection  ) {
 		Task task = taskService.createTaskQuery()
 						.processInstanceId( processId )
 						.singleResult();
-		taskService.complete( task.getId() , vars);
+		taskService.complete( task.getId() , vars );
 	}
 	
 	/**   
@@ -176,9 +203,9 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @param: @return      
 	 * @return: List<Task>        
 	 */  
-	public List<Task> getPersonalTasksByAssignee( String userId ){
+	public List<Task> getPersonalTasksByAssignee( String userName ){
 		List<Task> tasks = taskService.createTaskQuery()
-				.taskAssignee( userId )
+				.taskAssignee( userName )
 				.orderByTaskCreateTime()
 				.desc()
 				.list();
@@ -192,9 +219,9 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @param: @return      
 	 * @return: List<Task>        
 	 */  
-	public List<Task> getCandidateTasksByAssignee( String userId ){
+	public List<Task> getCandidateTasksByAssignee( String userName ){
 		List<Task> tasks = taskService.createTaskQuery()
-				.taskCandidateUser( userId )
+				.taskCandidateUser( userName )
 				.orderByTaskCreateTime()
 				.desc()
 				.list();
@@ -208,14 +235,14 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	 * @param: @return      
 	 * @return: List<Task>        
 	 */  
-	public List<Task> getCanPerTasksByAssignee( String userId ){
+	public List<Task> getCanPerTasksByAssignee( String userName ){
 		List<Task> personalTasks = taskService.createTaskQuery()
-				.taskAssignee( userId )
+				.taskAssignee( userName )
 				.orderByTaskCreateTime()
 				.desc()
 				.list();
 		List<Task> candidatetasks = taskService.createTaskQuery()
-				.taskCandidateUser( userId )
+				.taskCandidateUser( userName )
 				.orderByTaskCreateTime()
 				.desc()
 				.list();
@@ -225,7 +252,7 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 	
 	/**   
 	 * @Title: getProblemInspectionByTaskId   
-	 * @Description: 查询任务对应的业务数据对象  
+	 * @Description: 根据任务id,查询任务对应的业务数据对象  
 	 * @param: @param taskId
 	 * @param: @return      
 	 * @return: String        
@@ -236,17 +263,21 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 				.singleResult();
 		ProcessInstance pi = runtimeService
 				.createProcessInstanceQuery()
-				.processInstanceId( task.getProcessDefinitionId() )
+				.processInstanceId( task.getProcessInstanceId() )
 				.singleResult();
-		String businessKey = pi.getBusinessKey();
-		return businessKey;
-	}
-	
-	public ActivityImpl findActivitiImpl(String taskId, String activityId)  
-            throws Exception {
 		
-		return null;
-	}
+		String businessKey = "";
+		//判断
+		if( pi == null || task == null ) {
+			return "";
+		}
+		try {
+			businessKey = pi.getBusinessKey();
+		} catch (Exception e) {
+			return "";
+		}		
+		return businessKey == null?"":businessKey ;
+	}	
 	
 	/**   
 	 * @Title: findProcessDefinitionByTaskId   
@@ -322,7 +353,15 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 		return task;
 	}
 	
-	public ActivityImpl findActivityImplByTaskId( String taskId, String activityId ) {
+	/**   
+	 * @Title: findActivityImplByTaskId   
+	 * @Description: 根据任务ID和活动ID，得到活动节点 
+	 * @param: @param taskId
+	 * @param: @param activityId
+	 * @param: @return      
+	 * @return: ActivityImpl        
+	 */  
+	public ActivityImpl findActivityImplByTaskActId( String taskId, String activityId ) {
 //		ProcessDefinition processDefinition = 
 //				findProcessDefinitionByTaskId( taskId );
 		ProcessDefinitionEntity processDefinition = 
@@ -351,6 +390,67 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 		return activityImpl;
 	}
 	
+	/**   
+	 * @Title: findActivityImplByTaskId   
+	 * @Description: 根据任务id，查询活动节点   
+	 * @param: @param taskId
+	 * @param: @return      
+	 * @return: ActivityImpl        
+	 */  
+	public ActivityImpl findActivityImplByTaskId( String taskId ) {
+		Task task = taskService.createTaskQuery().taskId( taskId ).singleResult();
+		//获取流程定义id、实例id
+		String processDefinitionId = task.getProcessInstanceId();
+		String processInstanceId = task.getProcessInstanceId(); 		
+		//获取流程实例对象、流程定义对象
+		ProcessDefinition processDefinition = repositoryService
+				.createProcessDefinitionQuery()
+				.processDefinitionId( processDefinitionId )
+				.singleResult();
+//		ProcessDefinitionEntity processDefinitionEntity =     //实现方式1
+//				(ProcessDefinitionEntity) processDefinition;
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)
+				repositoryService.getProcessDefinition( processDefinitionId );
+		ProcessInstance processInstance = runtimeService
+				.createProcessInstanceQuery()
+				.processInstanceId( processInstanceId )
+				.singleResult();
+		//根据流程实例对象-查询活动节点对象-获取活动节点id
+		String activityId = processInstance.getActivityId();
+		ActivityImpl activityImpl = processDefinitionEntity
+				.findActivity( activityId );
+		return activityImpl;
+	}
+	
+	/**   
+	 * @Title: findActivityImplByPrid   
+	 * @Description: 根据流程实例id，查询活动节点     
+	 * @param: @param prid
+	 * @param: @return      
+	 * @return: ActivityImpl        
+	 */  
+	public ActivityImpl findActivityImplByPrid( String prid ){	
+		ProcessInstance processInstance = runtimeService
+				.createProcessInstanceQuery()
+				.processInstanceId( prid.trim() )
+				.singleResult();
+		String processDefinitionId = processInstance.getProcessDefinitionId();
+		//根据流程实例对象-查询活动节点对象-获取活动节点id
+		String activityId = processInstance.getActivityId();
+		ProcessDefinition processDefinition = repositoryService
+				.createProcessDefinitionQuery()
+				.processDefinitionId( processDefinitionId )
+				.singleResult();
+		ProcessDefinitionEntity processDefinitionEntity = (ProcessDefinitionEntity)
+				repositoryService.getProcessDefinition( processDefinitionId );
+		ActivityImpl activityImpl = processDefinitionEntity
+				.findActivity( activityId );
+		return activityImpl;
+	}
+	
+	public void saveComment( String taskId, String _comment ){
+		
+	}
 	
 	
 	
@@ -409,5 +509,48 @@ public class ProcessServiceImpl implements ProcessServiceInter {
 		List<Emploee> problemEstimateExecutors = 
 				employeeRepository.findByRoleName( roleNameLike );			
 		return problemEstimateExecutors;
+	}
+	
+	/**   
+	 * @Title: getUserHistoryTask   
+	 * @Description: 根据上报人名，查询全部上报任务    
+	 * @param: @param userName
+	 * @param: @return      
+	 * @return: List<ProblemInspection>        
+	 */  
+	public List<ProblemInspection> getUserHistoryTask( 
+			String userName, String problemTypeStr ){
+		//问题类型
+		List<String> problemTypes = new ArrayList<String>();
+		String[] problemTypeArr = problemTypeStr.split( "," );
+		for( String s : problemTypeArr ) {
+			problemTypes.add( s.trim() );
+		}
+		logger.debug( "查询历史任务：" + problemTypes.toString() );
+		logger.debug( "查询历史任务：" + userName );
+		List<ProblemInspection> problemInspections = new ArrayList<ProblemInspection>();		
+		Sort sort = new Sort( Sort.Direction.ASC, "problemType" );
+		problemInspections = 
+				processInsectionRepository
+				.findAllByReporterAndProblemTypeIn( userName, problemTypes, sort );
+		return problemInspections;
+	}
+	
+	
+	/**   
+	 * @Title: getActivityIdByPridService   
+	 * @Description: 根据流程实例ID，获取活动节点ID和名称 
+	 * @param: @return      
+	 * @return: String        
+	 */  
+	public String getActivityIdByPridService( String prid ) {		
+		ActivityImpl activityImpl = findActivityImplByPrid( prid );
+		if( activityImpl == null ) {
+			return "";
+		}
+		String idName = activityImpl.getId();
+		idName = idName +  "," + activityImpl.getProperty( "name" );
+		logger.debug( "根据流程实例ID，获取活动节点ID和名称 ：" + prid );
+		return idName;
 	}
 }

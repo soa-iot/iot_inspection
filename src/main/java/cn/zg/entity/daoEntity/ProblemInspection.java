@@ -8,7 +8,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
+
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 /**
@@ -28,9 +33,15 @@ public class ProblemInspection implements Serializable {
 
 	private String piid;
 	
+	private String currentTsid;	
+	
+	private String currentPrid;
+	
 	@NotBlank( message="上报人不能为空" )
 	private String reporter;
 	
+	@Temporal( TemporalType.TIMESTAMP )  
+	@JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8" )
 	private Timestamp reportTime;
 	
 	@NotBlank( message="问题区域不能为空" )
@@ -453,6 +464,45 @@ public class ProblemInspection implements Serializable {
 	public String getRemark5() {
 		return remark5;
 	}
+			
+
+	/**  
+	 * @Title:  getCurrentTsid <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	@Column( name = "CURRENT_PROCESS_TSID" )
+	public String getCurrentTsid() {
+		return currentTsid;
+	}
+
+	/**  
+	 * @Title:  getCurrentPrid <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	@Column( name = "CURRENT_PROCESS_PRID" )
+	public String getCurrentPrid() {
+		return currentPrid;
+	}
+
+	/**  
+	 * @Title:  setCurrentTsid <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	public void setCurrentTsid(String currentTsid) {
+		this.currentTsid = currentTsid;
+	}
+
+	/**  
+	 * @Title:  setCurrentPrid <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	public void setCurrentPrid(String currentPrid) {
+		this.currentPrid = currentPrid;
+	}
 
 	/**  
 	 * @Title:  setPiid <BR>  
@@ -743,18 +793,20 @@ public class ProblemInspection implements Serializable {
 	 */ 
 	@Override
 	public String toString() {
-		return "ProblemInspection [piid=" + piid + ", reporter=" + reporter + ", reportTime=" + reportTime + ", area="
-				+ area + ", PositionUNnit=" + positionUnit + ", profession=" + profession + ", problemType="
-				+ problemType + ", Department=" + department + ", problemClass=" + problemClass + ", problemPosition="
-				+ problemPosition + ", unsafetyAction=" + unsafetyAction + ", unsafetyState=" + unsafetyState
-				+ ", detailAction=" + detailAction + ", problemDescribe=" + problemDescribe + ", measures=" + measures
+		return "ProblemInspection [piid=" + piid + ", currentTsid=" + currentTsid + ", currentPrid=" + currentPrid
+				+ ", reporter=" + reporter + ", reportTime=" + reportTime + ", area=" + area + ", positionUnit="
+				+ positionUnit + ", profession=" + profession + ", problemType=" + problemType + ", department="
+				+ department + ", problemClass=" + problemClass + ", problemPosition=" + problemPosition
+				+ ", unsafetyAction=" + unsafetyAction + ", unsafetyState=" + unsafetyState + ", detailAction="
+				+ detailAction + ", problemDescribe=" + problemDescribe + ", measures=" + measures
 				+ ", preventMeasures=" + preventMeasures + ", planFinishedDate=" + planFinishedDate
 				+ ", actualFinishedDate=" + actualFinishedDate + ", idAccidentEvent=" + idAccidentEvent
 				+ ", idHiddenEvent=" + idHiddenEvent + ", problemState=" + problemState + ", currentProgress="
-				+ currentProgress + ", responsers=" + responsers + ", emergence=" + emergence + ", remark1=" + remark1
-				+ ", remark2=" + remark2 + ", remark3=" + remark3 + ", remark4=" + remark4 + ", remark5=" + remark5
-				+ "]";
+				+ currentProgress + ", responsers=" + responsers + ", emergence=" + emergence + ", rfId=" + rfId
+				+ ", equipmentPositionNum=" + equipmentPositionNum + ", remark1=" + remark1 + ", remark2=" + remark2
+				+ ", remark3=" + remark3 + ", remark4=" + remark4 + ", remark5=" + remark5 + "]";
 	}
+
 	
 	
 }
