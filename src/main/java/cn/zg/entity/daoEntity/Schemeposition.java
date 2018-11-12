@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Entity
-@Table( name = "SCHEMEPOSITION" )
+//@Table( name = "SCHEMEPOSITION" )
 public class Schemeposition implements Serializable{
 	
 	/**   

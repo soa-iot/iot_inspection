@@ -20,15 +20,15 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 //JPA实体类扫描
 @EntityScan("cn.zg.entity")
-public class H5PageGenerateApplication extends SpringBootServletInitializer{
+public class ElectricInspection extends SpringBootServletInitializer{
 
 	public static void main(String[] args) {
-		SpringApplication.run(H5PageGenerateApplication.class, args);
+		SpringApplication.run(ElectricInspection.class, args);
 	}			
 
 	 @Override
 	 protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 	        // 注意这里要指向原先用main方法执行的Application启动类
-	        return builder.sources(H5PageGenerateApplication.class); 
+	        return builder.sources(ElectricInspection.class); 
 	 }
 }

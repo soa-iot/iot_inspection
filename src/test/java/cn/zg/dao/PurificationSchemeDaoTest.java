@@ -11,10 +11,10 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import cn.zg.dao.inter.PurificationSchemeDao;
 import cn.zg.entity.daoEntity.Schemeposition;
-import cn.zg.start.H5PageGenerateApplication;
+import cn.zg.start.ElectricInspection;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = { H5PageGenerateApplication.class })
+@SpringBootTest(classes = { ElectricInspection.class })
 @WebAppConfiguration
 public class PurificationSchemeDaoTest {
 	@Autowired
