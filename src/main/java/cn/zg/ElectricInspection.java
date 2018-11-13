@@ -1,4 +1,4 @@
-package cn.zg.start;
+package cn.zg;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

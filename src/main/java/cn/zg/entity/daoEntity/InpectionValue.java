@@ -13,6 +13,10 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table( name = "CZ_TASK_INSPECTION_VALUE" )
 public class InpectionValue implements Serializable {
@@ -90,6 +94,7 @@ public class InpectionValue implements Serializable {
 	 * @return: Date <BR>  
 	 */
 	@Column( name = "RECORD_TIME")
+	@DateTimeFormat( pattern = "yyyy-MM-dd HH:mm:ss" ) 
 	public Date getRecord_time() {
 		return record_time;
 	}

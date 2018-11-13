@@ -1,14 +1,22 @@
 package cn.zg.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.zg.dao.inter.InpectionValueRepos;
 import cn.zg.dao.inter.PurificationSchemeDao;
+import cn.zg.entity.daoEntity.InpectionValue;
 import cn.zg.entity.daoEntity.Schemeposition;
 import cn.zg.entity.serviceEntity.CheckPosition;
 import cn.zg.entity.serviceEntity.DataRange;
@@ -32,6 +40,9 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 	
 	@Autowired
 	private PurificationSchemeDao psd;
+	
+	@Autowired
+	private InpectionValueRepos inpectValueRepos;
 	
 	
 	/**   
@@ -245,5 +256,57 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		logger.debug( "格式化表格的表头数据" , returnList );
 		System.out.println( returnList );
 		return returnList;
+	}
+	
+	public List<Map<String,Object>> getInspectData( String planId, String time ) 
+			throws ParseException {
+		//参数格式转化
+//		SimpleDateFormat sdf = new SimpleDateFormat( "YYYY-MM-DD" );
+//		Date date = sdf.parse( time );
+//		java.sql.Date date1 = new java.sql.Date( date.getTime() );		 
+		//查询
+		List<InpectionValue> inpectValues = new ArrayList<InpectionValue>();
+		inpectValues = inpectValueRepos.findByPlanidAndTime( planId, time );
+		
+		//分类处理
+		String flag = "0000";
+		Calendar cal = Calendar.getInstance();
+		cal.setTime( inpectValues.get( 0 ).getRecord_time() );
+		logger.debug( "查询表格数据……" + cal.toString() );
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		Map<String,Object> m = new HashMap<String,Object>();
+		int length = inpectValues.size();
+		for( int i = 0; i < length; i ++) {			
+			String currentHour = cal.get( Calendar.HOUR_OF_DAY ) + "" ;
+			if( !flag.equals( currentHour )) {
+				flag = currentHour;
+				logger.debug( "查询表格数据……flag:" + flag );
+				if( m != null && m.size() > 0) {
+					if( Integer.parseInt( currentHour ) > 8 && 
+							Integer.parseInt( currentHour ) < 19 ) {
+						m.put( "timeName", "白班" );
+					}else {
+						m.put( "timeName", "夜班" );
+					}
+					m.put( "time", Integer.parseInt( currentHour ) + ":00" );
+					list.add( m );
+				}
+				m = null;
+				m = new HashMap<String,Object>();				
+			}
+			m.put( inpectValues.get( i ).getPosition_num(), inpectValues.get( i ).getValue() );
+			if( i == length - 1 ) {
+				if( Integer.parseInt( currentHour ) > 8 && 
+						Integer.parseInt( currentHour ) < 19 ) {
+					m.put( "timeName", "白班" );
+				}else {
+					m.put( "timeName", "夜班" );
+				}
+				m.put( "time", Integer.parseInt( currentHour ) + ":00" );
+				list.add( m );
+			}
+		}
+		System.out.println( list.toString() );
+		return list;
 	}
 }

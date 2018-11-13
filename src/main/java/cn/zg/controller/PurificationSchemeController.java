@@ -49,11 +49,11 @@ public class PurificationSchemeController {
 	}
 	
 	@GetMapping("/tableData")
-	public ResultJson<List<Map<String,String>>> getTableData (
+	public ResultJson<List<Map<String,Object>>> getTableData (
 			@RequestParam( "time" ) String time,
 			@RequestParam( "currentScheme" ) String currentScheme) {
-		List<Map<String,String>> list = new ArrayList<Map<String,String>>();
-		Map<String,String> m = new HashMap<String,String>();
+		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
+		Map<String,Object> m = new HashMap<String,Object>();
 		m.put( "timeName", "白班" );
 		m.put( "time", "9:00" );
 		m.put( "111-PG-003", "1111" );
@@ -86,7 +86,7 @@ public class PurificationSchemeController {
 		m.put( "121-LT-104", "22222" );
 		list.add( m );
 		
-		Map<String,String> m1 = new HashMap<String,String>();
+		Map<String,Object> m1 = new HashMap<String,Object>();
 		m1.put( "timeName", "白班" );
 		m1.put( "time", "11:00" );
 		m1.put( "111-PG-003", "1111" );
@@ -119,7 +119,7 @@ public class PurificationSchemeController {
 		m1.put( "121-LT-104", "22222" );
 		list.add( m1 );
 		
-		Map<String,String> m2 = new HashMap<String,String>();
+		Map<String,Object> m2 = new HashMap<String,Object>();
 		m2.put( "timeName", "夜班" );
 		m2.put( "time", "21:00" );
 		m2.put( "111-PG-003", "1111" );
@@ -153,7 +153,7 @@ public class PurificationSchemeController {
 		list.add( m2 );
 		System.out.println(list);
 		logger.debug( "控制层请求的表头信息" , list );
-		return new ResultJson<List<Map<String,String>>>( list );
+		return new ResultJson<List<Map<String,Object>>>( list );
 	}
 	
 }

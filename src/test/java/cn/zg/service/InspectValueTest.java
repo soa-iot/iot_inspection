@@ -1,6 +1,9 @@
 package cn.zg.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,23 +13,23 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import cn.zg.ElectricInspection;
-import cn.zg.dao.inter.PurificationSchemeDao;
-import cn.zg.entity.daoEntity.Schemeposition;
 import cn.zg.service.impl.PurificationSchemeService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { ElectricInspection.class })
 @WebAppConfiguration
-public class PurificationSchemeServiceTest {
+public class InspectValueTest {
 	@Autowired
 	private PurificationSchemeService pss;
 	
 	@Test
-	public void getTableHeadTest() {
-		String inspectionName = "Ⅰ列1100#-1400#现场巡检参数记录";
-		List<Object> list =  pss.getTableHead( inspectionName );
-		//List<Schemeposition> list = psd.findAll();
-		System.out.println( list );
+	public void getInspectData() throws ParseException {
+		String planId = "18D178B18F351742FFF421AC60DC9E";
+		SimpleDateFormat sdf = new SimpleDateFormat( "YYYY-MM-DD" );
+		java.util.Date date = sdf.parse( "2018-11-13" );
+		String  time = "2018-11-13";
+		List<Map<String,Object>> lists = pss.getInspectData( planId, time ) ;
+		System.out.println( lists );
 	}
 	
 }
