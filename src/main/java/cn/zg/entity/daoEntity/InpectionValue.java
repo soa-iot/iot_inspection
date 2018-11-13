@@ -9,11 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-//@Table( name = "CZ_TASK_INSPECTION_VALUE" )
+@Table( name = "CZ_TASK_INSPECTION_VALUE" )
 public class InpectionValue implements Serializable {
 
 	/**   
@@ -21,13 +22,13 @@ public class InpectionValue implements Serializable {
 	 */  
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank( message = "主键不能为空或null" )
+	
 	private Integer ivid;
 	
 	@NotBlank( message = "方案id不能为空或null" )
 	private String plan_id;
 	
-	@NotBlank( message = "记录时间不能为空或null" )
+	//@NotBlank( message = "记录时间不能为空或null" )
 	private Date record_time;
 	
 	@NotBlank( message = "记录点位不能为空或null" )
@@ -66,8 +67,9 @@ public class InpectionValue implements Serializable {
 	 * @return: Integer <BR>  
 	 */
 	@Id
-	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "mseq" )
-	@SequenceGenerator( name = "mseq", sequenceName = "sequence_ctiv" )
+	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_CTIV" )	
+	@SequenceGenerator( name = "SEQUENCE_CTIV", sequenceName = "SEQUENCE_CTIV", allocationSize = 1 )
+	@Column( name = "IVID" )
 	public Integer getIvid() {
 		return ivid;
 	}
@@ -77,7 +79,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "plan_id")
+	@Column( name = "PLAN_ID")
 	public String getPlan_id() {
 		return plan_id;
 	}
@@ -87,7 +89,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: Date <BR>  
 	 */
-	@Column( name = "record_time")
+	@Column( name = "RECORD_TIME")
 	public Date getRecord_time() {
 		return record_time;
 	}
@@ -97,7 +99,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "position_num")
+	@Column( name = "POSITION_NUM")
 	public String getPosition_num() {
 		return position_num;
 	}
@@ -107,7 +109,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "value")
+	@Column( name = "VALUE")
 	public String getValue() {
 		return value;
 	}
@@ -117,7 +119,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "unit")
+	@Column( name = "UNIT")
 	public String getUnit() {
 		return unit;
 	}
@@ -127,7 +129,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "remark1")
+	@Column( name = "REMARK1")
 	public String getRemark1() {
 		return remark1;
 	}
@@ -137,7 +139,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
 	 */
-	@Column( name = "remark2")
+	@Column( name = "REMARK2")
 	public String getRemark2() {
 		return remark2;
 	}

@@ -206,6 +206,7 @@ var getJsonLength = function( jsonData ){
  * @return {}
  */
 Math.uuid = function (len, radix) {
+	var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''); 
 	var chars = CHARS, uuid = [], i;
     radix = radix || chars.length;
 

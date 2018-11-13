@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.zg.dao.impl.EeleInspectDao;
 import cn.zg.dao.inter.EeleInspectRepository;
 import cn.zg.entity.daoEntity.InpectionValue;
 import cn.zg.service.inter.EeleInspectServiceInter;
@@ -24,6 +25,9 @@ public class EeleInspectService implements EeleInspectServiceInter{
 	@Autowired
 	EeleInspectRepository eleInspectRep;
 	
+	@Autowired
+	EeleInspectDao eleInspectDao;
+	
 	/**   
 	 * @Title: saveInspectValue   
 	 * @Description: 保存方案巡检值
@@ -31,17 +35,32 @@ public class EeleInspectService implements EeleInspectServiceInter{
 	 * @param: @return      
 	 * @return: int        
 	 */  
+//	public int saveInspectValue( List<InpectionValue> _inpectValues ) {
+//		logger.debug( "S-保存方案巡检值……" + _inpectValues.toString() );
+//		long begin = System.currentTimeMillis();
+//		logger.debug( "S-保存方案巡检值……开始时间：" + System.currentTimeMillis() );
+//		eleInspectRep.flush();
+//		//List<InpectionValue> inpectValues = eleInspectRep.saveAll( _inpectValues );
+//		int i = new EeleInspectDao().saveEeleInspectAll( _inpectValues );
+//		long end = System.currentTimeMillis();
+//		logger.debug( "S-保存方案巡检值……开始时间：" + System.currentTimeMillis() );
+//		logger.debug( "S-保存方案巡检值……耗时：" + ( end - begin ) );
+//		if( inpectValues == null || inpectValues.size() == 0 ) {
+//			return 0;
+//		}
+//		return inpectValues.size();
+//	}
+	
+	
 	public int saveInspectValue( List<InpectionValue> _inpectValues ) {
-		logger.debug( "S-保存方案巡检值……" + _inpectValues.toString() );
+		//logger.debug( "S-保存方案巡检值……" + _inpectValues.toString() );
 		long begin = System.currentTimeMillis();
 		logger.debug( "S-保存方案巡检值……开始时间：" + System.currentTimeMillis() );
-		List<InpectionValue> inpectValues = eleInspectRep.saveAll( _inpectValues );
+		//List<InpectionValue> inpectValues = eleInspectRep.saveAll( _inpectValues );
+		int i = eleInspectDao.saveEeleInspectAll( _inpectValues );
 		long end = System.currentTimeMillis();
-		logger.debug( "S-保存方案巡检值……开始时间：" + System.currentTimeMillis() );
+		logger.debug( "S-保存方案巡检值……结束时间：" + System.currentTimeMillis() );
 		logger.debug( "S-保存方案巡检值……耗时：" + ( end - begin ) );
-		if( inpectValues == null || inpectValues.size() == 0 ) {
-			return 0;
-		}
-		return inpectValues.size();
+		return i;
 	}
 }

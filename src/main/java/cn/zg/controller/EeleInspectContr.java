@@ -34,7 +34,7 @@ public class EeleInspectContr {
 	@PostMapping( "/inspectionValue" )
 	public ResultJson<Integer> saveInspectValueContr(
 			@RequestBody @Valid List<InpectionValue> inpectionValues ){
-		logger.debug( "C-电子巡检记录值  ……" +  inpectionValues.toString() );
+		//logger.debug( "C-电子巡检记录值  ……" +  inpectionValues.toString() );
 		if( inpectionValues.size() == 0 ) {
 			return new ResultJson<Integer>( 1, "传入数据为空", 0 );
 		}
