@@ -2,25 +2,17 @@ package cn.zg.entity.serviceEntity;
 
 import java.io.Serializable;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-/**
- * 
- * @ClassName: PositionNum
- * @Description: 七级表头-现场、中控巡检位号
- * @author zhugang
- * @date 2018年9月19日
- */
+
 @Component
-public class PositionNum implements Serializable{
+public class Requireid implements Serializable{
 
 	/**   
 	 * @Fields serialVersionUID : 序列化  
 	 */  
 	private static final long serialVersionUID = 1111111L;
 
-	private String colspan;
+	private String field;
 	
 	private String title;
 	
@@ -28,21 +20,21 @@ public class PositionNum implements Serializable{
 	
 	private Integer minWidth;
 
-	public PositionNum() {
+	public Requireid() {
 		this.align = "center";
 		this.minWidth = 100;
 	}
 
-	public PositionNum(String colspan, String title, String align, Integer minWidth) {
+	public Requireid(String field, String title, String align, Integer minWidth) {
 		super();
-		this.colspan = colspan;
+		this.field = field;
 		this.title = title;
 		this.align = align;
 		this.minWidth = minWidth;
 	}
 
-	public String getColspan() {
-		return colspan;
+	public String getField() {
+		return field;
 	}
 
 	public String getTitle() {
@@ -57,8 +49,8 @@ public class PositionNum implements Serializable{
 		return minWidth;
 	}
 
-	public void setColspan(String colspan) {
-		this.colspan = colspan;
+	public void setField(String colspan) {
+		this.field = colspan;
 	}
 
 	public void setTitle(String title) {
@@ -75,7 +67,7 @@ public class PositionNum implements Serializable{
 
 	@Override
 	public String toString() {
-		return "PositionNum [colspan=" + colspan + ", title=" + title + ", align=" + align + ", minWidth=" + minWidth + "]";
+		return "Requireid [field=" + field + ", title=" + title + ", align=" + align + ", minWidth=" + minWidth + "]";
 	}
 
 	

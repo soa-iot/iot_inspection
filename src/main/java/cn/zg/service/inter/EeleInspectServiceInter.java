@@ -19,4 +19,13 @@ public interface EeleInspectServiceInter {
 	 * @return: int        
 	 */  
 	public int saveInspectValue( List<InpectionValue> _inpectValues );
+	
+	/**   
+	 * @Title: getPositionsServ   
+	 * @Description: 根据装置名，查询所有点位     
+	 * @param: @param schemeName
+	 * @param: @return      
+	 * @return: List<String>        
+	 */  
+	public List<String> getPositionsServ( String schemeName );
 }

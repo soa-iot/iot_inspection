@@ -5,23 +5,47 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>测试插入数据</title>
-	<link rel="stylesheet" href="/package/layui-v2.4.2/css/layui.css">
-	<link rel="stylesheet" href="/css/project.css">
-	<link rel="stylesheet" href="/css/productionReport/purificationScheme/sitePureScheme.css">
-	<script type="text/javascript" src="/package/layui-v2.4.2/layui.all.js"></script>
-	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="/package/own/universal.js"></script>
-	<script type="text/javascript" src="/javaScript/project.js"></script>
+	<link rel="stylesheet" href="../../package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="../../css/project.css">
+	<link rel="stylesheet" 
+		href="../../css/productionReport/purificationScheme/sitePureScheme.css">
+	<script type="text/javascript" src="../../package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../../package/own/universal.js"></script>
+	<script type="text/javascript" src="../../javaScript/project.js"></script>
 </head>
 <body>
 	
-	<div class="layui-fluid "> 	   	
+	<div class="layui-fluid " style="overflow:visible"> 	   	
 			<!-- 搜索条件 -->
 		<div class="layui-row layui-col-space15">			
 	   		<div class="layui-col-md12 " > 
 	   			<fieldset >
 					<legend>查询条件</legend>	
+					<form class="layui-form" action="" >
 						<div class="layui-form-item">
+							<div class="layui-inline" >
+								<label class="layui-form-label">方案名称：</label>
+					      		<div class="layui-input-inline">
+							        <select name="inspection" id="inspectTestName">
+										<option value="1">Ⅰ列现场巡检参数记录</option>
+										<option value="2">Ⅱ列现场巡检参数记录</option>
+										<option value="3">Ⅲ列现场巡检参数记录</option>
+										<option value="4">Ⅳ列现场巡检参数记录</option>
+										<option value="5">Ⅴ列现场巡检参数记录</option>
+										<option value="6">Ⅵ列现场巡检参数记录</option>
+										<option value="7">Ⅶ列现场巡检参数记录</option>
+							        </select>
+								</div>
+							</div>	
+							<div class="layui-inline" >
+						    	<label class="layui-form-label head-text" >日期选择：</label>
+						      	<div class="layui-input-inline">
+						        	<input type="text" class="layui-input" id="timeTest"
+						        		placeholder="yyyy-mm-dd" style="width:100px">
+						      	</div>
+					    	</div>
+					    	<!-- 
 							<div class="layui-inline">
 								<label class="layui-form-label" style="width:200px">
 									输入测试条数：
@@ -30,7 +54,7 @@
 							       	<input type="text" class="layui-input" id="testDataNum"
 						        		placeholder="" style="width:100px">
 						     	</div>
-							</div>						   
+							</div>		 -->				   
 							<div class="layui-inline" id="generateTestData">
 								<button class="layui-btn">
 				  					<i class="layui-icon">&#xe615;</i> 生成数据
@@ -42,67 +66,152 @@
 								</button>
 					   		</div>	
   						</div>
+  				</form>
 				</fieldset>
 	   		</div>
-	   	</div>		   
+	   	</div>	
+	   	
+	   	<!-- 显示数据 -->
+	   	<div class="layui-row layui-col-space15">			
+	   		<div class="layui-col-md12 " > 
+	   			<div class="layui-form-item layui-form-text">
+				    <label class="layui-form-label">显示数据</label>
+				    <div class="layui-input-block">
+      					<textarea id="showTestData" class="layui-textarea" 
+      						style="height:400px;width:1000px;"></textarea>
+    				</div>
+  				</div>	
+  			</div>	
+  		</div>
+  			   
 	</div>
 	
 	<!-- js -->
 	<script type="text/javascript">
+
 		$(function(){
+			
 			/*
 			 * 参数定义
 			 */
-			var layer = layui.layer,
+			var layer = layui.layer,form = layui.form,
 			//测试数据容器
 			testDataArr = [],
 			//测试url
-			testUrl = ipPort + "/inspectionValue";
+			testUrl = ipPort + "/inspectionValue",
+			//请求装置列点位信息
+			testPossUrl = ipPort + "/position",
+			//装置列下所有点位
+			positions = [];
+			//日期参数
+			var laydate = layui.laydate,
+				nowDateStr = new Date().toLocaleString(),
+				paramJson = {
+					time : nowDateStr.split( ' ' )[0].replace( /\//g , '-' ),
+					currentScheme : ""
+			};
+			console.log(nowDateStr);
+			
+			/*
+			 * 时间控件渲染
+			 */
+			laydate.render({
+				elem: '#timeTest', 
+				type: 'date',
+				value: paramJson.time,
+			});
 			 
+			form.render(); 
 			/*
 			 * 事件绑定
 			 */
 			 //生成测试数据按钮-单击事件
 			$( '#generateTestData' ).on( 'click', generateDataEve );
 			//测试数据按钮-单击事件	
-			$( '#testData' ).on( 'click', testDataEve );
+			$( '#testData' ).on( 'click', testDataEve );						
 			
 			
 		 	/*
 		  	 * 生成测试数据按钮-单击事件函数
 		  	 */
 			function generateDataEve(){
-				 console.log( '生成测试数据按钮-单击事件函数……' );
+				console.log( '生成测试数据按钮-单击事件函数……' );
 				 //检查数据
-				 var numStr = $.trim( $( '#testDataNum' ).val() );
-				 if( !numStr || !parseInt( numStr ) ){
-					 layer.msg( '请输入测试数据条数', {icon:3} );
-					 return;
-				 }
+				 /*
+				var numStr = $.trim( $( '#testDataNum' ).val() );
+				if( !numStr || !parseInt( numStr ) ){
+					layer.msg( '请输入测试数据条数', {icon:3} );
+					return;
+				}
+				*/
+
+				//生成数据
+				console.log( $( '#inspectTestName' ).next().find( 'dl .layui-this' ).text() );
+				var chooseStr = $( '#inspectTestName' ).next().find( 'dl .layui-this' ).text();
+				
+			 	paramJson.time = $( '#timeTest' ).val();
+				paramJson.currentScheme = chooseStr;
+				console.log( '生成测试数据按钮-单击事件函数……chooseStr' + chooseStr );
 				 
-				 //生成数据
-				 var num = parseInt( numStr ) ;
-				 console.log( '生成测试数据按钮-单击事件函数……num:' + num );
-				 for( var i = 0; i < num; i++ ){
-					 var testData = {};
-					 testData["plan_id"] = Math.uuid( 30, 16 ) + "";
-					 testData["record_time"] = new Date();
-					 testData["position_num"] = Math.uuid( 6, 10 ) + "";
-					 testData["value"] = Math.ceil( Math.random()*10000 ) + "";
-					 testData["unit"] = "%";
-					 testData["remark1"] = Math.ceil( Math.random()*100 ) + "";
-					 testData["remark2"] = Math.ceil( Math.random()*100 ) + "";
-					 testDataArr.push( testData );
-				 }
-				 console.log( testDataArr[0] ); 
-			 }
+				//请求装置下所有点位
+				getPositionNums();					
+				 
+				console.log( '生成测试数据按钮-单击事件函数……positions.length' + positions.length );
+				for( var i = 1; i < 25; i = i + 2 ){
+					for( var j = 0; j < positions.length ; j ++ ){
+						var testData = {};
+						testData["plan_id"] = "Ⅰ列现场巡检参数记录";
+						testData["record_time"] = Date.parse( paramJson.time + " " + i + ":00:00" );
+						testData["position_num"] = positions[j];
+						testData["value"] = Math.ceil( Math.random()*10000 ) + "";
+						testData["unit"] = "%";
+						testData["remark1"] = Math.ceil( Math.random()*100 ) + "";
+						testData["remark2"] = Math.ceil( Math.random()*100 ) + "";
+						$( '#showTestData' ).val( 
+								$( '#showTestData' ).val() + "  " + JSON.stringify( testData ) ) ;
+						testDataArr.push( testData );
+					}																				
+				}				
+				console.log( '生成测试数据按钮-单击事件函数……testDataArr.length' + testDataArr.length );
+				return false;
+			}
+		 	
+			/*
+		  	 * 请求所有装置列下点位
+		  	 */
+		  	function getPositionNums(){
+		  		console.log( '请求所有装置列下点位……' );	
+		  		 $.ajax({
+				     type : "get",
+				     url : testPossUrl + "/" + decodeURI( paramJson.currentScheme ),
+				     data : {},
+				     async : false, 
+				     contentType : "application/x-www-form-urlencoded",
+				     dataType : "json",
+				     success : function( jsonData ){
+				    	 console.log( '请求所有装置列下点位-成功回调函数……' );	
+				    	 if( jsonData ){
+				    		 var data = jsonData.data;
+				    		 if( jsonData.state == 0 && data ){
+				    			 positions = data;
+				    		 }else{
+					    		 layer.msg( jsonData.message, {icon:5} );
+					    	 }
+				    	 }else{
+				    		 layer.msg( '请求失败', {icon:5} );
+				    	 }
+				     },
+				     error : function(){
+				    	 layer.msg( '请求失败', {icon:5} );
+				     }		       
+			 	})
+			}
 		 	
 			/*
 		  	 * 测试数据按钮-单击事件函数
 		  	 */
 			function testDataEve(){
-				 console.log( '测试数据按钮-单击事件函数……' );
-				 
+				 console.log( '测试数据按钮-单击事件函数……' );				 				
 				 //请求
 				 $.ajax({
 				     type : "POST",
@@ -115,6 +224,7 @@
 				    	 layer.msg('请求失败');
 				     }		       
 			 	})
+			 	return false;
 			}
 			
 			/*

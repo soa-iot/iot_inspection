@@ -51,6 +51,8 @@ public class Schemeposition implements Serializable{
 	private String dataRange;
 	
 	private Integer fivthColspan;
+	
+	private String requireid;
 
 	public Schemeposition() {
 		super();
@@ -59,7 +61,7 @@ public class Schemeposition implements Serializable{
 
 	public Schemeposition(String id, String inspectionName, String checkPosition, Integer firstColspan,
 			String projectName1, Integer secondColspan1, String projectName2, Integer secondColspan2,
-			String positionNum, String unit, Integer fourthColspan, String dataRange, Integer fivthColspan) {
+			String positionNum, String unit, Integer fourthColspan, String dataRange, Integer fivthColspan,String requireid) {
 		super();
 		this.id = id;
 		this.inspectionName = inspectionName;
@@ -74,6 +76,7 @@ public class Schemeposition implements Serializable{
 		this.fourthColspan = fourthColspan;
 		this.dataRange = dataRange;
 		this.fivthColspan = fivthColspan;
+		this.requireid = requireid;
 	}
 
 	@Id
@@ -140,6 +143,13 @@ public class Schemeposition implements Serializable{
 	public Integer getFivthColspan() {
 		return fivthColspan;
 	}
+	
+	@Column( name = "REQUIREID" )
+	public String getrequireid() {
+		return requireid;
+	}
+	
+	
 
 	public void setId(String id) {
 		this.id = id;
@@ -192,6 +202,10 @@ public class Schemeposition implements Serializable{
 	public void setFivthColspan(Integer fivthColspan) {
 		this.fivthColspan = fivthColspan;
 	}
+	
+	public void setRequireid(String requireid) {
+		this.requireid = requireid;
+	}
 
 	@Override
 	public String toString() {
@@ -199,7 +213,7 @@ public class Schemeposition implements Serializable{
 				+ ", firstColspan=" + firstColspan + ", projectName1=" + projectName1 + ", secondColspan1="
 				+ secondColspan1 + ", projectName2=" + projectName2 + ", secondColspan2=" + secondColspan2
 				+ ", positionNum=" + positionNum + ", unit=" + unit + ", fourthColspan=" + fourthColspan
-				+ ", dataRange=" + dataRange + ", fivthColspan=" + fivthColspan + "]";
+				+ ", dataRange=" + dataRange + ", fivthColspan=" + fivthColspan + ", requireid=" + requireid + "]";
 	}
 	
 	

@@ -26,10 +26,10 @@ public class InpectionValueReposTest {
 	
 	@Test
 	public void findByPlanidAndTime() throws ParseException {
-		String planId = "18D178B18F351742FFF421AC60DC9E";
+		String planId = "Ⅰ列现场巡检参数记录";
 		SimpleDateFormat sdf = new SimpleDateFormat( "YYYY-MM-DD" );
-		java.util.Date date = sdf.parse( "2018-11-13" );
-		String  s = "2018-11-13";
+		java.util.Date date = sdf.parse( "2018-11-21" );
+		String  s = "2018-11-21";
 		java.sql.Date date1 = new java.sql.Date( date.getTime() );
 		List<InpectionValue> list = inpectionValueRepos.findByPlanidAndTime(planId, s);
 		System.out.println(list);

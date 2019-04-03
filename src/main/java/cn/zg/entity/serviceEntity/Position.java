@@ -34,7 +34,7 @@ public class Position implements Serializable{
 		this.title = "现场";
 		this.align = "center";
 		this.colspan = "1";
-		this.minWidth = 80;
+		this.minWidth = 100;
 	}
 	
 	public Position( String title ) {

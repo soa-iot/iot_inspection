@@ -26,40 +26,71 @@ public class CheckPosition implements Serializable{
 	private String align;
 
 	public CheckPosition() {
-		this.align = "center";
-	}
-
-	public CheckPosition(String title, String colspan, String align) {
 		super();
-		this.title = title;
-		this.colspan = colspan;
-		this.align = align;
+		this.align = "center";
+		// TODO Auto-generated constructor stub
 	}
 
+	/**  
+	 * @Title:  getTitle <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public String getTitle() {
 		return title;
 	}
 
+	/**  
+	 * @Title:  getColspan <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public String getColspan() {
 		return colspan;
 	}
 
+	/**  
+	 * @Title:  getAlign <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public String getAlign() {
 		return align;
 	}
 
+	/**  
+	 * @Title:  setTitle <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
+	/**  
+	 * @Title:  setColspan <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public void setColspan(String colspan) {
 		this.colspan = colspan;
 	}
 
+	/**  
+	 * @Title:  setAlign <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
 	public void setAlign(String align) {
-		this.align = align;
+		this.align = "center";
 	}
 
+	/**   
+	 * <p>Title: toString</p>   
+	 * <p>Description: </p>   
+	 * @return   
+	 * @see java.lang.Object#toString()   
+	 */ 
 	@Override
 	public String toString() {
 		return "CheckPosition [title=" + title + ", colspan=" + colspan + ", align=" + align + "]";

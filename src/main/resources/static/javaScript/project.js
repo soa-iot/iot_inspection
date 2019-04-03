@@ -2,11 +2,13 @@
  * 参数定义
  */
 //项目ip
+//var ip = "10.89.90.118",
 var ip = "localhost",
 	//项目端口
-	port = "8080",
+	port = "10238",
+	//port = "8080",
 	//域名
-	ipPort = "http://" + ip + ":" + port ,
+	ipPort = "http://" + ip + ":" + port + "/ElectricInspection",
 	//用户名
 	currentUser = getCookie1( 'userName' ),
 	//用户班组

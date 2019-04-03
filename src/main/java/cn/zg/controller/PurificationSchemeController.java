@@ -1,5 +1,6 @@
 package cn.zg.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,112 +49,39 @@ public class PurificationSchemeController {
 		return new ResultJson<List<Object>>( list );
 	}
 	
+	/**   
+	 * @Title: getTableData   
+	 * @Description: 获取表格展示数据  
+	 * @param: @param time
+	 * @param: @param currentScheme
+	 * @param: @return
+	 * @param: @throws ParseException      
+	 * @return: ResultJson<List<Map<String,Object>>>        
+	 */  
 	@GetMapping("/tableData")
 	public ResultJson<List<Map<String,Object>>> getTableData (
 			@RequestParam( "time" ) String time,
-			@RequestParam( "currentScheme" ) String currentScheme) {
-		List<Map<String,Object>> list = new ArrayList<Map<String,Object>>();
-		Map<String,Object> m = new HashMap<String,Object>();
-		m.put( "timeName", "白班" );
-		m.put( "time", "9:00" );
-		m.put( "111-PG-003", "1111" );
-		m.put( "111-PG-003", "1111" );
-		m.put( "111-LT-101", "22222" );
-		m.put( "111-LT-101", "22222" );
-		m.put( "111-LIT-120A", "22222" );
-		m.put( "111-LIT-120A", "22222" );
-		m.put( "111-LIT-121A", "22222" );
-		m.put( "111-LIT-121A", "22222" );
-		m.put( "121-LT-103A", "22222" );
-		m.put( "121-LT-103A", "22222" );
-		m.put( "121-LT-116", "22222" );
-		m.put( "121-LT-116", "22222" );
-		m.put( "121-PG-018", "22222" );
-		m.put( "121-PG-018", "22222" );
-		m.put( "121-PG-016", "22222" );
-		m.put( "121-PG-016", "22222" );
-		m.put( "121-PG-026", "22222" );
-		m.put( "121-PG-026", "22222" );
-		m.put( "121-LT-108", "22222" );
-		m.put( "121-LT-108", "22222" );
-		m.put( "121-PG-031", "22222" );
-		m.put( "121-PG-031", "22222" );
-		m.put( "121-LT-111", "22222" );
-		m.put( "121-LT-111", "22222" );
-		m.put( "121-LT-110A", "22222" );
-		m.put( "121-LT-110A", "22222" );
-		m.put( "121-LT-104", "22222" );
-		m.put( "121-LT-104", "22222" );
-		list.add( m );
-		
-		Map<String,Object> m1 = new HashMap<String,Object>();
-		m1.put( "timeName", "白班" );
-		m1.put( "time", "11:00" );
-		m1.put( "111-PG-003", "1111" );
-		m1.put( "111-PG-003", "1111" );
-		m1.put( "111-LT-101", "22222" );
-		m1.put( "111-LT-101", "22222" );
-		m1.put( "111-LIT-120A", "22222" );
-		m1.put( "111-LIT-120A", "22222" );
-		m1.put( "111-LIT-121A", "22222" );
-		m1.put( "111-LIT-121A", "22222" );
-		m1.put( "121-LT-103A", "22222" );
-		m1.put( "121-LT-103A", "22222" );
-		m1.put( "121-LT-116", "22222" );
-		m1.put( "121-LT-116", "22222" );
-		m1.put( "121-PG-018", "22222" );
-		m1.put( "121-PG-018", "22222" );
-		m1.put( "121-PG-016", "22222" );
-		m1.put( "121-PG-016", "22222" );
-		m1.put( "121-PG-026", "22222" );
-		m1.put( "121-PG-026", "22222" );
-		m1.put( "121-LT-108", "22222" );
-		m1.put( "121-LT-108", "22222" );
-		m1.put( "121-PG-031", "22222" );
-		m1.put( "121-PG-031", "22222" );
-		m1.put( "121-LT-111", "22222" );
-		m1.put( "121-LT-111", "22222" );
-		m1.put( "121-LT-110A", "22222" );
-		m1.put( "121-LT-110A", "22222" );
-		m1.put( "121-LT-104", "22222" );
-		m1.put( "121-LT-104", "22222" );
-		list.add( m1 );
-		
-		Map<String,Object> m2 = new HashMap<String,Object>();
-		m2.put( "timeName", "夜班" );
-		m2.put( "time", "21:00" );
-		m2.put( "111-PG-003", "1111" );
-		m2.put( "111-PG-003", "1111" );
-		m2.put( "111-LT-101", "22222" );
-		m2.put( "111-LT-101", "22222" );
-		m2.put( "111-LIT-120A", "22222" );
-		m2.put( "111-LIT-120A", "22222" );
-		m2.put( "111-LIT-121A", "22222" );
-		m2.put( "111-LIT-121A", "22222" );
-		m2.put( "121-LT-103A", "22222" );
-		m2.put( "121-LT-103A", "22222" );
-		m2.put( "121-LT-116", "22222" );
-		m2.put( "121-LT-116", "22222" );
-		m2.put( "121-PG-018", "22222" );
-		m2.put( "121-PG-018", "22222" );
-		m2.put( "121-PG-016", "22222" );
-		m2.put( "121-PG-016", "22222" );
-		m2.put( "121-PG-026", "22222" );
-		m2.put( "121-PG-026", "22222" );
-		m2.put( "121-LT-108", "22222" );
-		m2.put( "121-LT-108", "22222" );
-		m2.put( "121-PG-031", "22222" );
-		m2.put( "121-PG-031", "22222" );
-		m2.put( "121-LT-111", "22222" );
-		m2.put( "121-LT-111", "22222" );
-		m2.put( "121-LT-110A", "22222" );
-		m2.put( "121-LT-110A", "22222" );
-		m2.put( "121-LT-104", "22222" );
-		m2.put( "121-LT-104", "22222" );
-		list.add( m2 );
-		System.out.println(list);
-		logger.debug( "控制层请求的表头信息" , list );
+			@RequestParam( "currentScheme" ) String currentScheme) throws ParseException {
+		logger.debug( "C-获取表格展示数据 -time-currentScheme" + time + "-" + currentScheme );		
+		List<Map<String,Object>> list = psi.getInspectData( currentScheme, time );
+		logger.debug( "C-获取表格展示数据 -list:" + list.toString() );		
 		return new ResultJson<List<Map<String,Object>>>( list );
+	}
+	
+	/**   
+	 * @Title: getInspectionNames   
+	 * @Description:   获取所有的方案信息
+	 * @return: ResultJson<List<Map<String,Object>>>        
+	 */  
+	@GetMapping("/inspectionNames")
+	public ResultJson<List<Map<String,Object>>> getInspectionNames(){
+		logger.debug( "-C-------获取所有的方案信息-----------" );
+		List<Map<String, Object>> lists = psi.getInspectioNames();
+		logger.debug( "-C-------获取所有的方案信息-----------lists:" + lists );
+		if( lists == null || lists.isEmpty() ) {
+			return new ResultJson<List<Map<String,Object>>>( 1, "查询方案数据为空", null );
+		}
+		return new ResultJson<List<Map<String,Object>>>( 0, "查询方案数据成功", lists );
 	}
 	
 }

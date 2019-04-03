@@ -29,7 +29,7 @@ public interface InpectionValueRepos  extends JpaRepository< InpectionValue , St
 			value = " select * from CZ_TASK_INSPECTION_VALUE "
 					+ "  where PLAN_ID = :planId "
 					+ "  and RECORD_TIME like to_date(:str,'YYYY-MM-DD')"
-					+ "  Order BY RECORD_TIME ")
+					+ "  Order BY REMARK2,RECORD_TIME ")
 	public List<InpectionValue> findByPlanidAndTime( 
 			@Param( "planId" ) String planId, @Param( "str" ) String str );
 }

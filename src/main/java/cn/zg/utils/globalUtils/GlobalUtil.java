@@ -3,6 +3,12 @@ package cn.zg.utils.globalUtils;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -19,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 public class GlobalUtil {
@@ -40,6 +48,15 @@ public class GlobalUtil {
 	 *  	5.4 cookie删除
 	 *  	5.5 cookie修改
 	 *  	5.6 cookie展示
+	 *  
+	 *  6、序列化工具
+	 *  	6.1  对象序列化
+	 *  	6.2  对象反序列化
+	 *  	6.3 list序列化
+	 *  	6.4 list反序列化
+	 *  
+	 *  7、对象转json字符串
+	 *  	
 	 */
 	
 	
@@ -454,14 +471,154 @@ public class GlobalUtil {
 	
 	
 	///////////////////////////////////////////////////////////////////
-	//   
+	//   6、序列化
 	///////////////////////////////////////////////////////////////////
+	/**   
+	 * @Title: serialize   
+	 * @Description:   对象序列化 
+	 * @param: @param object
+	 * @param: @return      
+	 * @return: byte[]        
+	 */  
+	public static byte[] serialize( Object object) {
+		if ( object == null ) {  
+            return null;  
+        }  
+		ObjectOutputStream oos = null;
+		ByteArrayOutputStream bos = null;
+		byte[] bytes = null;
+		try {
+			oos = new ObjectOutputStream( bos );
+			bos = new ByteArrayOutputStream();
+			oos.writeObject( object );
+			bytes = bos.toByteArray();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 close( oos );  
+	         close( bos ); 
+		}
+		return bytes;
+	}
 	
+	/**   
+	 * @Title: deSerialize   
+	 * @Description: 对象反序列化   
+	 * @param: @param bytes
+	 * @param: @return      
+	 * @return: Object        
+	 */  
+	public static Object deSerialize( byte[] bytes ) {
+		if ( bytes.length <= 0 ) {  
+            return null;  
+        }  
+		ObjectInputStream ois = null;
+		ByteArrayInputStream bis = null;
+		try {
+			ois = new ObjectInputStream( bis );
+			bis = new ByteArrayInputStream( bytes );
+			Object object = ois.readObject();
+			return object;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			 close( ois );  
+	         close( bis ); 
+		}
+		return null;
+	}
 	
+	/**   
+	 * @Title: close   
+	 * @Description: 关闭输入输出流 
+	 * @param: @param closeable      
+	 * @return: void        
+	 */  
+	public static void close( Closeable closeable ) {  
+        if (closeable != null) {  
+            try {  
+                closeable.close();  
+            } catch (Exception e) {  
+                e.printStackTrace();  
+            }  
+        }  
+    }  
 	
 	///////////////////////////////////////////////////////////////////
-	//   
+	//   7、对象 <--> json字符串
 	///////////////////////////////////////////////////////////////////
+	/**   
+	 * @Title: convertObjToJson   
+	 * @Description: 对象转json字符串  
+	 * @param: @param object
+	 * @param: @return      
+	 * @return: String        
+	 */  
+	public static String convertObjToJsonstr( Object o ) {
+		if( o == null ) {
+			return null;
+		}
+		Gson g = new Gson();
+		String s = g.toJson( o );		
+		return s;
+	}
+	
+	/**   
+	 * @Title: convertObj2String   
+	 * @Description:  对象转json字符串  
+	 * @param: @param o
+	 * @param: @return      
+	 * @return: String        
+	 */  
+	public static String convertObj2String( Object o ) {
+		if( o == null ) {
+			return null;
+		}
+        String s = null;
+        try {
+            s = new ObjectMapper().writeValueAsString( o );
+        } catch ( JsonProcessingException e ) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+	
+	/**   
+	 * @Title: convertJsonstrToObj   
+	 * @Description: json字符串  转  对象 
+	 * @param: @param s
+	 * @param: @param c
+	 * @param: @return      
+	 * @return: Object        
+	 */  
+	public static Object convertJsonstrToObj( String s, Class<?> c ) {
+		if( s == null || s.isEmpty() ) {
+			return null;
+		}
+		Gson g = new Gson();
+		return g.fromJson( s, c );
+	}
+	
+	/**   
+	 * @Title: convertString2Obj   
+	 * @Description: json字符串  转  对象   
+	 * @param: @param s
+	 * @param: @param c
+	 * @param: @return      
+	 * @return: T        
+	 */  
+	public static <T> T convertString2Obj( String s, Class<T> c ) {
+		if( s == null || s.isEmpty() ) {
+			return null;
+		}
+        T t = null;
+        try {
+            t = new ObjectMapper().readValue( s, c );
+        } catch ( IOException e) {
+            e.printStackTrace();
+        }
+        return t;
+    }
 	
 	
 	

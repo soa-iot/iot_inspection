@@ -25,9 +25,10 @@ public class DataRange implements Serializable{
 	
 	private String colspan;
 	
-	private String align;
+	private String align = "center";
 
 	public DataRange() {
+		super();
 		this.align = "center";
 	}
 
@@ -59,7 +60,7 @@ public class DataRange implements Serializable{
 	}
 
 	public void setAlign(String align) {
-		this.align = align;
+		this.align = "center";
 	}
 
 	@Override

@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler( RuntimeException.class )
 	ResultJson<Object> handlerRuntimeException( RuntimeException e ){
 		logger.debug( e.getMessage() );
-		GlobalUtil.throwRuntimeException( e.getMessage() );
+		//GlobalUtil.throwRuntimeException( e.getMessage() );
 		return new ResultJson<Object>( 1, e.getMessage(), "运行时异常" );
 	}
 	

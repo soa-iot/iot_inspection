@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>测试移动端接口</title>
+	<link rel="stylesheet" href="../../package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="../../css/project.css">
+	<script type="text/javascript" src="../../package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src=></script>
+	<script type="text/javascript" src="../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+	<p style="font-size: 20px;color: red;">显示测试接口返回数据</p>
+  	<button onclick='test()'>测试</button>
+  	<div ></div>
+  	
+	<script>
+ 		function test(){
+ 			$.ajax({
+ 			     type: "GET",
+ 			     url: "192.168.18.22:10039/ElectricInspection/oracle/tables/list",
+ 			    // url: "http://localhost:8080/ElectricInspection/oracle/tables/list",
+ 			     data: {},
+ 			     contentType: "application/x-www-form-urlencoded",
+ 			     dataType: "json",
+ 			     success: function( jsonData ){
+ 			    	if( jsonData != null ){
+ 			    		 if( jsonData.state == 0 ){
+ 			    			$( 'div' ).text( JSON.stringify(jsonData.data) );
+ 			    		 }else{
+ 			    			layer.msg( '返回数据失败' )
+ 			    		 }
+ 			    	}else{
+ 			    		layer.msg( '返回数据为null' );
+ 			    	}
+ 			    	
+ 			     },
+ 			     error:function(){
+ 			    	 layer.msg('请求失败');
+ 			     }		       
+ 			});
+ 		}
+	</script>
+</body>
+</html>

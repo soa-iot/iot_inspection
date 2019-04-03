@@ -27,7 +27,7 @@ public class InpectionValue implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	
-	private Integer ivid;
+	private Long ivid;
 	
 	@NotBlank( message = "方案id不能为空或null" )
 	private String plan_id;
@@ -52,7 +52,7 @@ public class InpectionValue implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public InpectionValue(Integer ivid, String plan_id, Date record_time, String position_num, String value,
+	public InpectionValue(Long ivid, String plan_id, Date record_time, String position_num, String value,
 			String unit, String remark1, String remark2) {
 		super();
 		this.ivid = ivid;
@@ -74,7 +74,7 @@ public class InpectionValue implements Serializable {
 	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_CTIV" )	
 	@SequenceGenerator( name = "SEQUENCE_CTIV", sequenceName = "SEQUENCE_CTIV", allocationSize = 1 )
 	@Column( name = "IVID" )
-	public Integer getIvid() {
+	public Long getIvid() {
 		return ivid;
 	}
 
@@ -154,7 +154,7 @@ public class InpectionValue implements Serializable {
 	 * @Description: please write your description <BR>  
 	 * @return: Integer <BR>  
 	 */
-	public void setIvid(Integer ivid) {
+	public void setIvid(Long ivid) {
 		this.ivid = ivid;
 	}
 

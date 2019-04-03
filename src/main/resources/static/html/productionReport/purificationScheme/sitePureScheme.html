@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>净化现场巡检方案</title>
-	<link rel="stylesheet" href="/package/layui-v2.4.2/css/layui.css">
-	<link rel="stylesheet" href="/css/project.css">
-	<link rel="stylesheet" href="/css/productionReport/purificationScheme/sitePureScheme.css">
-	<script type="text/javascript" src="/package/layui-v2.4.2/layui.all.js"></script>
-	<script type="text/javascript" src="/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="/package/own/universal.js"></script>
-	<script type="text/javascript" src="/javaScript/project.js"></script>
+	<link rel="stylesheet" href="../../../package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="../../../css/project.css">
+	<link rel="stylesheet" href="../../../css/productionReport/purificationScheme/sitePureScheme.css">
+	<script type="text/javascript" src="../../../package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="../../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../../../package/own/universal.js"></script>
+	<script type="text/javascript" src="../../../javaScript/project.js"></script>
 	<script type="text/javascript" 
-			src="/javaScript/productionReport/purificationScheme/sitePureScheme.js"></script>	
+		src="../../../javaScript/productionReport/purificationScheme/sitePureScheme.js"></script>	
 </head>
 <body>
 	<div class="layui-fluid " style="overflow:visible"> 	   	
@@ -35,13 +35,13 @@
 								<label class="layui-form-label">方案名称：</label>
 					      		<div class="layui-input-inline">
 							        <select name="inspection" id="inspection">
-										<option value="1">Ⅰ列现场巡检参数记录</option>
+										<!-- <option value="1">Ⅰ列现场巡检参数记录</option>
 										<option value="2">Ⅱ列现场巡检参数记录</option>
 										<option value="3">Ⅲ列现场巡检参数记录</option>
 										<option value="4">Ⅳ列现场巡检参数记录</option>
 										<option value="5">Ⅴ列现场巡检参数记录</option>
 										<option value="6">Ⅵ列现场巡检参数记录</option>
-										<option value="7">Ⅶ列现场巡检参数记录</option>
+										<option value="7">Ⅶ列现场巡检参数记录</option> -->
 							        </select>
 								</div>
 							</div>	
@@ -69,10 +69,10 @@
 				</div>
 	   		</div>
 	   	</div>
-	
+
 	  	<!-- 表格-->
 		<div class="layui-row" >
-	   		<div class="layui-col-md12 " > 
+	   		<div class="layui-col-md12 " id="table_parent" > 
 				<div class="component_container" id="search_pure_table" >
 
 				</div>

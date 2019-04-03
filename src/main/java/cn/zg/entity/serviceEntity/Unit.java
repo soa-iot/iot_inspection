@@ -28,6 +28,7 @@ public class Unit implements Serializable{
 	private String align;
 
 	public Unit() {
+		super();
 		this.align = "center";
 	}
 
@@ -59,7 +60,7 @@ public class Unit implements Serializable{
 	}
 
 	public void setAlign(String align) {
-		this.align = align;
+		this.align = "center";
 	}
 
 	@Override
