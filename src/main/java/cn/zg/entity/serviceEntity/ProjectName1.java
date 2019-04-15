@@ -27,12 +27,11 @@ public class ProjectName1 implements Serializable{
 	
 	private String align;
 
-	private Integer minWidth;
+	private Integer width;
 	
 
 	public ProjectName1() {
 		super();
-		this.minWidth = 100;
 		this.align = "center";
 	}
 
@@ -64,12 +63,12 @@ public class ProjectName1 implements Serializable{
 	}
 
 	/**  
-	 * @Title:  getMinWidth <BR>  
+	 * @Title:  getwidth <BR>  
 	 * @Description: please write your description <BR>  
 	 * @return: Integer <BR>  
 	 */
-	public Integer getMinWidth() {
-		return minWidth;
+	public Integer getWidth() {
+		return width;
 	}
 
 	/**  
@@ -100,12 +99,12 @@ public class ProjectName1 implements Serializable{
 	}
 
 	/**  
-	 * @Title:  setMinWidth <BR>  
+	 * @Title:  setwidth <BR>  
 	 * @Description: please write your description <BR>  
 	 * @return: Integer <BR>  
 	 */
-	public void setMinWidth(Integer minWidth) {
-		this.minWidth = minWidth;
+	public void setWidth(Integer width) {
+		this.width = width;
 	}
 
 	/**   
@@ -116,7 +115,7 @@ public class ProjectName1 implements Serializable{
 	 */ 
 	@Override
 	public String toString() {
-		return "ProjectName1 [title=" + title + ", colspan=" + colspan + ", align=" + align + ", minWidth=" + minWidth
+		return "ProjectName1 [title=" + title + ", colspan=" + colspan + ", align=" + align + ", width=" + width
 				+ "]";
 	}
 	

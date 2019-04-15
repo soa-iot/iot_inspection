@@ -18,19 +18,19 @@ public class Requireid implements Serializable{
 	
 	private String align;
 	
-	private Integer minWidth;
+	private Integer width;
 
 	public Requireid() {
 		this.align = "center";
-		this.minWidth = 100;
+		this.width = 100;
 	}
 
-	public Requireid(String field, String title, String align, Integer minWidth) {
+	public Requireid(String field, String title, String align, Integer width) {
 		super();
 		this.field = field;
 		this.title = title;
 		this.align = align;
-		this.minWidth = minWidth;
+		this.width = width;
 	}
 
 	public String getField() {
@@ -45,8 +45,8 @@ public class Requireid implements Serializable{
 		return align;
 	}
 
-	public Integer getMinWidth() {
-		return minWidth;
+	public Integer getWidth() {
+		return width;
 	}
 
 	public void setField(String colspan) {
@@ -61,13 +61,13 @@ public class Requireid implements Serializable{
 		this.align = align;
 	}
 
-	public void setMinWidth(Integer minWidth) {
-		this.minWidth = minWidth;
+	public void setWidth(Integer width) {
+		this.width = width;
 	}
 
 	@Override
 	public String toString() {
-		return "Requireid [field=" + field + ", title=" + title + ", align=" + align + ", minWidth=" + minWidth + "]";
+		return "Requireid [field=" + field + ", title=" + title + ", align=" + align + ", width=" + width + "]";
 	}
 
 	

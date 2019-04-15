@@ -30,7 +30,7 @@ public class UseAbility {
 				"  		right JOIN CZ_INSEPCTION_C_P_R cpr on ipo.POINT_ID = cpr.POINT_ID" + 
 				"  		right JOIN CZ_INSPECTION_CONTENT ico on cpr.CONTENT_ID = ico.CONTENT_ID" + 
 				"  		right JOIN CZ_INSPECTION_REQUIRE ire on ico.CONTENT_ID = ire.CONTENT_ID" + 
-				"  where ip.plan_id is not null ";
+				"  where ip.plan_id is not null order by plan_id,point_name";
 		//获取整个电子巡检所有信息
 		String sql = " select ip.plan_id,ip.plan_name,isc.SCHEME_ID,isc.SCHEME_NAMe,ipo.POINT_ID,ipo.POINT_NAME," + 
 				"             ico.CONTENT_ID,ico.CONTENT_NAME,ire.REQUIRE_ID,ire.REQUIRE_CONTEXT,"+ 

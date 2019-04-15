@@ -22,8 +22,10 @@ public class CheckPosition implements Serializable{
 	private String title;
 	
 	private String colspan;
-	
+
 	private String align;
+	
+	private Integer width;
 
 	public CheckPosition() {
 		super();
@@ -31,6 +33,7 @@ public class CheckPosition implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	/**  
 	 * @Title:  getTitle <BR>  
 	 * @Description: please write your description <BR>  
@@ -59,6 +62,15 @@ public class CheckPosition implements Serializable{
 	}
 
 	/**  
+	 * @Title:  getMinWidth <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	public Integer getWidth() {
+		return width;
+	}
+
+	/**  
 	 * @Title:  setTitle <BR>  
 	 * @Description: please write your description <BR>  
 	 * @return: String <BR>  
@@ -82,8 +94,18 @@ public class CheckPosition implements Serializable{
 	 * @return: String <BR>  
 	 */
 	public void setAlign(String align) {
-		this.align = "center";
+		this.align = align;
 	}
+
+	/**  
+	 * @Title:  setMinWidth <BR>  
+	 * @Description: please write your description <BR>  
+	 * @return: String <BR>  
+	 */
+	public void setWidth(Integer width) {
+		this.width = width;
+	}
+
 
 	/**   
 	 * <p>Title: toString</p>   
@@ -93,8 +115,9 @@ public class CheckPosition implements Serializable{
 	 */ 
 	@Override
 	public String toString() {
-		return "CheckPosition [title=" + title + ", colspan=" + colspan + ", align=" + align + "]";
+		return "CheckPosition [title=" + title + ", colspan=" + colspan + ", align=" + align + ", width=" + width
+				+ "]";
 	}
-	
+
 	
 }
