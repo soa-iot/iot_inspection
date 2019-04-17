@@ -41,7 +41,7 @@
 		start with 10;
 		
 		Create table CZ_TASK_INSPECTION_VALUE(
-			ivid Integer primary key ,	
+			ivid char(36 byte) primary key ,	
 			plan_id varchar2(36 CHAR) default '' not null,
 			record_time Date not null ,
 			position_num varchar2(16 CHAR) default '' not null,
@@ -97,3 +97,81 @@
 		"message" : "操作成功",    //返回的提示信息
 		"data" : data           //成功时返回请求数据，失败时返回null或失败提示值
 	}
+	
+	
+	
+	
+	
+/**
+ * 维修静设备数据库设计
+ */	
+1、表头配置表
+create TABLE IOT_INSPECTION_HEADCONFIG_STATICEQUIP(
+	hsid CHAR(36 BYTE) PRIMARY KEY ,
+	planId  CHAR(36 BYTE) DEFAULT '' NOT NULL,
+	projectName VARCHAR2(36 char) DEFAULT '' NOT NULL,
+	requireid   VARCHAR2(36 BYTE) DEFAULT '' NOT NULL, 
+	colspan NUMBER(2)  DEFAULT 1 NOT NULL,  
+	remark1 VARCHAR2(6 CHAR)  DEFAULT '' NOT NULL, 
+	remark2 VARCHAR2(6 CHAR)  DEFAULT '' NOT NULL
+)
+comment on table  "IOT_INSPECTION_HEADCONFIG_JSB"                 is '存放表头的表';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."HSID"            is '主键';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."PLANID"            is '方案id';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."PROJECTNAME"   is '项目名称';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."COLSPAN"       is '合并列';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."REQUIREID"     is '和值表关联字段';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."REMARK1"       is '备用字段1';
+comment on column "IOT_INSPECTION_HEADCONFIG_JSB"."REMARK2"       is '备用字段2';
+		
+
+2、表值配置表
+CREATE TABLE IOT_INSPECTION_VALUE_JSB(
+	ivid INTEGER PRIMARY KEY ,	
+	planId VARCHAR2(36 char) DEFAULT '' NOT NULL,
+	planNum  VARCHAR2(36 BYTE) DEFAULT '' NOT NULL,  
+	unitType VARCHAR2(10 CHAR) DEFAULT '' NOT NULL,  
+	unitName VARCHAR2(16 CHAR) DEFAULT '' NOT NULL,
+	equipcol VARCHAR2(16 CHAR) DEFAULT '' NOT NULL,
+	recordTime Date ,
+	value VARCHAR2(66 CHAR) DEFAULT '' NOT NULL,
+	unit CHAR(4 CHAR) DEFAULT '' NOT NULL,	
+	requireid   VARCHAR2(36 BYTE) DEFAULT '' NOT NULL, 
+	remark1 VARCHAR2(6 CHAR) DEFAULT '' NOT NULL,
+	remark2 VARCHAR2(16 CHAR) DEFAULT '' NOT NULL
+)
+
+comment on table  "IOT_INSPECTION_VALUE_JSB"                   is '巡检值记录表';
+comment on column "IOT_INSPECTION_VALUE_JSB"."IVID"            is '主键';
+comment on column "IOT_INSPECTION_VALUE_JSB"."PLANID"          is '方案名关联字段';
+comment on column "IOT_INSPECTION_VALUE_JSB"."planNum"          is '方案的次数';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"         is '次数';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '单元名称';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '单元类型';
+comment on column "IOT_INSPECTION_VALUE_JSB"."RECORDTIME"     is '记录时间';
+comment on column "IOT_INSPECTION_VALUE_JSB"."VALUE"           is '值';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNIT"            is '单位';
+comment on column "IOT_INSPECTION_VALUE_JSB"."REQUIREID"       is '关联表头';
+comment on column "IOT_INSPECTION_VALUE_JSB"."REMARK1"         is '备注';
+comment on column "IOT_INSPECTION_VALUE_JSB"."REMARK2"         is '备注2';
+
+
+CREATE TABLE IOT_INSPECTION_HCORDER(
+	soid CHAR(36 BYTE) PRIMARY KEY,
+	unitName VARCHAR2(20 CHAR) DEFAULT '' NOT NULL, 
+	unitType VARCHAR2(20 CHAR) DEFAULT '' NOT NULL,  
+	unitNameorder INTEGER,
+	unitTypeorder INTEGER,
+	remark1 VARCHAR2(6 CHAR)  DEFAULT '' NOT NULL, 
+	remark2 VARCHAR2(6 CHAR)  DEFAULT '' NOT NULL,
+)
+
+comment on table  " IOT_INSPECTION_HCORDER"                 is '单元值排序';
+comment on column "IOT_INSPECTION_HCORDER"."SOId"           is '主键';
+comment on column "IOT_INSPECTION_HCORDER"."UNITNAME"       is '单元名称';
+comment on column "IOT_INSPECTION_HCORDER"."UNITTYPE"       is '单元类型';
+comment on column "IOT_INSPECTION_HCORDER"."UNITNAMEORDER"  is '单元名称排序';
+comment on column "IOT_INSPECTION_HCORDER"."UNITTYPEORDER"  is '单元类型排序';
+comment on column "IOT_INSPECTION_HCORDER"."REMARK1"        is '备注';
+comment on column "IOT_INSPECTION_HCORDER"."REMARK2"        is '备注';
+
