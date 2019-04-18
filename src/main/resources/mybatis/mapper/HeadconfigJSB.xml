@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.soa.dao.HeadconfigJSB">
+
+	<!-- ===========================1、查询===============================  -->
+	
+	<!-- 1.1、查询维修方案-静设备、工艺管道 表头 -->
+	<select id="findAll" resultType="cn.soa.entity.HeadConfigJSB">
+		select * from IOT_INSPECTION_HEADCONFIG_JSB hj
+			left join IOT_INSPECTION_HCORDER h on hj.projectName = h.paramName
+			where hj.planId = #{planId} ;
+			order by h.paramOrder
+	</select>
+	
+	
+	<!-- ===========================2、新增===============================  -->
+	
+	<!-- 2.1、根据id增加用户组织 -->
+	
+	
+	
+	<!-- ===========================3、修改===============================  -->	
+	
+	
+	
+	<!-- ===========================4、删除===============================  -->		
+
+
+	
+</mapper>
