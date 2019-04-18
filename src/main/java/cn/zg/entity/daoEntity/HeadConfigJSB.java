@@ -9,13 +9,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@SuppressWarnings( "serial" )
+@SuppressWarnings( "serial" )  
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Accessors( chain=true )
 @Validated
 public class HeadConfigJSB {
+	
+	
 	private String hsid;
 	private String planId;
 	private String projectName;
