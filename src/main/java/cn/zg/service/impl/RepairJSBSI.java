@@ -1,6 +1,9 @@
 package cn.zg.service.impl;
 
+import static org.assertj.core.api.Assertions.entry;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,20 +15,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cn.zg.dao.HeadconfigJSB;
-import cn.zg.dao.impl.AnalysisDao;
-import cn.zg.dao.inter.PurificationSchemeDao;
+import cn.zg.dao.HeadconfigJSBMapper;
+import cn.zg.dao.ValueJSBMapper;
 import cn.zg.entity.daoEntity.HeadConfigJSB;
-import cn.zg.entity.daoEntity.Schemeposition;
-import cn.zg.entity.serviceEntity.CheckPosition;
-import cn.zg.entity.serviceEntity.DataRange;
-import cn.zg.entity.serviceEntity.Position;
-import cn.zg.entity.serviceEntity.PositionNum;
-import cn.zg.entity.serviceEntity.ProjectName1;
-import cn.zg.entity.serviceEntity.ProjectName2;
-import cn.zg.entity.serviceEntity.Requireid;
-import cn.zg.entity.serviceEntity.Unit;
-import cn.zg.service.inter.AnalysisS;
+import cn.zg.entity.daoEntity.ValueJSB;
 import cn.zg.service.inter.RepairJSBS;
 
 @Service
@@ -33,7 +26,10 @@ public class RepairJSBSI implements RepairJSBS{
 	private static Logger logger = LoggerFactory.getLogger( RepairJSBSI.class );
 	
 	@Autowired
-	private HeadconfigJSB headconfigJSB;
+	private HeadconfigJSBMapper headconfigJSB;
+	
+	@Autowired
+	private ValueJSBMapper vm;
 	
 	/**   
 	 * @Title: getHeadJSB   
@@ -73,6 +69,42 @@ public class RepairJSBSI implements RepairJSBS{
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public List<Object> getValueJSB( String planId, String time ) {
+		List<Object> values = new ArrayList<Object>();	
+		LinkedHashMap<String, Object> flag = new LinkedHashMap<String,Object>();
+		try {
+			List<ValueJSB> valueJSB = vm.findByPlanIdTime( planId, time );
+			String tempStr = "";
+			logger.debug( valueJSB.toString() );
+			//循环防止value值
+			for( ValueJSB v : valueJSB ) {
+				tempStr = v.getUnitType()==null?"":v.getUnitType().trim() 
+						+ v.getUnitName()==null?"":v.getUnitName().trim();
+				if( !flag.containsKey( tempStr )) {	
+					HashMap<String, Object> tempMap = new HashMap<String,Object>();
+					tempMap.put( v.getRequireid(), v.getValue() );
+					tempMap.put( "equipName", v.getUnitType() );
+					tempMap.put( "unitName", v.getUnitName());
+					flag.put( tempStr, tempMap );					
+				}else {
+					Object object = flag.get( tempStr );
+					Map<String,Object> tempValueMap = (Map<String,Object>)object;
+					tempValueMap.put( v.getRequireid(), v.getValue() );			
+				}
+			}
+			logger.debug( flag.toString() );
+			
+			//循环防止构造返回值
+			for( Map.Entry<String, Object> e : flag.entrySet() ) {
+				values.add( e.getValue() );
+			}
+			return values;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}		
 	}
 	
 }

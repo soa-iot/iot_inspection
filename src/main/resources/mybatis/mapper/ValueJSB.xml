@@ -2,16 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="cn.soa.dao.HeadconfigJSB">
+<mapper namespace="cn.soa.dao.ValueJSBMapper">
 
 	<!-- ===========================1、查询===============================  -->
 	
-	<!-- 1.1、查询维修方案-静设备、工艺管道 表头 -->
-	<select id="findAll" resultType="cn.soa.entity.HeadConfigJSB">
+	<!-- 1.1、查询维修方案-静设备、工艺管道值 -->
+	<select id="findByPlanIdTime" resultType="cn.zg.entity.daoEntity.ValueJSB">
 		select * from IOT_INSPECTION_VALUE_JSB
-		where planId = #{planId} 
-		  and to_char(recordTime, 'YYYY-MM' ) like #{timeStr} 
-		  and 
+		where planId = #{param1} 
+		  and to_char(recordTime, 'YYYY-MM' ) like #{param2} 
  	</select>
 	
 	

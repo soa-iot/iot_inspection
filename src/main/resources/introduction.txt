@@ -1,4 +1,4 @@
-公司本项目gitlab地址：http://192.168.18.21/zhugang/ElectricInspection.git
+公司本项目gitlab地址：https://github.com/soa-iot/iot_inspection.git
 
 #####################################################################################################
 	http访问链接
@@ -143,9 +143,8 @@ comment on table  "IOT_INSPECTION_VALUE_JSB"                   is '巡检值记�
 comment on column "IOT_INSPECTION_VALUE_JSB"."IVID"            is '主键';
 comment on column "IOT_INSPECTION_VALUE_JSB"."PLANID"          is '方案名关联字段';
 comment on column "IOT_INSPECTION_VALUE_JSB"."planNum"          is '方案的次数';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"         is '次数';
 comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '单元名称';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '单元类型';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '装置单元';
 comment on column "IOT_INSPECTION_VALUE_JSB"."RECORDTIME"     is '记录时间';
 comment on column "IOT_INSPECTION_VALUE_JSB"."VALUE"           is '值';
 comment on column "IOT_INSPECTION_VALUE_JSB"."UNIT"            is '单位';

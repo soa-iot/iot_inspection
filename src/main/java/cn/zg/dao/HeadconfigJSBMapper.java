@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import cn.zg.entity.daoEntity.HeadConfigJSB;
 
 @Mapper
-public interface HeadconfigJSB {
+public interface HeadconfigJSBMapper {
 	
 	/**   
 	 * @Title: findAll   
