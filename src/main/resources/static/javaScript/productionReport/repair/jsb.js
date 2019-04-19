@@ -2,18 +2,21 @@
  * 参数定义
  */
 var laydate = layui.laydate,
-	nowDateStr = new Date().toLocaleString(),
+	nowDateStr = new Date().getFullYear() + "-" + (new Date().getMonth() + 1),
+	chooseDayStr , 
 	currentTableHead = [],
 	currentTableBody = [],
 	currentTableHeadTitle = "",
-	tableHeadUrl = ipPort + '/productionReport/purificationScheme/tableHead',
-	tableDataUrl = ipPort + '/productionReport/purificationScheme/tableData',
-	inspectionUrl = ipPort + '/productionReport/purificationScheme/inspectionNames',
+	tableHeadUrl = ipPort + '/repair/headconfig',
+	tableDataUrl = ipPort + '/repair/value',
+	inspectionUrl = ipPort + '/repair/plan',
+	daysUrl = ipPort + '/repair/day',
 	form = layui.form,
 	table = layui.table,element = layui.element,
 	paramJson = {
-		time : nowDateStr.split( ' ' )[0].replace( /\//g , '-' ),
-		currentScheme : ""
+		time : nowDateStr,
+		currentScheme : "",
+		timeStr: ''
 	},
 	tableObj;
 
@@ -26,11 +29,30 @@ $(function(){
 	/*
 	 * 时间控件渲染
 	 */
+	console.log( paramJson.time );
 	laydate.render({
 		elem: '#timeConponent', 
-		type: 'date',
-		value: paramJson.time,
+		type: 'month'
+		,format: 'yyyy-MM'
+		,value: paramJson.time
+		,done: function(value, date, endDate){
+//		    console.log(value); //得到日期生成的值，如：2017-08-18
+//		    console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+//		    console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+		    ajaxByGet( daysUrl , {"time": value} , getDaysSF , false );
+		}
 	});
+	
+	/*
+	 * 日期动态生成
+	 */
+	var arr = paramJson.time.split("-"),dateParam;
+	if( arr[1] < 10 ){
+		dateParam = arr[0] + "-0" + arr[1];
+	}else{
+		dateParam = arr[0] + "-" + arr[1];
+	}
+	ajaxByGet( daysUrl , {"time": dateParam} , getDaysSF , false );
 	
 	/*
 	 * 动态生成方案名称
@@ -67,18 +89,57 @@ $( function(){
 	 * 导出报表按钮单击事件
 	 */
 	$( '#search_button_export' ).on( 'click' , exportExcelBCE);
+	/*
+	 * 日期控件值改变事件
+	 */
+	
 })
+
+/**
+ * 获取日期回调函数
+ */
+function getDaysSF( jsonData ){
+	console.log( '-------获取日期回调函数---------' );
+	$( '#day' ).empty();
+	if( jsonData ){
+		if( jsonData.state == 0 && jsonData.data != null){
+			$.each( jsonData.data, function( index, item ){
+				$( '#day' ).append( 
+						'<option value="' + $.trim( item.TIME ) + '">' 
+						+ $.trim( item.TIME )
+						+ '</option>' 
+				); 
+			})
+			form.render();
+		}else{
+			layer.msg( '返回数据为空' , { icon : 2 });
+		}		
+	}else{
+		layer.msg( '连接发生错误' , { icon : 2 });
+	}
+}
 
 /**
  * 标题加时间
  */
 function addTimeNoteToTitle(){
-	var timeNote = $( '#timeConponent' ).val().replace( '-' , '年') + '月',
+	var timeNote = $( '#timeConponent' ).val() + '月',
 		$title = $( '#search_waterEC_title' ).find( 'div' ),
 		stableTitle = $title.text();
 	$title.html( timeNote + stableTitle );
 	$title.parent().addClass( 'search_waterEC_title' );
 	$title.addClass( 'search_waterEC_title_div' );
+}
+/**
+ * 更新时间格式
+ */
+function formatDate(){
+	var y = new Date().getFullYear();
+	var m = new Date().getMonth() + 1;
+	if( m < 10 ){
+		m = '0' + m;
+	}
+	param.time = y + "-" + m;
 }
 
 /**
@@ -88,17 +149,29 @@ function searchPlan( jsonData ){
 	console.log( '------- 初始化方案--------' );
 	if( jsonData.state == 0 ){
 		if( jsonData.data != null){
+//			$.each( jsonData.data, function( index, item ){
+//				$( '#inspection' ).append( 
+//						'<option value="' + item.SCHEME_ID + '">' + item.SCHEME_NAME + '</option>' 
+//				); 
+//			})		
 			$.each( jsonData.data, function( index, item ){
+				var s = '';
+				if( $.trim( item.PLANID ) == '2' ){
+					s = "遂宁龙王庙净化厂工艺管道巡检记录表";
+				}else{
+					s = "遂宁龙王庙净化厂静设备巡检记录表";
+				}
 				$( '#inspection' ).append( 
-						'<option value="' + item.SCHEME_ID + '">' + item.SCHEME_NAME + '</option>' 
+						'<option value="' + $.trim( item.PLANID ) + '">' 
+						+ s
+						+ '</option>' 
 				); 
-			})			
+			})
 			element.init();
 			form.render();
 		}else{
 			layer.msg( '请求方案返回数据为空' , { icon : 2 });
-		}
-		
+		}		
 	}else{
 		layer.msg( '请求方案连接发生错误' , { icon : 2 });
 	}
@@ -123,59 +196,7 @@ function searchButtonClickEvent(){
 	/*
 	 * 生成表格
 	 */
-	tableObj.reload({
-		 elem : '#search_pure_table',
-		    title : currentTableHeadTitle,
-		    //width: '800px',
-		    url : tableDataUrl,
-		    page : false ,
-		    where : paramJson,
-		    toolbar: '<div style="width:100%;"> ' +
-		    			'<div style="text-align:center;' +
-		    						'font-size:24px;font-family:"华文仿宋"> ' +
-		    				currentTableHeadTitle +
-		    			'</div> ' +
-		    		 '</div>',
-		    request: {},
-		    loading: true,
-	    	response: {
-				statusName: 'state', 
-				statusCode: 0 ,
-				msgName: 'message', 
-				countName: 'total', 
-				dataName: 'data'
-			},      	
-		    cols : currentTableHead ,
-		    done : function( res , curr , count ){
-		    	//去掉数据的多余列
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-		    		.find( '.layui-table-box > .layui-table-main  td' )
-		    		.filter( 'td[data-key^="1-1"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-2"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-3"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-4"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-5"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-6"]' ).remove();
-		    	
-		    	//去掉数据行的左右padding
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-		    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
-		    		.css( { "padding" : "0px" } );
-		    	
-		    	//获取表格返回数据
-		    	currentTableBody = res.data;
-		    }
-	});
+	generateTable();
 	
 	return false;
 }
@@ -184,11 +205,14 @@ function searchButtonClickEvent(){
  * 更新当前查询条件中参数
  */
 function getSearchCondition(){	
-	var chooseStr = $( '#inspection' ).next().find( 'dl .layui-this' ).attr( 'lay-value' );
+	var chooseStr = $( '#inspection' ).next().find( 'dl .layui-this' ).attr( 'lay-value' ),
+	timeStr = $( '#day' ).next().find( 'dl .layui-this' ).attr( 'lay-value' );
 	console.log( chooseStr );
+	console.log( timeStr );
 	paramJson = {
-		time: $( '#timeConponent' ).val(),
-		currentScheme : chooseStr
+		timeStr: timeStr,
+		currentScheme : chooseStr,
+		time: $( '#timeConponent' ).val() 
 	}
 	
 	currentTableHeadTitle = $( '#inspection' ).next().find( 'dl .layui-this' ).text();
@@ -199,6 +223,8 @@ function getSearchCondition(){
  */
 function exportExcelBCE(){
 	console.log('导出报表按钮单击事件触发……');
+	console.log( currentTableHead );
+	console.log( currentTableBody );
 	generStaticTable( currentTableHead, currentTableBody );	
 	// 使用outerHTML属性获取整个table元素的HTML代码（包括<table>标签），然后包装成一个完整的HTML文档，
 	// 设置charset为urf-8以防止中文乱码
@@ -211,7 +237,7 @@ function exportExcelBCE(){
     // 利用URL.createObjectURL()方法为a元素生成blob URL
     a.href = URL.createObjectURL(blob);
     // 设置文件名
-    a.download = "净化方案巡检表.xls";
+    a.download = "维修设备巡检表.xls";
     document.getElementById("aExport").click();
     //$( '#aExport' ).click();
 	return false;
@@ -221,7 +247,7 @@ function exportExcelBCE(){
  * 请求表格表头
  */
 function getTableHead( url , param ){
-	console.log( '请求表格表头……' );
+	console.log( '请求表格表头……' );	
 	ajaxByGet( url , param , getTableHeadSCB , false );
 }
 
@@ -243,6 +269,8 @@ function getTableHeadSCB( jsonData ){
  * 表格配置参数生成表格
  */
 function generateTable(){
+	console.log( '----------表格配置参数生成表格-----------' );
+	console.log( currentTableHead );
 	tableObj = table.render({
 	    elem : '#search_pure_table',
 	    title : currentTableHeadTitle,
@@ -265,34 +293,14 @@ function generateTable(){
 			countName: 'total', 
 			dataName: 'data'
 		},      	
-	    cols : currentTableHead ,
-	    done : function( res , curr , count ){
-	    	//去掉数据的多余列
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main  td' )
-	    		.filter( 'td[data-key^="1-1"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-2"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-3"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-4"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-5"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-6"]' ).remove();
-	    	
+	    cols :[currentTableHead] ,
+	    done : function( res , curr , count ){	     	
 	    	//去掉数据行的左右padding
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
-	    		.css( { "padding" : "0px" } );
-	    	
-	    	//获取表格返回数据
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//	    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
+//	    		.css( { "padding" : "0px" } );
+//	    	
+//	    	//获取表格返回数据
 	    	currentTableBody = res.data;
 	    },
 	    id : 'idTest'
@@ -310,32 +318,34 @@ function generStaticTable( tableHeadData, tableBodyData ){
 	var tableBefore = "<table>",tableEnd = "</table>";	
 	var tableBody = "";
 	var colspan ;
-	$.each( tableHeadData, function( index, item ){
-		tableBody = tableBody + "<tr>";		
-		$.each( item, function( index1, item1 ){
-			colspan = item1.colspan?item1.colspan:1;
-			tableBody = tableBody
-				+ '<td colspan=' + colspan + ' align=' + item1.align + '>' 
-				+ item1.title+ '</td>';
-		} )
-		tableBody = tableBody + "</tr>";
+	tableBody = tableBody + "<tr>";	
+	$.each( tableHeadData, function( index, item ){			
+		colspan = item.colspan?item.colspan:1;
+		tableBody = tableBody
+			+ '<td colspan=' + colspan + ' align=' + item.align + '>' 
+			+ item.title+ '</td>';		
 	} )
+	tableBody = tableBody + "</tr>";	
 	//console.log( '生成静态表格-生成表头……tableBody' + tableBody );
 
-	var position  = "",length = tableHeadData.length-1,
-		flagData = tableHeadData[length];
+	var position  = "",flagData = tableHeadData,num=1;
 	$.each( tableBodyData, function( index, item ){
-		for( var o in flagData ){
+		tableBody = tableBody + "<tr>";
+		for( var o in flagData ){			
 			position = flagData[o].field;
 			if( item[position] ){
 				tableBody = tableBody 
 				+ '<td align="center">' + item[position] + '</td>';
-			}else{
-				tableBody = tableBody 
-				+ '<td align="center">' + '' + '</td>';
-			}
-			
-			
+			}else{				
+				if( flagData[o].type == 'numbers' ){
+					tableBody = tableBody 
+					+ '<td align="center">' + num + '</td>';
+					num ++;
+				}else{
+					tableBody = tableBody 
+					+ '<td align="center">' + '' + '</td>';
+				}				
+			}			
 		}
 		/*
 		$.each( flagData, function( index1, item1 ){

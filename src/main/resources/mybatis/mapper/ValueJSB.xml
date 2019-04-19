@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="cn.soa.dao.ValueJSBMapper">
+<mapper namespace="cn.zg.dao.ValueJSBMapper">
 
 	<!-- ===========================1、查询===============================  -->
 	
@@ -10,9 +10,15 @@
 	<select id="findByPlanIdTime" resultType="cn.zg.entity.daoEntity.ValueJSB">
 		select * from IOT_INSPECTION_VALUE_JSB
 		where planId = #{param1} 
-		  and to_char(recordTime, 'YYYY-MM' ) like #{param2} 
+		  and to_char(recordTime, 'YYYY-MM-DD' ) like #{param2} 
  	</select>
-	
+ 	
+ 	<!-- 1.2、查询指定月的方案时间-->
+	<select id="selectDayByMonth"  resultType="hashMap">
+		select distinct(to_char(RECORDTIME, 'YYYY-MM-DD')) as TIME from IOT_INSPECTION_VALUE_JSB
+		where to_char(recordTime, 'YYYY-MM' ) like  #{param1}  
+		order by TIME
+	</select>
 	
 	<!-- ===========================2、新增===============================  -->
 	

@@ -22,7 +22,7 @@ public class HeadConfigJSB {
 	private String planId;
 	private String projectName;
 	private String requireid;
-	private String colspan;
+	private Long colspan;
 	private String remark1;
 	private String remark2;
 }

@@ -2,18 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
-<mapper namespace="cn.soa.dao.Headconfig.JSBMapper">
+<mapper namespace="cn.zg.dao.HeadconfigJSBMapper">
 
 	<!-- ===========================1、查询===============================  -->
 	
 	<!-- 1.1、查询维修方案-静设备、工艺管道 表头 -->
-	<select id="findAll" resultType="cn.zg.entity.daoEntity.HeadConfigJSB">
-		select * from IOT_INSPECTION_HEADCONFIG_JSB hj
+	<select id="findAll" parameterType="string" resultType="cn.zg.entity.daoEntity.HeadConfigJSB">
+		select  hj.* from IOT_INSPECTION_HEADCONFIG_JSB hj
 			left join IOT_INSPECTION_HCORDER h on hj.projectName = h.paramName
-			where hj.planId = #{planId} ;
+			where PLANID = #{planId} 
 			order by h.paramOrder
 	</select>
 	
+	<!-- 1.2、获取此表头配置表中所有的方案     -->
+	<select id="selectPlanId" resultType="hashMap">
+		select distinct(PLANID) from IOT_INSPECTION_HEADCONFIG_JSB
+	</select>
 	
 	<!-- ===========================2、新增===============================  -->
 	

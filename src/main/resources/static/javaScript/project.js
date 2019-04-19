@@ -8,7 +8,7 @@ var ip = "localhost",
 	port = "10238",
 	//port = "8080",
 	//域名
-	ipPort = "http://" + ip + ":" + port + "/ElectricInspection",
+	ipPort = "http://" + ip + ":" + port + "/iot_inspection",
 	//用户名
 	currentUser = getCookie1( 'userName' ),
 	//用户班组

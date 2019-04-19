@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>静设备现场巡检方案</title>
+	<link rel="stylesheet" href="../../../package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="../../../css/project.css">
+	<link rel="stylesheet" href="../../../css/productionReport/repair/jsb.css">
+	<script type="text/javascript" src="../../../package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="../../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../../../package/own/universal.js"></script>
+	<script type="text/javascript" src="../../../javaScript/project.js"></script>
+	<script type="text/javascript" 
+		src="../../../javaScript/productionReport/repair/jsb.js"></script>	
+</head>
+<body>
+	<div class="layui-fluid " style="overflow:visible"> 	   	
+	   	<!-- 搜索条件 -->
+		<div class="layui-row layui-col-space15">			
+	   		<div class="layui-col-md12 " > 
+	   			<fieldset >
+					<legend>查询条件</legend>	
+					<form class="layui-form" action="" >
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">月份：</label>
+						     	<div class="layui-input-inline">
+							       	<input type="text" class="layui-input" id="timeConponent"
+						        		placeholder="yyyy-mm-dd" style="width:100px">
+						     	</div>
+							</div>
+							<div class="layui-inline" >
+								<label class="layui-form-label">方案日期：</label>
+					      		<div class="layui-input-inline">
+							        <select name="day" id="day" >
+							        </select>
+								</div>
+							</div>	
+						   	<div class="layui-inline" style="margin-left:8%">
+								<label class="layui-form-label">方案名称：</label>
+					      		<div class="layui-input-inline">
+							        <select name="inspection" id="inspection" >
+										<!-- <option value="1">Ⅰ列现场巡检参数记录</option>
+										<option value="2">Ⅱ列现场巡检参数记录</option>
+										<option value="3">Ⅲ列现场巡检参数记录</option>
+										<option value="4">Ⅳ列现场巡检参数记录</option>
+										<option value="5">Ⅴ列现场巡检参数记录</option>
+										<option value="6">Ⅵ列现场巡检参数记录</option>
+										<option value="7">Ⅶ列现场巡检参数记录</option> -->
+							        </select>
+								</div>
+							</div>	
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-inline" id="search_button_search" style="margin-left:30%">
+								<button class="layui-btn">
+				  					<i class="layui-icon">&#xe615;</i> 查询
+								</button>
+					   		</div>
+					   		<div class="layui-inline" id="search_button_export"  style="margin-left:8%">
+								<button class="layui-btn">
+				  					<i class="layui-icon">&#xe60a;</i>打印页面
+								</button>
+					   		</div>	
+  						</div>
+  					</form>
+				</fieldset>
+	   		</div>
+	   	</div>
+	   	
+	   	<!-- 标题-->
+		<div class="layui-row" >
+	   		<div class="layui-col-md12  layui-col-space15" > 
+				<div class="component_container" id="search_pure_title">
+					<div></div>
+				</div>
+	   		</div>
+	   	</div>
+
+	  	<!-- 表格-->
+		<div class="layui-row" >
+	   		<div class="layui-col-md12 " id="table_parent" > 
+				<div class="component_container" id="search_pure_table" >
+
+				</div>
+	   		</div>
+	   	</div>
+	</div>
+</body>
+</html>			
