@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>检维修变电站负荷记录</title>
+<link rel="stylesheet" href="../../package/layui-v2.4.2/css/layui.css">
+<script type="text/javascript"
+	src="../../package/layui-v2.4.2/layui.all.js"></script>
+<script type="text/javascript"
+	src="../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet"
+	href="../../css/productionReport/purificationScheme/sitePureScheme.css">
+<style type="text/css">
+html, body {
+	height: 100%;
+	background-color: #fff;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.layui-fluid {
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	background-color: white;
+}
+
+fieldset {
+	border-radius: 13px;
+	margin-top: 10px;
+}
+
+fieldset legend {
+	margin-left: 5%;
+	font-size: 16px;
+}
+
+.layui-row {
+	margin-left: 10px;
+	margin-right: 10px;
+	background-color: white;
+}
+
+.head-text {
+	font-size: 16px;
+}
+
+#search_button_search {
+	margin-left: 50%;
+	margin-right: 5%;
+}
+
+#search_button_export {
+	margin-right: 5%;
+}
+</style>
+</head>
+<body>
+	<div class="layui-fluid " style="overflow: visible">
+		<!-- 搜索条件 -->
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12 ">
+				<fieldset>
+					<legend>查询条件</legend>
+					<div class="layui-inline">
+						<label class="layui-form-label">日期：</label>
+						<div class="layui-input-inline">
+							<input type="text" class="layui-input" id="timeConponent"
+								placeholder="yyyy-mm-dd" style="width: 100px">
+						</div>
+					</div>
+					<div class="layui-inline" id="search_button_search">
+						<button class="layui-btn">
+							<i class="layui-icon">&#xe615;</i> 查询
+						</button>
+					</div>
+					<div class="layui-inline" id="search_button_export">
+						<button class="layui-btn">
+							<i class="layui-icon">&#xe60a;</i>打印页面
+						</button>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		<!-- 标题-->
+		<div class="layui-row">
+			<div class="layui-col-md12  layui-col-space15">
+				<div class="component_container" id="search_pure_title">
+					<div></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 表格-->
+		<div class="layui-row">
+			<div class="layui-col-md12 " id="table_parent">
+				<div class="component_container" id="search_pure_table"></div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		layui.use(
+			[ 'layer', 'form', 'table', 'element'
+			], function()
+			{
+				var element = layui.element, layer = layui.layer, form = layui.form, table = layui.table;
+				$ = layui.$, laydate = layui.laydate;
+				$(function()
+					{
+						/*通过方案ID查询巡检的名称或者巡检的内容*/
+						var plan_id='AA29F4CED6F34D83A714942D5A9F3E8C';
+						var mycols =
+							[];
+						var currentTableBody =
+							[];
+						var tableName = '';
+						/*获取当前时间*/
+						var date = new Date();
+						var currentDate = myformatter(date);
+						/*添加时间控件*/
+						laydate.render(
+							{
+								elem : '#timeConponent' //指定元素
+								,
+								value : currentDate
+							});
+						/*初始化表格信息*/
+						$.ajax(
+							{
+								url : "http://localhost:10238/iot_inspection/findTableHead.do",
+								type : "post",
+								data :
+									{
+										scheme_id :plan_id ,//检维修变电站负荷记录ID
+										date : currentDate//时间
+									},
+								dataType : "json",
+								success : function(result)
+									{
+										var state = result.state;
+										var data = result.data;
+										var message = result.message;
+										if (state == 0)
+											{
+												//设置表名
+												tableName = data.tableName;
+												$('#search_pure_title').html(tableName);
+												//设置表头参数
+												//一级表头
+												mycols[0] =
+													[
+														{
+															align : 'center',
+															field : 'POSITION_NAME',
+															title : '名称/时间',
+															rowspan : 2,
+															width : 200
+														} //rowspan即纵向跨越的单元格数
+													,
+														{
+															align : 'center',
+															field : 'LIMIT_MAX',
+															title : '上限值',
+															rowspan : 2,
+															width : 80
+														}
+													];//负荷记录的两个固定表头(时间/名称)和上限值
+												inspectionTimes = data.inspectionTimes;
+												for (var i = 0; i < inspectionTimes.length; i++)
+													{
+														mycols[0].push(
+															{
+																align : 'center',
+																title : inspectionTimes[i],
+																colspan : 3
+															});
+													}
+												mycols[1] =
+													[];
+												for (var i = 0; i < inspectionTimes.length; i++)
+													{
+														mycols[1].push(
+															{
+																align : 'center',
+																width : 70,
+																field : inspectionTimes[i] + 'A相',
+																title : 'A相'
+															});
+														mycols[1].push(
+															{
+																align : 'center',
+																width : 70,
+																field : inspectionTimes[i] + 'B相',
+																title : 'B相'
+															});
+														mycols[1].push(
+															{
+																align : 'center',
+																width : 70,
+																field : inspectionTimes[i] + 'C相',
+																title : 'C相'
+															});
+													}
+												var options =
+													{
+														elem : '#search_pure_table',
+														height : 'full-100',
+														cols : mycols,
+														url : 'http://localhost:10238/iot_inspection/findTableContent.do', //数据接口
+														where: {plan_id:plan_id, date: currentDate},
+														response :
+															{
+																statusName : 'state' //规定数据状态的字段名称
+																,
+																msgName : 'message' //规定状态信息的字段名称
+																,
+																countName : 'total' //规定数据总数的字段名称
+																,
+																dataName : 'data' //规定数据列表的字段名称
+															},
+														done : function(res, curr, count)
+															{
+																console.log(res.data);
+																//获取表格返回数据
+																currentTableBody = res.data;
+															}
+													};
+												table.init('filter', options);
+												ins1 = table.render(options);
+
+												console.log($('#table_parent table').html());
+												//tableObj.reload(options);
+											}
+										if (state == "1")
+											{
+												layer.msg(message);
+											}
+										return false;//阻止表单跳转
+									}
+							});
+						/*点击根据条件查询列表数据*/
+						$('#search_button_search').click(function()
+							{
+								var date = $('#timeConponent').val();
+							});
+
+						$('#search_button_export').click(function()
+							{
+								exportExcelBCE(tableName);
+							});
+						/**
+						 * 导出报表按钮单击事件执行函数
+						 */
+						function exportExcelBCE(tableName)
+							{
+								generStaticTable(mycols, currentTableBody);
+								// 使用outerHTML属性获取整个table元素的HTML代码（包括<table>标签），然后包装成一个完整的HTML文档，
+								// 设置charset为urf-8以防止中文乱码
+								var html = "<html><head><meta charset='utf-8' /></head><body>" + $("#excelTempDiv").html() + "</body></html>";
+								// 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
+								var blob = new Blob(
+									[ html
+									],
+									{
+										type : "application/vnd.ms-excel"
+									});
+								$('body').append('<a id="aExport" style="display:none"></a>');
+								var a = $('#aExport')[0];
+								// 利用URL.createObjectURL()方法为a元素生成blob URL
+								a.href = URL.createObjectURL(blob);
+								// 设置文件名
+								if (tableName != '')
+									{
+										a.download = tableName + ".xls";
+									}
+								document.getElementById("aExport").click();
+								//$( '#aExport' ).click();
+								return false;
+							}
+
+						/**
+						 * 生成静态表格
+						 */
+						function generStaticTable(tableHeadData, tableBodyData)
+							{
+								var tableBefore = "<table>", tableEnd = "</table>";
+								var tableBody = "";
+								var colspan;
+								$.each(tableHeadData, function(index, item)
+									{
+										tableBody = tableBody + "<tr>";
+										$.each(item, function(index1, item1)
+											{
+												colspan = item1.colspan ? item1.colspan : 1;
+												rowspan = item1.rowspan ? item1.rowspan : 1;
+												tableBody = tableBody + '<td rowspan='+rowspan+' colspan=' + colspan + ' align=' + item1.align + '>' + item1.title + '</td>';
+											})
+										tableBody = tableBody + "</tr>";
+									})
+								//console.log( '生成静态表格-生成表头……tableBody' + tableBody );
+								var position = "";
+								var flagData =
+									[];
+								$.each(tableHeadData, function(index, item)
+									{
+										$.each(item, function(index1, item1)
+											{
+												if (item1.field != null && typeof (item1.field) != 'undefined' && item1.field != '')
+													{
+														flagData.push(item1);
+													}
+											})
+									});
+								$.each(tableBodyData, function(index, item)
+									{
+										//这个地方是一个bug，必须要使用for循环遍历，不能使用$.each()遍历
+										for ( var o in flagData)
+											{
+												position = flagData[o].field;
+												tableBody = tableBody + '<td align="center">' + item[position] + '</td>';
+											}
+										/*
+										$.each( flagData, function( index1, item1 ){
+											console.log( '生成静态表格……item.field' + item1.field );
+											position = item1[field];
+											tableBody = tableBody 
+												+ '<td align="center">' + item[position] + '</td>';
+										} )
+										 */
+										tableBody = tableBody + "</tr>";
+									})
+
+								//console.log( '生成静态表格-生成数据……tableBody' + tableBody );	
+								$('body').append('<div id="excelTempDiv" style="display:none"></div>');
+								$('#excelTempDiv').html('');
+								$('#excelTempDiv').append(tableBefore + tableBody + tableEnd);
+							}
+
+					})
+			});
+		/*时间格式化的方法*/
+		function myformatter(date)
+			{
+
+				var strDate = date.getFullYear() + "-";
+
+				if (date.getMonth() < 10)
+					{
+
+						var s = date.getMonth() + 1 + "-";
+
+						strDate += "0" + s;
+
+					} else
+					{
+
+						strDate += date.getMonth() + 1 + "-";
+
+					}
+
+				if (date.getDate() < 10)
+					{
+
+						strDate += "0" + date.getDate();
+
+					} else
+					{
+
+						strDate += date.getDate();
+
+					}
+
+				return strDate;
+
+			}
+	</script>
+</body>
+</html>
