@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.MovingEquipmentConfigMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.MovingEquipmentConfig">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="SCHEME_TYPE" jdbcType="VARCHAR"
+			property="schemeType" />
+		<result column="FIELD" jdbcType="VARCHAR" property="field" />
+		<result column="TITLE" jdbcType="VARCHAR" property="title" />
+		<result column="WIDTH" jdbcType="DECIMAL" property="width" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="FIXED" jdbcType="VARCHAR" property="fixed" />
+		<result column="SORT" jdbcType="VARCHAR" property="sort" />
+		<result column="COLSPAN" jdbcType="DECIMAL" property="colspan" />
+		<result column="ROWSPAN" jdbcType="DECIMAL" property="rowspan" />
+		<result column="CLASS_NUM" jdbcType="VARCHAR"
+			property="classNum" />
+		<result column="SORT_NUM" jdbcType="VARCHAR" property="sortNum" />
+	</resultMap>
+
+	<sql id="BaseColumn">
+		ID, SCHEME_TYPE, FIELD, TITLE, WIDTH, TYPE, FIXED, SORT, COLSPAN,
+		ROWSPAN, CLASS_NUM, SORT_NUM
+	</sql>
+
+	<!-- 根据条件查询 -->
+	<select id="findByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+		select
+		<include refid="BaseColumn"/>
+		from IOT_INSPECTION_HEADCONFIG_ME
+		<where>
+			<if test="schemeType != null and schemeType != ''">
+				and SCHEME_TYPE = #{schemeType,jdbcType=VARCHAR}
+			</if>
+		</where>
+		ORDER BY CLASS_NUM,SORT_NUM
+	</select>
+
+
+
+	<insert id="insert"
+		parameterType="cn.zg.entity.daoEntity.MovingEquipmentConfig">
+		insert into IOT_INSPECTION_HEADCONFIG_ME (ID, SCHEME_TYPE, FIELD,
+		TITLE, WIDTH, TYPE,
+		FIXED, SORT, COLSPAN,
+		ROWSPAN, CLASS_NUM, SORT_NUM
+		)
+		values (#{id,jdbcType=VARCHAR}, #{schemeType,jdbcType=VARCHAR},
+		#{field,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR}, #{width,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR},
+		#{fixed,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR},
+		#{colspan,jdbcType=DECIMAL},
+		#{rowspan,jdbcType=DECIMAL}, #{classNum,jdbcType=VARCHAR}, #{sortNum,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="cn.zg.entity.daoEntity.MovingEquipmentConfig">
+		insert into IOT_INSPECTION_HEADCONFIG_ME
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="schemeType != null">
+				SCHEME_TYPE,
+			</if>
+			<if test="field != null">
+				FIELD,
+			</if>
+			<if test="title != null">
+				TITLE,
+			</if>
+			<if test="width != null">
+				WIDTH,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="fixed != null">
+				FIXED,
+			</if>
+			<if test="sort != null">
+				SORT,
+			</if>
+			<if test="colspan != null">
+				COLSPAN,
+			</if>
+			<if test="rowspan != null">
+				ROWSPAN,
+			</if>
+			<if test="classNum != null">
+				CLASS_NUM,
+			</if>
+			<if test="sortNum != null">
+				SORT_NUM,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeType != null">
+				#{schemeType,jdbcType=VARCHAR},
+			</if>
+			<if test="field != null">
+				#{field,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="width != null">
+				#{width,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="fixed != null">
+				#{fixed,jdbcType=VARCHAR},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=VARCHAR},
+			</if>
+			<if test="colspan != null">
+				#{colspan,jdbcType=DECIMAL},
+			</if>
+			<if test="rowspan != null">
+				#{rowspan,jdbcType=DECIMAL},
+			</if>
+			<if test="classNum != null">
+				#{classNum,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNum != null">
+				#{sortNum,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+</mapper>
