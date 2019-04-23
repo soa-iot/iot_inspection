@@ -8,14 +8,16 @@
 	<link rel="stylesheet" href="../../../package/layui-v2.4.2/css/layui.css">
 </head>
 <body>
+	
 	<!-- 标题 -->
 	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
   		<legend>分析化验方案数据录入</legend>
 	</fieldset> 
 	
+	
 	<!-- 巡检单选 -->
 	<div>
-		<form class="layui-form" action="">
+		<form class="layui-form"  action="">
 			<!-- 巡检单元展示 -->
 			<div class="layui-form-item">
 		    	<label class="layui-form-label">巡检单元：</label>
@@ -33,33 +35,23 @@
 	
 	<!-- 数据表格 -->
 	<div style="width:100%">	
-		<div id="tableArea"  style="width:600px;margin:0 auto">
+		<div id="tableArea"  style="width:700px;margin:0 auto">
 			<table class="layui-hide" id="table" lay-filter="test"></table>
 		</div>
 		
 		<!-- 数据录入 -->
-		<div  style="margin-left:width:600px;margin:0 auto">
-			<table>
-				<tr>
-					<td>
-	        			<input type="text" class="layui-input" id="time" placeholder="HH:mm:ss">
-	      			</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+		<div  style="width:700px;margin:0 auto">
+			<form  class="layui-form" id="value"  action="" style="" >
+			</form>
 		</div>
 	</div>
 	
 	<!-- 按钮 -->
-	<div>	
-		<div class="layui-input-block">
-   			<button class="layui-btn" id="submit" lay-filter="submit">上传</button>
-    	</div>
-    	
+	<div style="margin:0px;padding:0px">	
+		<div  style="margin-left:40%;margin-top:40px;">
+			<button class="layui-btn" id="add" lay-filter="add">新增一行</button>
+   			<button class="layui-btn" id="submit" lay-filter="submit" style="margin-left:30px;">上传数据</button>
+    	</div>   	
 	</div>
 	
 	<!-- js -->

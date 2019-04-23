@@ -141,11 +141,11 @@ CREATE TABLE IOT_INSPECTION_VALUE_JSB(
 );
 comment on table  "IOT_INSPECTION_VALUE_JSB"                   is '巡检值记录表';
 comment on column "IOT_INSPECTION_VALUE_JSB"."IVID"            is '主键';
-comment on column "IOT_INSPECTION_VALUE_JSB"."PLANID"          is '方案名关联字段';
+comment on column "IOT_INSPECTION_VALUE_JSB"."PLANID"          is '该方案名关联字段，方案模板的id';
 comment on column "IOT_INSPECTION_VALUE_JSB"."planNum"          is '方案的次数';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '单元名称';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '装置单元';
-comment on column "IOT_INSPECTION_VALUE_JSB"."RECORDTIME"     is '记录时间';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '装置单元名称';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '装置列';
+comment on column "IOT_INSPECTION_VALUE_JSB"."RECORDTIME"     is '记录时间（一个方案只有一个记录时间，就是做方案当天的日期）';
 comment on column "IOT_INSPECTION_VALUE_JSB"."VALUE"           is '值';
 comment on column "IOT_INSPECTION_VALUE_JSB"."UNIT"            is '单位';
 comment on column "IOT_INSPECTION_VALUE_JSB"."REQUIREID"       is '关联表头';

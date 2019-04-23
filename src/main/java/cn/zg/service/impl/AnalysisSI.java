@@ -156,7 +156,7 @@ public class AnalysisSI implements AnalysisS{
 			dataRangeInit.setTitle( "参考范围" );
 			dataRangeList.add( dataRangeInit );
 
-			int num = 300/tableHeadInfoList.size();
+			int num = 400/tableHeadInfoList.size();
 			for( Schemeposition s : tableHeadInfoList ) {
 				//巡检单元
 				if( !pointSet.contains( s.getCheckPosition() ) ) {
