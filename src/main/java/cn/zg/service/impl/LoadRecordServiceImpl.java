@@ -59,6 +59,12 @@ public class LoadRecordServiceImpl implements LoadRecordService{
 		}
 		return new JsonResult(lists);
 	}
+
+	@Override
+	public JsonResult findPlans() {
+		List<Map<String, Object>> Plans = loadRecordDao.findPlans();
+		return new JsonResult(Plans);
+	}
 	
 	
 }

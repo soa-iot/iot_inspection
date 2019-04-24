@@ -21,6 +21,17 @@ public class LoadRecordDao {
 	@Autowired
     private JdbcTemplate jdbcTemplate;
 	
+	
+	/**
+	 * 查询负荷记录方案集合
+	 * @param scheme_id
+	 * @return
+	 */
+	public List<Map<String,Object>> findPlans() {
+		String sql = "SELECT SCHEME_ID,SCHEME_NAME FROM CZ_INSPECTION_SCHEME WHERE SCHEME_ID IN (SELECT PLAN_ID FROM IOT_INSPECTION_VALUE_LR GROUP BY PLAN_ID)";
+		return jdbcTemplate.queryForList(sql);
+	}
+	
 	/**
 	 * 根据scheme_id查询表名
 	 * @param scheme_id
