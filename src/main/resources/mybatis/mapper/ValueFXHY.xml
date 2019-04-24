@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.zg.dao.ValueFXHYMapper">
+
+	<!-- ===========================1、查询===============================  -->
+	
+	<!-- 1.1、 -->
+
+	
+	<!-- ===========================2、新增===============================  -->
+	
+	<!-- 2.1、插入分析方案数据 -->
+	<insert id="insert" parameterType="cn.zg.entity.daoEntity.ValueFXHY">
+		<selectKey keyProperty="vfid" resultType="String" order="BEFORE">  
+        	select sys_guid() from dual  
+    	</selectKey>  
+		insert into IOT_INSPECTION_VALUE_FXHY
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			vfid,
+			<if test="requireid != null">
+				requireid,
+			</if>
+			<if test="valueunit != null">
+				valueunit,
+			</if>
+			<if test="valuename != null">
+				valuename,
+			</if>
+			<if test="equipcol != null">
+				equipcol,
+			</if>			
+			<if test="recordtime != null">
+				recordtime,
+			</if>
+			<if test="value != null">
+				value,
+			</if>
+			<if test="unit != null">
+				unit,
+			</if>
+			<if test="remark1 != null">
+				remark1,
+			</if><if test="remark2 != null">
+				remark2
+			</if>
+		</trim>
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			#{vfid,jdbcType=VARCHAR},
+			<if test="requireid != null">
+				#{requireid,jdbcType=VARCHAR},
+			</if>
+			<if test="valueunit != null">
+				#{valueunit,jdbcType=VARCHAR},
+			</if>
+			<if test="valuename != null">
+				#{valuename,jdbcType=VARCHAR},
+			</if>
+			<if test="equipcol != null">
+				#{equipcol,jdbcType=VARCHAR},
+			</if>			
+			<if test="recordtime != null">
+				#{recordtime,jdbcType=DATE},
+			</if>
+			<if test="value != null">
+				#{value,jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="remark1 != null">
+				#{remark1,jdbcType=VARCHAR},
+			</if><if test="remark2 != null">
+				#{remark2,jdbcType=VARCHAR}
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 2.2、 -->
+	
+	
+	
+	<!-- ===========================3、修改===============================  -->	
+	
+	
+	
+	<!-- ===========================4、删除===============================  -->		
+
+
+	
+</mapper>

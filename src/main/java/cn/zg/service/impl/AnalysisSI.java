@@ -155,6 +155,11 @@ public class AnalysisSI implements AnalysisS{
 			dataRangeInit.setWidth( 300 );
 			dataRangeInit.setTitle( "参考范围" );
 			dataRangeList.add( dataRangeInit );
+			Requireid requireidInit = new Requireid();
+			requireidInit.setField( "-1" ) ;
+			requireidInit.setWidth( 300 );
+			requireidInit.setTitle( "要求" );
+			requireidList.add(requireidInit);
 
 			int num = 400/tableHeadInfoList.size();
 			for( Schemeposition s : tableHeadInfoList ) {
@@ -207,12 +212,11 @@ public class AnalysisSI implements AnalysisS{
 				dataRangeList.add( dataRange );				
 				
 				//要求id
-//				Requireid requireid = new Requireid();
-//				requireid.setAlign( "1" );
-//				requireid.setField( s.getrequireid() );
-//				requireid.setTitle( s.getProjectName1() );
-//				requireidList.add( requireid );
-				
+				Requireid requireid = new Requireid();
+				requireid.setAlign( "1" );
+				requireid.setField( s.getrequireid() );
+				requireid.setTitle( s.getProjectName2() );
+				requireidList.add( requireid );				
 			}
 			
 			//全部添加
@@ -222,7 +226,7 @@ public class AnalysisSI implements AnalysisS{
 			headList.add( projectName2List );
 			headList.add( unitList );
 			headList.add( dataRangeList );
-//			headList.add( requireidList );
+			headList.add( requireidList );
 			
 			return headList;
 		} catch (Exception e) {

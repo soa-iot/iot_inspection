@@ -38,7 +38,7 @@ public interface PurificationSchemeDao extends JpaRepository< Schemeposition , S
 	 * @return: List<Schemeposition>        
 	 */  
 	@Query( nativeQuery = true,
-			value = " select * from CZ_INSPECTION_HEADCONFIG "
+			value = " select * from IOT_INSPECTION_HEADCONFIG_FXHY "
 					+ "  where INSPECTIONNAME = :inspectionName"
 					+ "    and CHECKPOSITON = :pointName "
 					+ "    and PROJECTNAME1 = :projectName "

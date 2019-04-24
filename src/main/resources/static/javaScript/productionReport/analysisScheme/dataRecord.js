@@ -6,8 +6,14 @@ $(function(){
 	,form = layui.form
 	,laydate = layui.laydate
 	,table = layui.table
+	,nowDate = new Date()
 	,currParamNum //当前参数的个数
 	,currDayNum = 1 //当前日期控件个数
+	,currCheckPos = ''  //当前分析方案巡检点
+	,currPro1 = '' //当前分析项目1
+	,currPro2 = []  //当前分析项目2
+	,currUnit = [] //当前分析项目单位
+	,currRequire = [] //当前分析项目要求
 	,cellTatalWidth = 400 //数据列的总宽度
 	,planName = "1"//分析化验方案的方案id（配置信息）
 	,currPointName
@@ -23,10 +29,11 @@ $(function(){
 					,"pointName": currPointName
 					,"projectName": currProjectName}, sf.showTable );			
 			}
-			,createValueInput: function( currObj, num ){
+			,createValueInput: function( currObj, num, require ){
 				console.log( '------动态生成输入input的个数--------' );
 				console.log( currObj );
 				console.log( num );
+				console.log( currRequire );
 				var headhtml = 
 					'<div class="layui-form-item" style="margin:0px;padding:0px">' +
 				    	'<div class="layui-inline"  style="margin:0px;padding:0px" >' +
@@ -37,13 +44,13 @@ $(function(){
 			    	'--><div class="layui-inline"  style="margin:0px;padding:0px">		' +				
 							'<div class="layui-input-block"  style="width:150px;margin:0px;padding:0px">' +
 				      		'	<select name="equipcol" lay-verify="required">' +
-				        		'	<option value="1">主体装置Ⅰ列</option>' +
-				        		'	<option value="2">主体装置Ⅱ列</option>' +
-				        		'	<option value="3">主体装置Ⅲ列</option>' +
-				        		'	<option value="4">主体装置Ⅳ列</option>' +
-				        		'	<option value="5">主体装置Ⅴ列</option>' +
-				        		'	<option value="6">主体装置Ⅵ列</option>' +
-				        		'	<option value="7">主体装置Ⅶ列</option>' +
+				        		'	<option value="主体装置Ⅰ列">主体装置Ⅰ列</option>' +
+				        		'	<option value="主体装置Ⅱ列">主体装置Ⅱ列</option>' +
+				        		'	<option value="主体装置Ⅲ列">主体装置Ⅲ列</option>' +
+				        		'	<option value="主体装置Ⅳ列">主体装置Ⅳ列</option>' +
+				        		'	<option value="主体装置Ⅴ列">主体装置Ⅴ列</option>' +
+				        		'	<option value="主体装置Ⅵ列">主体装置Ⅵ列</option>' +
+				        		'	<option value="主体装置Ⅶ列">主体装置Ⅶ列</option>' +
 				      		'	</select>' +
 				  		'	</div>' +
 		  			'	</div><!--'
@@ -52,7 +59,10 @@ $(function(){
 				for( var z=0; z<num; z++ ){
 					midHtml = midHtml + 
 							'--><div class="layui-inline"  style="margin:0px;padding:0px;" > ' + 
-							' 		<div class="layui-input-block"  style="width:' + cellTatalWidth/num + 'px;margin:0px;padding:0px"> ' + 
+							' 		<div class="layui-input-block" flag="paramValue"' + 
+							'			 requireid="' + require[z+1].field + '" project="' + currPro2[z+1].title + '"' + 
+							'			 unit="' + currUnit[z+1].title + '"' +						
+							'			 style="width:' + cellTatalWidth/num + 'px;margin:0px;padding:0px"> ' + 
 							' 			<input type="text" name="value" autocomplete="off" placeholder="请输入值" class="layui-input"> ' + 
 							' 		</div> ' + 
 							'	</div><!-- ';
@@ -60,9 +70,10 @@ $(function(){
 				currObj.append( headhtml + midHtml + endHtml );
 				form.render();
 				laydate.render({
-			    	elem: '#time' + currDayNum ,
-			    	type: 'time',
-			    	value: new Date().getHours() + ":" + new Date().getMinutes() + ":" + "00",
+			    	elem: '#time' + currDayNum,
+			    	type: 'datetime',
+			    	value: nowDate.getFullYear() + "-" + nowDate.getMonth() + "-" + nowDate.getDay() + " " + 
+			    		   nowDate.getHours() + ":" + new Date().getMinutes() + ":" + "00",
 				})
 			}
 	}
@@ -137,9 +148,15 @@ $(function(){
 					//动态生成值input的个数
 					var currObj = $( '#value' );
 					currObj.empty();
+					//修改当前值
+					currCheckPos = data[0][1].title;
+					currPro1 = data[1][1].title;
+					currPro2 =  data[2] ;
+					currUnit = data[3];
+					currRequire = data[5];
 					var num = data[data.length-1].length;
 					currParamNum = num;
-					init.createValueInput( currObj, num - 1 );
+					init.createValueInput( currObj, num - 1, currRequire );
 				}else{
 					layer.msg( '请求失败', {icon:2} );
 				}			
@@ -154,7 +171,35 @@ $(function(){
 				console.log( '-------addRow-------' );
 				console.log( currParamNum );
 				currDayNum ++;
-				init.createValueInput( $( '#value' ), currParamNum - 1 );
+				init.createValueInput( $( '#value' ), currParamNum - 1, currRequire );
+			}
+			,submit: function(){
+				console.log( '-------submit-------' );
+				var inputValues = [], valueObjs = $( '#value' ).find( '.layui-form-item' );
+				console.log( valueObjs );
+				$.each( valueObjs, function( index, item ){				
+					var recordtime = $ ( item ).find( 'input[id^=time]').val()
+					,equipcol = $ ( item ).find( 'select' ).next().find( 'dl .layui-this' ).attr( 'lay-value' )
+					,valueObj = $ ( item ).find( 'div[flag=paramValue]' );
+					$.each( valueObj, function( index1, item1 ){
+						var tempValue = {};
+						//检查
+						var currValue = $( item1 ).find( 'input' ).val();
+						if( currValue || $.trim( currValue ) == '' ){
+							return false;
+						}
+						//获取输入值
+						tempValue.recordtime = recordtime;
+						tempValue.equipcol = equipcol;
+						tempValue.requireid = $( item1 ).attr( 'requireid' );
+						tempValue.valueunit = currCheckPos;
+						tempValue.valuename = currPro1;
+						tempValue.unit = $( item1 ).attr( 'unit' );
+						tempValue.value = currValue;
+						inputValues.push( tempValue );
+					})
+				})
+				console.log( inputValues );
 			}
 	}
 	
@@ -177,11 +222,11 @@ $(function(){
 	});
 	
 	//事件空间渲染
-	laydate.render({
-    	elem: '#time',
-    	type: 'time',
-    	value: new Date().getHours() + ":" + new Date().getMinutes() + ":" + "00",
-	})
+//	laydate.render({
+//    	elem: '#time',
+//    	type: 'time',
+//    	value: new Date().getHours() + ":" + new Date().getMinutes() + ":" + "00",
+//	})
 	
 	form.render();
 
@@ -189,5 +234,6 @@ $(function(){
 	 * 事件绑定
 	 */
 	$( '#add' ).on( 'click', cf.addRow );
+	$( '#submit' ).on( 'click', cf.submit );
 	
 })

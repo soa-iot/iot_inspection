@@ -1,0 +1,81 @@
+/**
+ * 数据库设计
+ */
+create table `PROJECT`(
+	`ID` int  primary key  auto_increment comment '主键',
+	`PID` varchar(56)  comment '项目编号',
+	`CUSTOMER`  varchar(56)  comment '客户名称',
+	`MANAGER`	varchar(56)  comment '项目经理',
+	`PARTITIONER` varchar(1024) comment '项目成员',
+	`TIME`	varchar(224) comment '审计时间',
+	`RANGE`	varchar(226) comment '审计范围',
+	`REMARK1` varchar(126) comment '备用字段1',
+	`REMARK2`varchar(126)  comment '备用字段2'
+)engine=InnoDB default charset=utf8 comment='项目表';
+
+create table `PAPER`(
+	`ID` int  primary key  auto_increment comment '主键',
+	`PID` varchar(56)  comment '项目编号',
+	`PNAME` varchar(56)  comment '项目名称',
+	`TIME`	varchar(224) comment '审计时间',
+	`RANGE` varchar(56)  comment '审计范围',
+	`RID` varchar(56)  comment '底稿编号',
+	`RINDEX` varchar(56)  comment '底稿索引',
+	`CREATEPERSON`  varchar(56)  comment '创建人',
+	`CREATETIME`	varchar(56)  comment '创建时间',
+	`FIRSTPERSON` varchar(1024) comment '一级复核人',
+	`FIRSTTIME`	varchar(224) comment '一级时间',
+	`SECONDPERSON`	varchar(226) comment '二级复核人',
+	`SECONDTIME`	varchar(224) comment '二级复核时间',
+	`THIRDPERSON` varchar(126) comment '三级复核人',
+	`THIRDTIME` varchar(126) comment '三级复核时间',
+	`TOSYSTEM` varchar(126) comment '使用系统',
+	`ISTEST` varchar(126) comment '控制测试',
+	`TARGET` varchar(126) comment '控制目标',
+	`MOVE` varchar(126) comment '控制活动',
+	`CONTACT` varchar(126) comment '客户联系人',
+	`TESTORDER`varchar(126)  comment '测试步骤',
+	`TESTRESULT`varchar(126)  comment '测试结果',
+	`TESTFIND`varchar(126)  comment '测试发现',
+	`TESTSUM`varchar(126)  comment '测试总结',
+	`TESTORDER1`varchar(126)  comment '测试步骤1',
+	`TESTRESULT1`varchar(126)  comment '测试结果1',
+	`TESTFIND1`varchar(126)  comment '测试发现1',
+	`TESTSUM1`varchar(126)  comment '测试总结1',
+	`REMARK1` varchar(126)  comment '',
+	`REMARK2` varchar(126)  comment ''
+)engine=InnoDB default charset=utf8 comment='底稿表';
+
+create table `user_organization`(
+	`orgid` int auto_increment primary key ,
+	`name` varchar(16) not null unique comment '组织机构名称',
+	`parent_id` int  comment '父节点id',
+	//`userid` int not null comment '用户id主键',
+	`usernum` int not null unique comment '用户唯一标识',
+	//`username` varchar(12) not null  comment '用户名称',	
+	`user_password` varchar(18) not null default '123' comment '用户密码',
+	`is_parent` tinyint not null default 1 comment '是否为父节点 0_不是 1_是',
+	`note` varchar(38) not null default '' comment '用户组织结构备注',
+	`remark1` int comment '备用字段1',
+	`remark2` varchar(8) comment '备用字段2'
+)engine=InnoDB default charset=utf8 comment='用户组织机构表'
+	
+
+create table `user_role`(
+	`rolid` int auto_increment primary key,
+	`name` varchar(16) not null unique comment '角色名称',
+	`state` tinyint not null default 1 comment '角色状态 1-启用 2-停用',
+	`create_time` timestamp not null default current_timestamp comment '角色创建时间',
+	`last_modify_time` timestamp not null default current_timestamp on update current_timestamp comment '角色最后修改时间',
+	`note` varchar(38) not null default '' comment '角色备注',
+	`remark1` int comment '备用字段1',
+	`remark2` varchar(8) comment '备用字段2'
+)engine=InnoDB default charset=utf8 comment='用户角色表'
+
+create table `user_role_relation`(
+	`user_rol_id` int auto_increment primary key ,
+	`userid` int not null comment '用户id',
+	`rolid` int not null comment '角色id'
+)engine=InnoDB default charset=utf8 comment='用户角色关系表'
+	
+	

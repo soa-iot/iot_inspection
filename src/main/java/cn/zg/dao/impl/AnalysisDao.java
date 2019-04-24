@@ -21,7 +21,7 @@ public class AnalysisDao {
 	 * @return: List<Map<String,Object>>        
 	 */  
 	public List<Map<String, Object>> selectPointType( String name ) {
-		String sql = " select distinct(CHECKPOSITON) from CZ_INSPECTION_HEADCONFIG "
+		String sql = " select distinct(CHECKPOSITON) from IOT_INSPECTION_HEADCONFIG_FXHY "
 				+ "  where INSPECTIONNAME = '" + name + "' ";
 		return jdbcTemplate.queryForList( sql );
 	}
@@ -32,7 +32,7 @@ public class AnalysisDao {
 	 * @return: List<Map<String,Object>>        
 	 */  
 	public List<Map<String, Object>> selectProjectType( String name, String pointName ) {
-		String sql = " select distinct(PROJECTNAME1) from CZ_INSPECTION_HEADCONFIG "
+		String sql = " select distinct(PROJECTNAME1) from IOT_INSPECTION_HEADCONFIG_FXHY "
 				+ "  where INSPECTIONNAME = '" + name + "' and CHECKPOSITON='" + pointName + "' ";
 		return jdbcTemplate.queryForList( sql );
 	}

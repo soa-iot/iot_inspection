@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -89,5 +90,16 @@ public class AnalysisC {
 		}else {
 			return new ResultJson<List<Object>>( 1, "查询数据失败", null );
 		}
+	}
+	
+	/**   
+	 * @Title: saveValueC   
+	 * @Description:   保存方案值
+	 * @return: ResultJson<Integer>        
+	 */  
+	@PostMapping()
+	public ResultJson<Integer> saveValueC(){
+		
+		return null;
 	}
 }

@@ -33,7 +33,8 @@
 			UNIT  VARCHAR(10 CHAR) DEFAULT ''  NOT NULL,
 			FOURTHCOLSPAN NUMBER(2) DEFAULT 2 NOT NULL,
 			DATARANGE  VARCHAR2(20 CHAR) DEFAULT '' NOT NULL ,
-			FIVTHCOLSPAN NUMBER(2) DEFAULT 2 NOT NULL
+			FIVTHCOLSPAN NUMBER(2) DEFAULT 2 NOT NULL,
+			REQUIREID VARCHAR2(64 byte) DEFAULT '' NOT NULL 
 		);
 	1.2    方案值记录表 
 		create sequence sequence_ctiv
@@ -103,7 +104,7 @@
 	
 	
 /**
- * 维修静设备数据库设计
+ * 维修-静设备、工艺管道数据库设计
  */	
 1、表头配置表
 create TABLE IOT_INSPECTION_HEADCONFIG_JSB(
@@ -142,13 +143,14 @@ CREATE TABLE IOT_INSPECTION_VALUE_JSB(
 comment on table  "IOT_INSPECTION_VALUE_JSB"                   is '巡检值记录表';
 comment on column "IOT_INSPECTION_VALUE_JSB"."IVID"            is '主键';
 comment on column "IOT_INSPECTION_VALUE_JSB"."PLANID"          is '该方案名关联字段，方案模板的id';
-comment on column "IOT_INSPECTION_VALUE_JSB"."planNum"          is '方案的次数';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '装置单元名称';
-comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '装置列';
+comment on column "IOT_INSPECTION_VALUE_JSB"."PLANNUM"          is '此字段暂时不需要传值';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITNAME"        is '巡检单元名称';
+comment on column "IOT_INSPECTION_VALUE_JSB"."UNITTYPE"        is '装置列名称';
+comment on column "IOT_INSPECTION_VALUE_JSB"."EQUIPCOL"        is '此字段暂时不需要传值';
 comment on column "IOT_INSPECTION_VALUE_JSB"."RECORDTIME"     is '记录时间（一个方案只有一个记录时间，就是做方案当天的日期）';
 comment on column "IOT_INSPECTION_VALUE_JSB"."VALUE"           is '值';
 comment on column "IOT_INSPECTION_VALUE_JSB"."UNIT"            is '单位';
-comment on column "IOT_INSPECTION_VALUE_JSB"."REQUIREID"       is '关联表头';
+comment on column "IOT_INSPECTION_VALUE_JSB"."REQUIREID"       is '方案模板要求id';
 comment on column "IOT_INSPECTION_VALUE_JSB"."REMARK1"         is '备注';
 comment on column "IOT_INSPECTION_VALUE_JSB"."REMARK2"         is '备注2';
 
@@ -167,3 +169,38 @@ comment on column "IOT_INSPECTION_HCORDER"."PARAMORDER"  is '单元名称排序'
 comment on column "IOT_INSPECTION_HCORDER"."REMARK1"        is '备注';
 comment on column "IOT_INSPECTION_HCORDER"."REMARK2"        is '备注';
 
+
+
+/**
+ * 分析化验数据库设计
+ */	
+	1、分析化验方案表头配置表
+		create table IOT_INSPECTION_HEADCONFIG_FXHY (
+			ID VARCHAR2(36) primary Key,
+			INSPECTIONNAME VARCHAR2(30 CHAR) DEFAULT '' NOT NULL  ,
+			CHECKPOSITON VARCHAR2(20 CHAR)  DEFAULT '' NOT NULL ,
+			FIRSTCOLSPAN NUMBER(2)  DEFAULT 2 NOT NULL,
+			PROJECTNAME1 VARCHAR2(20 CHAR) DEFAULT '' NOT NULL  ,
+			SECONDCOLSPAN1 NUMBER(2)  DEFAULT 2 NOT NULL,
+			PROJECTNAME2 VARCHAR2(20 CHAR)  DEFAULT '' NOT NULL ,
+			SECONDCOLSPAN2 NUMBER(2)  DEFAULT 2 NOT NULL,
+			POSITIONNUM  VARCHAR2(20 CHAR) DEFAULT '' NOT NULL ,
+			UNIT  VARCHAR(10 CHAR) DEFAULT ''  NOT NULL,
+			FOURTHCOLSPAN NUMBER(2) DEFAULT 2 NOT NULL,
+			DATARANGE  VARCHAR2(20 CHAR) DEFAULT '' NOT NULL ,
+			FIVTHCOLSPAN NUMBER(2) DEFAULT 2 NOT NULL,
+			REQUIREID VARCHAR2(64 byte) DEFAULT '' NOT NULL 
+		);
+	2、分析化验方案值表
+		CREATE TABLE IOT_INSPECTION_VALUE_FXHY(
+			VFID CHAR(36) PRIMARY KEY,
+			REQUIREID VARCHAR2(64 byte) DEFAULT '' NOT NULL,
+			VALUE VARCHAR2(64 CHAR) DEFAULT '' NOT NULL,
+			UNIT  VARCHAR2(10 CHAR) DEFAULT ''  NOT NULL,
+			RECORDTIME DATE DEFAULT '' ,
+			VALUEUNIT VARCHAR2(58 CHAR) DEFAULT '' NOT NULL,
+			VALUENAME VARCHAR2(58 CHAR) DEFAULT '' NOT NULL,
+			REMARK1 VARCHAR2(18 CHAR) DEFAULT '' NOT NULL,
+			REMARK2 VARCHAR2(38 CHAR) DEFAULT '' NOT NULL
+		)
+ 
