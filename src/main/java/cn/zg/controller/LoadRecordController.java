@@ -30,4 +30,10 @@ public class LoadRecordController {
 		return loadRecordService.findInspectionData(plan_id, date);
 	}
 	
+	@ResponseBody
+	@RequestMapping("/initPlans.do")
+	public JsonResult findPlans(){
+		return loadRecordService.findPlans();
+	}
+	
 }
