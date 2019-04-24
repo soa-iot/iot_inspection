@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.MovingEquipmentValueMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.MovingEquipmentValue">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="SCHEME_REMARK" jdbcType="VARCHAR"
+			property="schemeRemark" />
+		<result column="REQUIRE_ID" jdbcType="VARCHAR"
+			property="requireId" />
+		<result column="PARA_VALUE" jdbcType="VARCHAR"
+			property="paraValue" />
+		<result column="UNIT" jdbcType="VARCHAR" property="unit" />
+		<result column="POSITION_NUM" jdbcType="VARCHAR"
+			property="positionNum" />
+		<result column="EQU_NAME" jdbcType="VARCHAR" property="equName" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+		<result column="RECORD_DATE" jdbcType="TIMESTAMP"
+			property="recordDate" />
+	</resultMap>
+
+	<sql id="base_column">
+		ID, SCHEME_REMARK, REQUIRE_ID,
+		PARA_VALUE, UNIT,
+		POSITION_NUM,
+		EQU_NAME, STANDBY1, STANDBY2,
+		STANDBY3,TO_CHAR(RECORD_DATE,'YYYY-MM-DD') RECORD_DATE
+	</sql>
+
+	<select id="findByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+
+		SELECT
+		<include refid="base_column"></include>
+		FROM
+		IOT_INSPECTION_VALUE_ME
+		<where>
+			<if test="recordDate != null and recordDate !='' ">
+				AND TO_CHAR(RECORD_DATE,'YYYY-MM-DD') =
+				#{recordDate,jdbcType=VARCHAR}
+			</if>
+			<if test="schemeRemark != null and schemeRemark !=''">
+				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<!-- 根据条件获取实际数据条数 -->
+	<select id="countByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultType="java.util.Map">
+
+		select count(1) NUM from (
+		select distinct position_num
+		from
+		IOT_INSPECTION_VALUE_ME
+		<where>
+			<if test="schemeRemark != null and schemeRemark != ''">
+				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="recordDate != null and recordDate !='' ">
+				TO_CHAR(RECORD_DATE,'YYYY-MM-DD') =
+				#{recordDate,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		)
+	</select>
+
+
+
+
+	<insert id="insert"
+		parameterType="cn.zg.entity.daoEntity.MovingEquipmentValue">
+		insert into IOT_INSPECTION_VALUE_ME (ID, SCHEME_REMARK,
+		REQUIRE_ID,
+		PARA_VALUE, UNIT, POSITION_NUM,
+		EQU_NAME, STANDBY1,
+		STANDBY2,
+		STANDBY3, RECORD_DATE)
+		values (#{id,jdbcType=VARCHAR},
+		#{schemeRemark,jdbcType=VARCHAR},
+		#{requireId,jdbcType=VARCHAR},
+		#{paraValue,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+		#{positionNum,jdbcType=VARCHAR},
+		#{equName,jdbcType=VARCHAR},
+		#{standby1,jdbcType=VARCHAR},
+		#{standby2,jdbcType=VARCHAR},
+		#{standby3,jdbcType=VARCHAR}, #{recordDate,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="cn.zg.entity.daoEntity.MovingEquipmentValue">
+		insert into IOT_INSPECTION_VALUE_ME
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="schemeRemark != null">
+				SCHEME_REMARK,
+			</if>
+			<if test="requireId != null">
+				REQUIRE_ID,
+			</if>
+			<if test="paraValue != null">
+				PARA_VALUE,
+			</if>
+			<if test="unit != null">
+				UNIT,
+			</if>
+			<if test="positionNum != null">
+				POSITION_NUM,
+			</if>
+			<if test="equName != null">
+				EQU_NAME,
+			</if>
+			<if test="standby1 != null">
+				STANDBY1,
+			</if>
+			<if test="standby2 != null">
+				STANDBY2,
+			</if>
+			<if test="standby3 != null">
+				STANDBY3,
+			</if>
+			<if test="recordDate != null">
+				RECORD_DATE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeRemark != null">
+				#{schemeRemark,jdbcType=VARCHAR},
+			</if>
+			<if test="requireId != null">
+				#{requireId,jdbcType=VARCHAR},
+			</if>
+			<if test="paraValue != null">
+				#{paraValue,jdbcType=VARCHAR},
+			</if>
+			<if test="unit != null">
+				#{unit,jdbcType=VARCHAR},
+			</if>
+			<if test="positionNum != null">
+				#{positionNum,jdbcType=VARCHAR},
+			</if>
+			<if test="equName != null">
+				#{equName,jdbcType=VARCHAR},
+			</if>
+			<if test="standby1 != null">
+				#{standby1,jdbcType=VARCHAR},
+			</if>
+			<if test="standby2 != null">
+				#{standby2,jdbcType=VARCHAR},
+			</if>
+			<if test="standby3 != null">
+				#{standby3,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDate != null">
+				#{recordDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+</mapper>
