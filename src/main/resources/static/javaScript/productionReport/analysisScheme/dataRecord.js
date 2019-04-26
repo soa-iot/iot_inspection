@@ -21,6 +21,7 @@ $(function(){
 	,pointTypeUrl = '../../../analysis/points'
 	,projectTypeUrl = '../../../analysis/projects'
 	,headConfigUtl = '../../../analysis/headConfig'
+	,sUrl = '../../../analysis'
 	,init = {
 			getTableHead: function( cols ){
 				//动态生成表头
@@ -161,6 +162,18 @@ $(function(){
 					layer.msg( '请求失败', {icon:2} );
 				}			
 			}
+			,saveValue: function( jsonData ){
+				console.log( '------sf.saveValue--------' );
+				if( jsonData ){
+					if( jsonData.state == 0 && jsonData.data ){
+						layer.msg( '保存数据成功', {icon:1} );
+					}else{
+						layer.msg( '保存数据失败', {icon:2} );
+					}
+				}else{
+					layer.msg( '保存数据失败，未知错误', {icon:2} );
+				}
+			}
 	}
 	,cf = {
 			showProjectType: function( pointName ){
@@ -185,8 +198,8 @@ $(function(){
 						var tempValue = {};
 						//检查
 						var currValue = $( item1 ).find( 'input' ).val();
-						if( currValue || $.trim( currValue ) == '' ){
-							return false;
+						if( !currValue || $.trim( currValue ) == '' ){
+							return true;
 						}
 						//获取输入值
 						tempValue.recordtime = recordtime;
@@ -200,6 +213,19 @@ $(function(){
 					})
 				})
 				console.log( inputValues );
+				//请求保存数据
+				$.ajax({
+				     type: "POST",
+				     url: sUrl,
+				     data: JSON.stringify( inputValues ),
+				     cache: true, //默认
+				     contentType: "application/json",//默认
+				     dataType: "json",//必须指定，否则根据后端判断				     
+				     success: sf.saveValue,
+				     error:function(){
+				    	 layer.msg('请求失败：');
+				     }		       
+				});
 			}
 	}
 	
@@ -219,14 +245,8 @@ $(function(){
 	form.on( 'radio(project)', function( data ){
 		currProjectName = data.value;
 		init.getTableHead();
+		$('#button').show();
 	});
-	
-	//事件空间渲染
-//	laydate.render({
-//    	elem: '#time',
-//    	type: 'time',
-//    	value: new Date().getHours() + ":" + new Date().getMinutes() + ":" + "00",
-//	})
 	
 	form.render();
 

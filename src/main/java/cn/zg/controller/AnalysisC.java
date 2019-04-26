@@ -1,5 +1,6 @@
 package cn.zg.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.zg.entity.daoEntity.ValueFXHY;
 import cn.zg.entity.dataExchange.ResultJson;
 import cn.zg.service.impl.AnalysisSI;
 import cn.zg.service.inter.AnalysisS;
@@ -93,13 +96,66 @@ public class AnalysisC {
 	}
 	
 	/**   
+	 * @Title: getHeadConfigC   
+	 * @Description: 获取分析方案的表头信息   
+	 * @return: ResultJson<List<Object>>        
+	 */  
+	@GetMapping("/headConfig1")
+	public ResultJson<List<Object>> getHeadConfigC1(
+			@RequestParam("planName") String planName,
+			@RequestParam("pointName") String pointName,
+			@RequestParam("projectName") String projectName){
+		logger.debug( "--C------------获取分析方案的巡检单元种类 --------------");
+		logger.debug( planName );
+		logger.debug( pointName );
+		logger.debug( projectName );
+		List<Object> headConfigS = as.getHeadConfigS1( planName, pointName, projectName );
+		if( headConfigS != null ) {
+			return new ResultJson<List<Object>>( 0, "查询数据成功", headConfigS );
+		}else {
+			return new ResultJson<List<Object>>( 1, "查询数据失败", null );
+		}
+	}
+	
+	/**   
 	 * @Title: saveValueC   
 	 * @Description:   保存方案值
 	 * @return: ResultJson<Integer>        
 	 */  
 	@PostMapping()
-	public ResultJson<Integer> saveValueC(){
-		
-		return null;
+	public ResultJson<Integer> saveValueC(
+			@RequestBody List<ValueFXHY> fvs){
+		logger.debug( "--C------------保存方案值 --------------");
+		logger.debug( fvs.toString() );
+		int i = as.saveValueS(fvs);
+		if( i > 0 ) {
+			return new ResultJson<Integer>( 0, "保存数据成功", i );
+		}else {
+			return new ResultJson<Integer>( 1, "保存数据失败", 0);
+		}
+	}
+	
+	/**   
+	 * @Title: getValueByUnitPnameTimeC   
+	 * @Description: 根据巡检单元、巡检项目、时间 查询方案数据    
+	 * @return: ResultJson<List<Object>>        
+	 */  
+	@GetMapping()
+	public ResultJson<List<Object>> getValueByUnitPnameTimeC(
+			@RequestParam("stime") String stime,
+			@RequestParam("etime") String etime,
+			@RequestParam("uname") String uname,
+			@RequestParam("pname") String pname){
+		logger.debug( "--C------------根据巡检单元、巡检项目、时间 查询方案数据 --------------");
+		logger.debug( stime );
+		logger.debug( etime );
+		logger.debug( uname );
+		logger.debug( pname );
+		LinkedList<Object> values = as.getValueByUnitPnameTimeS(stime, etime, uname, pname);
+		if( values != null ) {
+			return new ResultJson<List<Object>>( 0, "查询数据成功", values );
+		}else {
+			return new ResultJson<List<Object>>( 1, "查询数据失败", null );
+		}
 	}
 }

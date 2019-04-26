@@ -36,7 +36,7 @@ public class AnalysisDao {
 		java.sql.Date time1 =  new java.sql.Date(time.getTime());
 		v.setRecordtime(time1);
 		v.setValue( "234");
-		v.setValueunit("");
+		v.setValueunit("sds");
 		v.setValuename("参数1");
 		v.setUnit("c");
 		int i = vf.insert(v);

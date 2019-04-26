@@ -19,6 +19,13 @@ import cn.zg.entity.daoEntity.ValueJSB;
 public interface ValueFXHYMapper {
 	
 	/**   
+	 * @Title: findByUnitPnameTime   
+	 * @Description:  根据巡检单元、巡检项目、时间 查询方案数据 
+	 * @return: List<ValueFXHY>        
+	 */  
+	public List<ValueFXHY> findByUnitPnameTime( String stime, String etime, String uname, String pname );
+	
+	/**   
 	 * @Title: insert   
 	 * @Description:  插入数据 
 	 * @return: int        

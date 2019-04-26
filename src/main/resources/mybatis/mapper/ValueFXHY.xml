@@ -6,8 +6,15 @@
 
 	<!-- ===========================1、查询===============================  -->
 	
-	<!-- 1.1、 -->
-
+	<!-- 1.1、根据巡检单元、巡检项目、时间 查询方案数据 -->
+	<select id="findByUnitPnameTime" parameterType="string" resultType="cn.zg.entity.daoEntity.ValueFXHY">
+		select * from IOT_INSPECTION_VALUE_FXHY
+		where <![CDATA[ RECORDTIME >= to_date(#{param1},'yyyy-MM-dd')]]>
+			AND <![CDATA[ RECORDTIME <= to_date(#{param2},'yyyy-MM-dd')]]>
+			AND VALUEUNIT = #{param3} 
+			AND VALUENAME =  #{param4}
+		order by RECORDTIME
+	</select>
 	
 	<!-- ===========================2、新增===============================  -->
 	

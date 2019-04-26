@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>分析化验数据录入</title>
+	<link rel="stylesheet" href="../../../package/layui-v2.4.2/css/layui.css">
+</head>
+<body>
+	   	
+   	<!-- 名称 -->
+	<div style="width:100%;font-size:32px;text-align:center;margin-top:10px">	
+		分 析 化 验 设 备 方 案 数 据
+	</div>
+
+	<!-- 搜索条件 -->
+	<div class="layui-row layui-col-space15">			
+   		<div class="layui-col-md12 " > 
+   			<fieldset >
+				<legend>查询条件</legend>	
+				<form class="layui-form" action="" >
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">起始时间：</label>
+					     	<div class="layui-input-inline">
+						       	<input type="text" class="layui-input" id="stime"
+					        		placeholder="yyyy-mm-dd">
+					     	</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">截止时间：</label>
+					     	<div class="layui-input-inline">
+						       	<input type="text" class="layui-input" id="etime"
+					        		placeholder="yyyy-mm-dd">
+					     	</div>
+						</div>
+					   	<div class="layui-inline" id="search" style="margin-left:8%">
+							<button class="layui-btn">
+			  					<i class="layui-icon">&#xe615;</i> 查询
+							</button>
+				   		</div>
+				   		<div class="layui-inline" id="search_button_export" style="margin-left:8%" >
+							<button class="layui-btn">
+			  					<i class="layui-icon">&#xe60a;</i>导出Excel
+							</button>
+				   		</div>											
+ 					</div>
+ 					<div class="layui-form-item">
+		    			<label class="layui-form-label">巡检单元：</label>
+				    	<div class="layui-input-block" id="points">
+				    	</div>
+					  	<!-- 巡检单元展示 -->
+					  	<div class="layui-form-item" style="margin-top:10px">
+					    	<label class="layui-form-label">巡检项目：</label>
+					    	<div class="layui-input-block" id="projects">
+					    	</div>
+					 	</div>
+					 </div>
+ 				</form>
+			</fieldset>
+   		</div>
+   	</div> 
+	
+	<!-- 数据表格 -->
+	<div style="width:100%;overflow-x:scroll;white-space: nowrap;font-size:0px" id="tableArea">	
+	</div>
+	
+	<!-- js -->
+	<script type="text/javascript" src="../../../package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="../../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="../../../package/own/universal.js"></script>
+	<script type="text/javascript" src="../../../javaScript/productionReport/analysisScheme/analysisShow.js"></script>
+</body>
+</html>
