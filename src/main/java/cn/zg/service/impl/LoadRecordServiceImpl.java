@@ -51,8 +51,18 @@ public class LoadRecordServiceImpl implements LoadRecordService{
 			for (Map<String, Object> map : InspectionDatas) {
 				String CURRENT_POSITION_NAME=(String)map.get("POSITION_NAME");
 				if(POSITION_NAME.equals(CURRENT_POSITION_NAME)) {
-					maps.put("LIMIT_MAX", (String)map.get("LIMIT_MAX"));
-					maps.put((String)map.get("RECORD_TIME_NUM")+(String)map.get("POSITION_NUM"), (String)map.get("VALUE")+(String)map.get("UNIT"));
+					//设置上下限值
+					String max=(String)map.get("REQUIRE_MAX");//最大值
+					String min=(String)map.get("REQUIRE_MIX");//最小值
+					String unit=(String)map.get("REQUIRE_UNIT");//单位
+					if(max!=null&&min!=null) {//区间的限制
+						maps.put("LIMIT_MAX", min+unit+"-"+max+unit);
+					}else if(max!=null&&min==null) {//只有上限值
+						maps.put("LIMIT_MAX",max+unit);
+					}else {//只有下限值
+						maps.put("LIMIT_MAX",min+unit);
+					}
+					maps.put((String)map.get("RECORD_TIME_NUM")+(String)map.get("REQUIRE_CONTEXT"), (String)map.get("VALUE")+unit);
 				}
 			}
 			lists.add(maps);
