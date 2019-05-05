@@ -22,6 +22,43 @@
 			property="standby3" />
 		<result column="RECORD_DATE" jdbcType="TIMESTAMP"
 			property="recordDate" />
+		<result column="PARA_NAME" jdbcType="VARCHAR"
+			property="paraName" />
+		<result column="TASK_INST_ID" jdbcType="VARCHAR"
+			property="taskInstId" />
+
+	</resultMap>
+
+
+	<resultMap id="RelationResultMap"
+		type="cn.zg.entity.daoEntity.MovingEquipmentValue">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="SCHEME_REMARK" jdbcType="VARCHAR"
+			property="schemeRemark" />
+		<result column="REQUIRE_ID" jdbcType="VARCHAR"
+			property="requireId" />
+		<result column="PARA_VALUE" jdbcType="VARCHAR"
+			property="paraValue" />
+		<result column="UNIT" jdbcType="VARCHAR" property="unit" />
+		<result column="POSITION_NUM" jdbcType="VARCHAR"
+			property="positionNum" />
+		<result column="EQU_NAME" jdbcType="VARCHAR" property="equName" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+		<result column="RECORD_DATE" jdbcType="TIMESTAMP"
+			property="recordDate" />
+		<result column="PARA_NAME" jdbcType="VARCHAR"
+			property="paraName" />
+		<result column="TASK_REQUIRE_CONTEXT" jdbcType="VARCHAR"
+			property="taskRequireContext" />
+		<result column="STAND_VALUE" jdbcType="VARCHAR"
+			property="standValue" />
+		<result column="TASK_INST_ID" jdbcType="VARCHAR"
+			property="taskInstId" />
 	</resultMap>
 
 	<sql id="base_column">
@@ -29,14 +66,29 @@
 		PARA_VALUE, UNIT,
 		POSITION_NUM,
 		EQU_NAME, STANDBY1, STANDBY2,
-		STANDBY3,TO_CHAR(RECORD_DATE,'YYYY-MM-DD') RECORD_DATE
+		STANDBY3,TO_CHAR(RECORD_DATE,'YYYY-MM-DD HH24:MI:SS')
+		RECORD_DATE,PARA_NAME,TASK_INST_ID
+	</sql>
+
+	<sql id="relation_column">
+		ID, SCHEME_REMARK, REQUIRE_ID,
+		PARA_VALUE, UNIT,
+		POSITION_NUM,
+		EQU_NAME, STANDBY1, STANDBY2,
+		STANDBY3,
+		RECORD_DATE,TASK_REQUIRE_CONTEXT AS PARA_NAME,
+		STAND_VALUE,TASK_INST_ID
 	</sql>
 
 	<select id="findByCondition"
 		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
-		resultMap="BaseResultMap">
+		resultMap="RelationResultMap">
+
 
 		SELECT
+		<include refid="relation_column"></include>
+		FROM
+		( SELECT
 		<include refid="base_column"></include>
 		FROM
 		IOT_INSPECTION_VALUE_ME
@@ -48,7 +100,37 @@
 			<if test="schemeRemark != null and schemeRemark !=''">
 				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
 			</if>
+			<if test="taskInstId != null and taskInstId !=''">
+				AND TASK_INST_ID = #{taskInstId,jdbcType=VARCHAR}
+			</if>
 		</where>
+		) T1,
+		(
+		SELECT TASK_REQUIRE_CONTEXT,TASK_REQUIRE_ID,
+		CASE
+		WHEN
+		(TASK_REQUIRE_MIX IS NOT NULL)
+		AND
+		(TASK_REQUIRE_MAX IS NOT NULL)
+		THEN
+		TASK_REQUIRE_MIX || '~' || TASK_REQUIRE_MAX
+		WHEN (TASK_REQUIRE_MIX IS
+		NULL )
+		AND
+		(TASK_REQUIRE_MAX IS NOT NULL)
+		THEN <![CDATA['<']]>
+		|| TASK_REQUIRE_MAX
+
+		WHEN (TASK_REQUIRE_MIX IS NOT NULL )
+		AND
+		(TASK_REQUIRE_MAX IS NULL OR TASK_REQUIRE_MAX = '') THEN <![CDATA['>']]>||
+		TASK_REQUIRE_MIX
+		ELSE ''
+		END AS STAND_VALUE
+		FROM
+		CZ_TASK_INSPECTION_REQUIRE
+		) T2
+		WHERE T1.REQUIRE_ID = T2.TASK_REQUIRE_ID
 	</select>
 
 	<!-- 根据条件获取实际数据条数 -->
@@ -57,7 +139,7 @@
 		resultType="java.util.Map">
 
 		select count(1) NUM from (
-		select distinct position_num
+		select distinct position_num || RECORD_DATE
 		from
 		IOT_INSPECTION_VALUE_ME
 		<where>
@@ -65,13 +147,49 @@
 				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
 			</if>
 			<if test="recordDate != null and recordDate !='' ">
-				TO_CHAR(RECORD_DATE,'YYYY-MM-DD') =
+				AND TO_CHAR(RECORD_DATE,'YYYY-MM-DD') =
 				#{recordDate,jdbcType=TIMESTAMP}
 			</if>
 		</where>
 		)
 	</select>
 
+	<!-- 根据条件选择可选择的日期 -->
+
+	<select id="findDatesByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultType="String">
+
+		SELECT DISTINCT TO_CHAR(RECORD_DATE,'YYYY-MM-DD') RECORD_DATE FROM
+		IOT_INSPECTION_VALUE_ME
+		<where>
+			<if test="schemeRemark != null and schemeRemark != ''">
+				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 根据条件获取任务实例id -->
+	<select id="findTaskInstIds"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+
+		SELECT TASK_INST_ID,MIN(RECORD_DATE) AS RECORD_DATE FROM
+		IOT_INSPECTION_VALUE_ME
+		<where>
+			<if test="schemeRemark != null and schemeRemark != ''">
+				AND SCHEME_REMARK = #{schemeRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="recordDate != null and recordDate !='' ">
+				AND TO_CHAR(RECORD_DATE, 'yyyy-iw') =
+				TO_CHAR(TO_DATE(#{recordDate,jdbcType=TIMESTAMP}, 'yyyy-mm-dd'),
+				'yyyy-IW')
+			</if>
+		</where>
+		GROUP BY TASK_INST_ID ORDER BY RECORD_DATE
+
+	</select>
 
 
 
@@ -82,16 +200,20 @@
 		PARA_VALUE, UNIT, POSITION_NUM,
 		EQU_NAME, STANDBY1,
 		STANDBY2,
-		STANDBY3, RECORD_DATE)
-		values (#{id,jdbcType=VARCHAR},
+		STANDBY3, RECORD_DATE,PARA_NAME)
+		values
+		(#{id,jdbcType=VARCHAR},
 		#{schemeRemark,jdbcType=VARCHAR},
 		#{requireId,jdbcType=VARCHAR},
-		#{paraValue,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR},
+		#{paraValue,jdbcType=VARCHAR},
+		#{unit,jdbcType=VARCHAR},
 		#{positionNum,jdbcType=VARCHAR},
 		#{equName,jdbcType=VARCHAR},
 		#{standby1,jdbcType=VARCHAR},
 		#{standby2,jdbcType=VARCHAR},
-		#{standby3,jdbcType=VARCHAR}, #{recordDate,jdbcType=TIMESTAMP})
+		#{standby3,jdbcType=VARCHAR},
+		#{recordDate,jdbcType=TIMESTAMP},
+		#{paraName,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective"
 		parameterType="cn.zg.entity.daoEntity.MovingEquipmentValue">
@@ -130,6 +252,9 @@
 			<if test="recordDate != null">
 				RECORD_DATE,
 			</if>
+			<if test="paraName != null">
+				PARA_NAME,
+			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -164,6 +289,9 @@
 			</if>
 			<if test="recordDate != null">
 				#{recordDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paraName != null">
+				#{paraName,jdbcType=VARCHAR},
 			</if>
 		</trim>
 	</insert>

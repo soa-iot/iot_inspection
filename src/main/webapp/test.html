@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- 引入样式 -->
+<link rel="stylesheet"
+	href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+<body>
+	<div class="container" id="app">
+		<div class="block">
+			<span class="demonstration">周</span>
+			<el-date-picker v-model="value1" type="week" format="yyyy 第 WW 周"
+				placeholder="选择周"> </el-date-picker>
+		</div>
+</body>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+/* import Vue from 'vue';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import App from './App.vue';
+
+Vue.use(ElementUI);
+
+new Vue({
+  el: '#app',
+  render: h => h(App)
+});
+ */
+  export default {
+    data() {
+      return {
+        value1: ''
+      };
+    }
+  }; 
+</script>
+</html>
