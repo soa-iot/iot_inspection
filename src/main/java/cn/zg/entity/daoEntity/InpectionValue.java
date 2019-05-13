@@ -73,7 +73,7 @@ public class InpectionValue implements Serializable {
 	@Id
 	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_CTIV" )	
 	@SequenceGenerator( name = "SEQUENCE_CTIV", sequenceName = "SEQUENCE_CTIV", allocationSize = 1 )
-	@Column( name = "IVID" )
+
 	public Long getIvid() {
 		return ivid;
 	}
