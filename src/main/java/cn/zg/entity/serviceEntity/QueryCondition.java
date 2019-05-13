@@ -25,5 +25,7 @@ public class QueryCondition {
 	private String schemeRemark;//方案标志
 	
 	private String recordDate;//日期
+	
+	private String taskInstId;
 
 }

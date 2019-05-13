@@ -10,6 +10,7 @@
 package cn.zg.controller;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
 
 import cn.zg.entity.daoEntity.MovingEquipmentConfig;
+import cn.zg.entity.daoEntity.MovingEquipmentValue;
 import cn.zg.entity.serviceEntity.QueryCondition;
 import cn.zg.entity.serviceEntity.ResponseEntity;
 import cn.zg.service.inter.MovingEquipmentInter;
@@ -68,16 +70,18 @@ public class MovingEquipmentController {
 	 * @return
 	 */
 	@RequestMapping("/getMovingEquipmentData")
-	public ResponseEntity<Collection<Map<String, String>>> getMovingEquipmentData(@RequestParam("date") String date,
-			@RequestParam(value = "schemeRemark", required = true) String schemeRemark) {
+	public ResponseEntity<Collection<Map<String, String>>> getMovingEquipmentData(
+			@RequestParam(value = "schemeRemark", required = true) String schemeRemark,
+			@RequestParam(value = "taskInstId", required = true) String taskInstId) {
 
 		/**
 		 * 构造请求条件
 		 */
 		QueryCondition condition = new QueryCondition();
-		condition.setRecordDate(date.trim());
 		condition.setSchemeRemark(schemeRemark.trim());
-		
+		condition.setSchemeType(schemeRemark);
+		condition.setTaskInstId(taskInstId.trim());
+
 		System.out.println(condition);
 		ResponseEntity<Collection<Map<String, String>>> resObj;
 		try {
@@ -88,10 +92,54 @@ public class MovingEquipmentController {
 			e.printStackTrace();
 			resObj = new ResponseEntity<Collection<Map<String, String>>>(1, "failure >>" + e.getMessage(), 0, null);
 		}
-		
-		
+
 		System.out.println(resObj);
 		return resObj;
+	}
+
+	/**
+	 * 根据方案标志获取数据可选日期
+	 * 
+	 * @param schemeRemark
+	 * @return
+	 */
+	@RequestMapping("/getDatesOfData")
+	public ResponseEntity<List<MovingEquipmentValue>> getDatesOfData(
+			@RequestParam(value = "schemeRemark", required = true) String schemeRemark) {
+
+		/**
+		 * 构造请求条件
+		 */
+		QueryCondition condition = new QueryCondition();
+		condition.setSchemeRemark(schemeRemark.trim());
+		List<MovingEquipmentValue> dates = movingEquipmentInter.getDatesOfData(condition);
+		ResponseEntity<List<MovingEquipmentValue>> resObj = new ResponseEntity<List<MovingEquipmentValue>>(0, "success",
+				dates.size(), dates);
+		return resObj;
+
+	}
+
+	/**
+	 * 根据方案标识和时间，获取任务次数
+	 * 
+	 * @param schemeRemark
+	 * @param date
+	 * @return
+	 */
+	@RequestMapping("/getTaskInstIds")
+	public ResponseEntity<List<String>> getTaskInstIds(
+			@RequestParam(value = "schemeRemark", required = true) String schemeRemark,
+			@RequestParam(value = "date", required = true) String date) {
+		QueryCondition condition = new QueryCondition();
+		condition.setRecordDate(date);
+		condition.setSchemeRemark(schemeRemark);
+
+		List<String> taskInstIds = movingEquipmentInter.getTaskIdsByCondition(condition);
+
+		ResponseEntity<List<String>> resObj = new ResponseEntity<List<String>>(0, "success", taskInstIds.size(),
+				taskInstIds);
+		return resObj;
+
 	}
 
 }

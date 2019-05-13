@@ -16,6 +16,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import cn.zg.entity.daoEntity.MovingEquipmentConfig;
+import cn.zg.entity.daoEntity.MovingEquipmentValue;
 import cn.zg.entity.serviceEntity.QueryCondition;
 import cn.zg.entity.serviceEntity.ResponseEntity;
 
@@ -31,5 +32,17 @@ public interface MovingEquipmentInter {
 	 * @throws Exception 
 	 */
 	public Collection<Map<String, String>> getMovingEquipmentDataByCondition(QueryCondition condition) throws Exception;
+
+	/**
+	 * @param condition
+	 * @return
+	 */
+	public List<MovingEquipmentValue> getDatesOfData(QueryCondition condition);
+
+	/**
+	 * @param condition
+	 * @return
+	 */
+	public List<String> getTaskIdsByCondition(QueryCondition condition);
 
 }

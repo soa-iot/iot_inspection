@@ -26,6 +26,16 @@ public interface MovingEquipmentValueMapper {
      */
     Map<String, BigDecimal> countByCondition(QueryCondition condition);
     
+    /**
+     * 根据条件获取可选日期
+     */
+    List<MovingEquipmentValue> findDatesByCondition(QueryCondition condition);
     
+    /**
+     * 根据条件获取任务实例id
+     * @param condition
+     * @return
+     */
+    List<MovingEquipmentValue> findTaskInstIds(QueryCondition condition);
     
 }
