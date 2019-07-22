@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>仪表巡检结果</title>
+<link rel="stylesheet"
+	href="../../../package/layui-v2.4.2/css/layui.css">
+</head>
+<body>
+	<div class="layui-fluid " style="overflow: visible">
+		<!-- 搜索条件 -->
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12 ">
+				<fieldset
+					style="border-radius: 13px; margin-top: 10px; vertical-align: middle;">
+					<legend>查询条件</legend>
+					<form class="layui-form" action="" style="margin-top: 15px;">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">方案名称：</label>
+								<div class="layui-input-inline">
+									<select name="inspection" id="inspection"
+										lay-filter="inspection">
+										<option value="DCS、SIS、F&GS系统巡检方案">DCS、SIS、F&GS系统巡检方案</option>
+										<option value="PLC巡检方案">PLC巡检方案</option>
+										<option value="主装置现场巡检方案">主装置现场巡检方案</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-inline">
+								<label class="layui-form-label">日期</label>
+								<div class="layui-input-inline">
+									<input type="text" class="layui-input" id="record_day"
+										placeholder="yyyy-MM-dd">
+								</div>
+							</div>
+							<div class="layui-inline">
+								<button class="layui-btn" lay-submit
+									lay-filter="search_button_search">
+									<i class="layui-icon">&#xe615;</i> 查询
+								</button>
+							</div>
+							<div class="layui-inline" id="search_button_export"
+								name="search_button_export">
+								<button class="layui-btn">
+									<i class="layui-icon">&#xe60a;</i>导出Excel
+								</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+
+		<!-- 标题-->
+		<div class="layui-row">
+			<div class="layui-col-md12  layui-col-space15">
+				<div class="component_container" id="search_pure_title">
+					<div></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 表格-->
+		<div class="layui-row">
+			<div class="layui-col-md12 " id="meter_record">
+				<div class="component_container" id="meter_record_table"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript"
+	src="../../../package/layui-v2.4.2/layui.js"></script>
+<script type="text/javascript"
+	src="../../../javaScript/meter/meter_inspection_result.js"></script>
+</html>

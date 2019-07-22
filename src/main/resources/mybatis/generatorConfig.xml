@@ -12,7 +12,7 @@
 		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 mysql数据库连接 -->
 		<jdbcConnection
 			driverClass="oracle.jdbc.driver.OracleDriver"
-			connectionURL="jdbc:oracle:thin:@192.168.18.22:1521:orcl"
+			connectionURL="jdbc:oracle:thin:@192.168.18.5:1521:orcl"
 			userId="sts" password="sts123">
 		</jdbcConnection>
 		<!--oracle数据库连接 -->
@@ -46,7 +46,7 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- 指定数据库表 -->
-		<table tableName="IOT_INSPECTION_VALUE_ME" domainObjectName="MovingEquipmentValue"
+		<table tableName="IOT_INSPECTION_VALUE_YB" domainObjectName="MeterInspectionResult"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.MeterInspectionResultMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.MeterInspectionResult">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="SCHEME_TYPE" jdbcType="VARCHAR"
+			property="schemeType" />
+		<result column="SCHEME_NAME" jdbcType="VARCHAR"
+			property="schemeName" />
+		<result column="REQUIRE_ID" jdbcType="VARCHAR"
+			property="requireId" />
+		<result column="REQUIRE_CONTEXT" jdbcType="VARCHAR"
+			property="requireContext" />
+		<result column="INSPECTION_RESULT" jdbcType="VARCHAR"
+			property="inspectionResult" />
+		<result column="RECORD_DAY" jdbcType="TIMESTAMP"
+			property="recordDay" />
+		<result column="TASK_INST_ID" jdbcType="VARCHAR"
+			property="taskInstId" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+	</resultMap>
+
+	<select id="findRecordBySchemeAndDate"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+		select t1.* ,t2.REQUIRE_CONTEXT from (select * from
+		IOT_INSPECTION_VALUE_YB where SCHEME_NAME =
+		#{schemeName,jdbcType=VARCHAR} and to_char(RECORD_DAY,'yyyy-mm-dd') = #{recordDate,jdbcType =
+		TIMESTAMP}) t1 LEFT JOIN
+		CZ_INSPECTION_REQUIRE t2
+		ON t1.REQUIRE_ID = t2.REQUIRE_ID
+
+	</select>
+
+
+
+</mapper>
