@@ -10,7 +10,7 @@
 	<select id="findTaskStateByPlanidAndTime" resultType="cn.zg.entity.daoEntity.StatusRecord">
 		select * from CZ_TASK_INSPECTION_STATE
 		where PLAN_ID = #{planId}
-		and RECORD_TIME like to_date( #{time} ,'YYYY-MM-DD')")
+		and RECORD_TIME like to_date( #{time} ,'YYYY-MM-DD')
 	</select>
 	
 	<!-- ===========================2、新增===============================  -->

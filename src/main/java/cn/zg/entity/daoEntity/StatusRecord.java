@@ -22,28 +22,39 @@ import lombok.experimental.Accessors;
 public class StatusRecord implements Serializable{
 private static final long serialVersionUID = 1L;
 	
+
+
+
+
+
+
+
+
+
+
+
+
+	private String IVID;
 	
-	private Long ivid;
+	private String PLAN_ID;
 	
-	private String plan_id;
+	private Date RECORD_TIME;
 	
-	private Date record_time;
+	private String POSITION_NUM ;
 	
-	private String position_num ;
+	private String VALUE ;
 	
-	private String value ;
+	private String UNIT ;
 	
-	private String unit ;
+	private String REMARK1 ;
 	
-	private String remark1 ;
+	private String REMARK2 ;
 	
-	private String remark2 ;
+	private String STATE ;
 	
-	private String state ;
+	private String COMPLETOR ;
 	
-	private String completor ;
+	private String REMARK3 ;
 	
-	private String remark3 ;
-	
-	private String remark4 ;
+	private String REMARK4 ;
 }
