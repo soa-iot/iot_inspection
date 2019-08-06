@@ -21,7 +21,15 @@ var laydate = layui.laydate,
  * 页面初始化
  */
 $(function(){
+	console.log( '-------页面初始化--------' );	
 	form.render(); 
+	
+	//接受url传递参数
+	var urlTime =  getUrlParamValueByName( 'time' );
+	console.log( urlTime );
+	if( urlTime ){
+		paramJson.time = urlTime;
+	}		
 	
 	/*
 	 * 时间控件渲染
@@ -32,10 +40,19 @@ $(function(){
 		value: paramJson.time,
 	});
 	
+	//接受url传递方案参数
+	var urlScheme =  getUrlParamValueByName( 'scheme' );
+	console.log( decodeURIComponent(urlScheme) );
+	if( urlScheme ){
+		paramJson.currentScheme = decodeURIComponent(urlScheme);
+		
+	}	
 	/*
 	 * 动态生成方案名称
 	 */
 	ajaxByGet( inspectionUrl , {} , searchPlan , false );
+	
+	
 	
 	/*
 	 * 标题加时间
@@ -88,9 +105,14 @@ function searchPlan( jsonData ){
 	console.log( '------- 初始化方案--------' );
 	if( jsonData.state == 0 ){
 		if( jsonData.data != null){
-			$.each( jsonData.data, function( index, item ){
+			$.each( jsonData.data, function( index, item ){	
+				var flag = '';
+				if( item.SCHEME_NAME == paramJson.currentScheme ){
+					console.log( paramJson.currentScheme );
+					flag = 'selected';
+				}
 				$( '#inspection' ).append( 
-						'<option value="' + item.SCHEME_ID + '">' + item.SCHEME_NAME + '</option>' 
+						'<option value="' + item.SCHEME_ID + '"' + flag + '>' + item.SCHEME_NAME + '</option>' 
 				); 
 			})			
 			element.init();
@@ -120,6 +142,7 @@ function searchButtonClickEvent(){
 	 */
 	getTableHead( tableHeadUrl , paramJson );
 	
+	console.log(currentTableHead);
 	/*
 	 * 生成表格
 	 */
@@ -160,18 +183,18 @@ function searchButtonClickEvent(){
 		    	$( '#search_pure_table' ).next( '.layui-form' )
 	    		.find( '.layui-table-box > .layui-table-main td' )
 	    		.filter( 'td[data-key^="1-4"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-5"]' ).remove();
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main td' )
-	    		.filter( 'td[data-key^="1-6"]' ).remove();
-		    	
-		    	//去掉数据行的左右padding
-		    	$( '#search_pure_table' ).next( '.layui-form' )
-		    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
-		    		.css( { "padding" : "0px" } );
-		    	
+//		    	$( '#search_pure_table' ).next( '.layui-form' )
+//	    		.find( '.layui-table-box > .layui-table-main td' )
+//	    		.filter( 'td[data-key^="1-5"]' ).remove();
+//		    	$( '#search_pure_table' ).next( '.layui-form' )
+//	    		.find( '.layui-table-box > .layui-table-main td' )
+//	    		.filter( 'td[data-key^="1-6"]' ).remove();
+//		    	
+//		    	//去掉数据行的左右padding
+//		    	$( '#search_pure_table' ).next( '.layui-form' )
+//		    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
+//		    		.css( { "padding" : "0px" } );
+//		    	
 		    	//获取表格返回数据
 		    	currentTableBody = res.data;
 		    }
@@ -268,29 +291,29 @@ function generateTable(){
 	    cols : currentTableHead ,
 	    done : function( res , curr , count ){
 	    	//去掉数据的多余列
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-main  td' )
-	    		.filter( 'td[data-key^="1-1"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-2"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-3"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-4"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-5"]' ).remove();
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-    		.find( '.layui-table-box > .layui-table-main td' )
-    		.filter( 'td[data-key^="1-6"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//	    		.find( '.layui-table-box > .layui-table-main  td' )
+//	    		.filter( 'td[data-key^="1-1"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//    		.find( '.layui-table-box > .layui-table-main td' )
+//    		.filter( 'td[data-key^="1-2"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//    		.find( '.layui-table-box > .layui-table-main td' )
+//    		.filter( 'td[data-key^="1-3"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//    		.find( '.layui-table-box > .layui-table-main td' )
+//    		.filter( 'td[data-key^="1-4"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//    		.find( '.layui-table-box > .layui-table-main td' )
+//    		.filter( 'td[data-key^="1-5"]' ).remove();
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//    		.find( '.layui-table-box > .layui-table-main td' )
+//    		.filter( 'td[data-key^="1-6"]' ).remove();
 	    	
 	    	//去掉数据行的左右padding
-	    	$( '#search_pure_table' ).next( '.layui-form' )
-	    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
-	    		.css( { "padding" : "0px" } );
+//	    	$( '#search_pure_table' ).next( '.layui-form' )
+//	    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
+//	    		.css( { "padding" : "0px" } );
 	    	
 	    	//获取表格返回数据
 	    	currentTableBody = res.data;
@@ -307,44 +330,111 @@ function generateTable(){
  */
 function generStaticTable( tableHeadData, tableBodyData ){
 	console.log( '生成静态表格……' );
-	var tableBefore = "<table>",tableEnd = "</table>";	
-	var tableBody = "";
-	var colspan ;
+	var headLength = tableHeadData[5].length-1;
+	var tableBefore = '<table  border="1" cellspacing="0" font-size="18px" text-align="center" >'
+		,tableEnd = "</table>";	
+	
+	//生成标题
+	var tableBody = '<tr style="height:50px;font-size:28px;font-weight:500;text-align:center">';
+	var l = 0;
+	for( var i = 0; i <=headLength; i = i+9 ){
+		l = headLength - i + 1;
+		if( l >= 9 ){
+			tableBody = tableBody + 
+			'<td colspan="9" style="text-align=center">'  
+				+ currentTableHeadTitle 
+			+ ' </td>';	
+		}else{
+			tableBody = tableBody + 
+			'<td colspan="' + l + '" style="text-align=center">'  
+				+ currentTableHeadTitle 
+			+ ' </td>';
+		}	
+	}
+	tableBody = tableBody + '</tr>';
+	
+	//生成表头	
+	var pageColspanNum = 9  //标准excel页面的列数
+	,leftNum = pageColspanNum //每次循环后剩余的未使用的列数
+	,leftColspanNum = 0;  //每次循环后剩余的还需要继续合并的列数
+	//生成一级表头	
+	tableBody = tableBody + '<tr  style="height:30px;text-align:center">'	
+	try{ 
+		var i = 0;
+		for( var j = 0; j < tableHeadData[0].length; j++ ){
+			i++ ;
+			var item1 = tableHeadData[0][j];		
+			//计算colspan			
+			if( j == 0 && i==1 ){
+				leftColspanNum = item1.colspan?item1.colspan:1; 
+			}				
+			if( leftColspanNum < leftNum ){
+				tableBody = tableBody
+				+ '<td  style="width:110px" colspan=' + leftColspanNum + ' align="center">' 
+				+ item1.title + '</td>';
+				
+				leftNum = leftNum - leftColspanNum;
+				leftColspanNum = 0;
+				var tempNum = tableHeadData[0][j+1].colspan;
+				leftColspanNum = tempNum?tempNum:1; 
+			}else if( leftColspanNum == leftNum  ){
+				tableBody = tableBody
+				+ '<td  style="width:110px" colspan=' + leftColspanNum + ' align="center">' 
+				+ item1.title + '</td>';
+				
+				leftNum = leftNum - leftColspanNum;
+				leftColspanNum = 0;
+				leftNum = pageColspanNum;
+				var tempNum = tableHeadData[0][j+1].colspan;			
+				leftColspanNum = tempNum?tempNum:1; 				
+			}else {
+				tableBody = tableBody
+				+ '<td  style="width:110px" colspan=' + leftNum + ' align="center">' 
+				+ item1.title+ '</td>';
+				
+				leftColspanNum = leftColspanNum - leftNum;
+				leftNum = pageColspanNum;	
+				j--;
+			}
+		} 
+    }catch(err){
+       console.log(err);
+    }
+	tableBody = tableBody + "</tr>";
+	console.log(tableBody);
+
+	//生成二到六级表头
+	var colspan;
+	tableHeadData.splice(0,1);
 	$.each( tableHeadData, function( index, item ){
-		tableBody = tableBody + "<tr>";		
+		tableBody = tableBody + '<tr  style="height:30px;text-align:center">';		
 		$.each( item, function( index1, item1 ){
 			colspan = item1.colspan?item1.colspan:1;
 			tableBody = tableBody
-				+ '<td colspan=' + colspan + ' align=' + item1.align + '>' 
+				+ '<td  style="width:110px" colspan=' + colspan + ' align=' + item1.align + '>' 
 				+ item1.title+ '</td>';
 		} )
 		tableBody = tableBody + "</tr>";
 	} )
+	
+	//生成表数据
 	//console.log( '生成静态表格-生成表头……tableBody' + tableBody );
-
-	var position  = "",length = tableHeadData.length-1,
-		flagData = tableHeadData[length];
+	var position  = "",length = tableHeadData.length-1;
+	flagData = tableHeadData[length];
 	$.each( tableBodyData, function( index, item ){
+		tableBody = tableBody + '<tr  style="height:30px">';		
 		for( var o in flagData ){
 			position = flagData[o].field;
 			if( item[position] ){
 				tableBody = tableBody 
-				+ '<td align="center">' + item[position] + '</td>';
+				+ '<td style="width:110px;text-align:center">' + item[position] + '</td>';
 			}else{
 				tableBody = tableBody 
-				+ '<td align="center">' + '' + '</td>';
+				+ '<td style="width:110px;text-align:center" >' + '' + '</td>';
 			}
 			
 			
 		}
-		/*
-		$.each( flagData, function( index1, item1 ){
-			console.log( '生成静态表格……item.field' + item1.field );
-			position = item1[field];
-			tableBody = tableBody 
-				+ '<td align="center">' + item[position] + '</td>';
-		} )
-		*/
 		tableBody = tableBody + "</tr>";
 	})
 	

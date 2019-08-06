@@ -50,7 +50,7 @@ public class PositionNum implements Serializable{
 	}
 
 	public String getAlign() {
-		return align;
+		return "center";
 	}
 
 	public Integer getMinWidth() {

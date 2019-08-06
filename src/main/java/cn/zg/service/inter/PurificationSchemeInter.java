@@ -45,4 +45,11 @@ public interface PurificationSchemeInter {
 	 */  
 	List<Map<String, Object>> getInspectioNames();
 
+	/**   
+	 * @Title: getInspectState   
+	 * @Description: 查看任务状态    
+	 * @return: List<Map<String,Object>>        
+	 */  
+	List<Map<String, Object>> getInspectState(String planId, String time);
+
 }

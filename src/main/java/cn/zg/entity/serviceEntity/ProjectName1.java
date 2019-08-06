@@ -33,6 +33,7 @@ public class ProjectName1 implements Serializable{
 	public ProjectName1() {
 		super();
 		this.align = "center";
+		this.width = 100;
 	}
 
 	/**  
@@ -59,7 +60,7 @@ public class ProjectName1 implements Serializable{
 	 * @return: String <BR>  
 	 */
 	public String getAlign() {
-		return align;
+		return "center";
 	}
 
 	/**  

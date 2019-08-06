@@ -122,7 +122,7 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		 */
 		//一级表头-巡检点
 		CheckPosition cp = new CheckPosition();	
-		cp.setColspan( "2" );
+		cp.setColspan( "2" ); 
 		cp.setTitle( "单元" );
 		checkPositionList.add( cp );
 		//二级表头-巡检项目名称1
@@ -292,11 +292,11 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		List<Object> returnList = new ArrayList<Object>();
 		returnList.add( checkPositionList );
 		returnList.add( projectName1List );
-		returnList.add( projectName2List );
+		//returnList.add( projectName2List );
 		returnList.add( positionNumList );
 		returnList.add( unitList );
 		returnList.add( dataRangeList );
-		returnList.add( positionList );
+		//returnList.add( positionList );
 		
 		returnList.add( requireidList );
 		
@@ -326,24 +326,25 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
-		logger.debug( "S-获取表格展示数据   -inpectValues:" + inpectValues.toString());
-		//动态添加当前时间点没有巡检要求-满足layui表格展示要求
-		try {
-			ArrayList<String> tempRequireids = new ArrayList<String>();
-			Date plantime = inpectValues.get(0).getRecord_time();
-			for( InpectionValue i : inpectValues ) {
-				tempRequireids.add( i.getRemark1() );
-			}
-			List<Schemeposition> requires = psd.findByInspectionName(planId);
-			String plantime1 = inpectValues.get(0).getRemark2();
-			for( Schemeposition s : requires ) {
-				if ( !tempRequireids.contains( s.getrequireid() )) {
-					inpectValues.add( new InpectionValue( (long)1, "", plantime ,s.getPositionNum(), " ", s.getUnit(), s.getrequireid(), plantime1 ));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		logger.debug( "S-获取表格展示数据   -inpectValues:" + inpectValues.toString());
+		
+		//动态添加当前时间点没有巡检要求的项目-(没有数据的用"-"代替)
+//		try {
+//			ArrayList<String> tempRequireids = new ArrayList<String>();
+//			Date plantime = inpectValues.get(0).getRecord_time();
+//			for( InpectionValue i : inpectValues ) {
+//				tempRequireids.add( i.getRemark1() );
+//			}
+//			List<Schemeposition> requires = psd.findByInspectionName(planId);
+//			String plantime1 = inpectValues.get(0).getRemark2();
+//			for( Schemeposition s : requires ) {
+//				if ( !tempRequireids.contains( s.getrequireid() )) {
+//					inpectValues.add( new InpectionValue( (long)1, "", plantime ,s.getPositionNum(), "-", s.getUnit(), s.getrequireid(), plantime1 ));
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		//分类处理
 		String flag =inpectValues.get( 0 ).getRemark2();
 //		Calendar cal = Calendar.getInstance();
@@ -353,52 +354,66 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		Map<String,Object> m = new HashMap<String,Object>();
 		int length = inpectValues.size();
 		String currentHour = "";
-		for( int i = 0; i < length; i++ ) {				
-			if( i == length-1 || !flag.equals( inpectValues.get( i ).getRemark2().trim() ) ) {				
+		for( int i = 0; i < length; i++ ) {		
+			if( i == 0) {
+				flag = inpectValues.get( 0 ).getRemark2();
+			}
+			if(  !flag.equals( inpectValues.get( i ).getRemark2().trim() ) ) {				
 				flag = inpectValues.get( i ).getRemark2();
-				String timeStr = inpectValues.get( i ).getRemark2();
-				m.put( "time", timeStr + ":00");
+				String timeStr = inpectValues.get( i-1 ).getRemark2();
+				m.put( "time", timeStr + ":00"); 
 				if( Integer.parseInt( timeStr ) > 8 && Integer.parseInt( timeStr ) < 19  ) {
 					m.put( "timeName", "白班" );
 				}else {
 					m.put( "timeName", "夜班" );
 				}
 				list.add( m );
+//				System.out.println(list);
 				m = null;
 				m = new HashMap<String,Object>();
+			}		
+			m.put( inpectValues.get( i ).getRemark1(), inpectValues.get( i ).getValue() );	
+			if( i == length - 1 ) {				
+				flag = inpectValues.get( i ).getRemark2();
+				String timeStr = inpectValues.get( i-1 ).getRemark2();
+				m.put( "time", timeStr + ":00"); 
+				if( Integer.parseInt( timeStr ) > 8 && Integer.parseInt( timeStr ) < 19  ) {
+					m.put( "timeName", "白班" );
+				}else {
+					m.put( "timeName", "夜班" );
+				}
+				list.add( m );
+			}	
+		}	
+		
+		List<Map<String,Object>> list1 = new ArrayList<Map<String,Object>>();
+		//动态添加当前时间点没有巡检要求的项目-(没有数据的用"-"代替)
+		List<Schemeposition> requires = psd.findByInspectionName(planId);
+		Set<String> wholeKeys = new HashSet<String>();
+		for(  Schemeposition s : requires  ) {
+			wholeKeys.add( s.getrequireid() );
+		}
+		System.out.println(wholeKeys.size());
+		System.out.println("---------------------------------------------------");
+		for( Map<String,Object> m1 : list ) {	
+			Set<String> wholeKeysTemp = new HashSet<String>();
+			for( String s : wholeKeys ) {
+				wholeKeysTemp.add( s );
 			}
-//			cal.setTime( inpectValues.get( i ).getRecord_time() );
-//			currentHour = cal.get( Calendar.HOUR_OF_DAY ) + "" ;
-//			if( !flag.equals( currentHour )) {
-//				flag = currentHour;
-//				logger.debug( "查询表格数据……flag:" + flag ); 
-//				if( m != null && m.size() > 0) {
-//					if( Integer.parseInt( flag ) > 8 && 
-//							Integer.parseInt( flag ) < 19 ) {
-//						m.put( "timeName", "白班" );
-//					}else {
-//						m.put( "timeName", "夜班" );
-//					}
-//					m.put( "time", (Integer.parseInt( flag ) - 2 ) + ":00" );
-//					list.add( m );
-//				}
-//				m = null;
-//				m = new HashMap<String,Object>();				
-//			}
-//			m.put( inpectValues.get( i ).getPosition_num(), inpectValues.get( i ).getValue() );			
-			m.put( inpectValues.get( i ).getRemark1(), inpectValues.get( i ).getValue() );
-//			if( i == length - 1 ) {
-//				if( Integer.parseInt( currentHour ) > 8 && 
-//						Integer.parseInt( currentHour ) < 19 ) {
-//					m.put( "timeName", "白班" );
-//				}else {
-//					m.put( "timeName", "夜班" );
-//				}
-//				m.put( "time", Integer.parseInt( currentHour ) + ":00" );
-//				list.add( m );				
-//			}			
-		}		
-		System.out.println( list.size() ); 
+			Set<String> keys = m1.keySet();
+			boolean b = wholeKeysTemp.removeAll( keys );
+			System.out.println(wholeKeysTemp.size());
+			if( b ) {
+				for( String s : wholeKeysTemp ) {
+					m1.put( s, "-" );
+				}
+			}else {
+				logger.debug( "S-获取表格展示数据   -增加当前非巡检点位数据为-失败");
+			}
+			wholeKeysTemp = null;
+			
+		}
+		
 		return list;
 	}
 	
@@ -422,6 +437,136 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("-S---获取所有的方案信息报错 -------");
+			return null;
+		}
+	}
+	
+	
+	/**   
+	 * @Title: getInspectState   
+	 * @Description: 查看任务状态  
+	 * @return: List<Map<String,Object>>        
+	 */ 
+	@Override
+	public List<Map<String,Object>> getInspectState( String planId, String time )  {
+		List<Map<String,Object>> tempTaskStates = new ArrayList<Map<String,Object>>();
+		try {			
+			try {
+				tempTaskStates = inpectValueRepos.findTaskStateByPlanidAndTime( planId, time );
+			} catch (Exception e) {
+				e.printStackTrace(); 
+			}
+			if( tempTaskStates != null ) {
+				tempTaskStates.forEach(t->logger.debug( "S-获取任务状态  -inpectValues:" + t.get("REMARK2")+"," +t.get("state")));
+			}else { 
+				logger.debug( "S-获取任务状态为空------------:");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		List<Map<String,Object>> taskStates = new ArrayList<Map<String,Object>>();
+		List<String> taskStatesKey = new ArrayList<String>();
+		
+		//循环数据，根据重复的数据判断是否完成
+		for( Map<String,Object> m : tempTaskStates) {
+			String tempRemark1 = (String) m.get( "REMARK2" );
+			String tempState = (String) m.get( "STATE" );
+			String tempCompletor = (String) m.get( "COMPLETOR" );
+			if( tempRemark1 == null ) {
+				continue;
+			}
+			if( tempState == null ) {
+				tempState = "0";
+			}
+			
+			try {
+				if( !taskStatesKey.contains(tempRemark1) ) {
+					HashMap<String, Object> tempMap = new HashMap<String,Object>();
+					taskStatesKey.add( tempRemark1 );
+					tempMap.put( "time", tempRemark1 );
+					tempMap.put( "state", tempState );
+					tempMap.put( "completor", tempCompletor );
+					logger.info( "S--------tempMap------------:" + tempMap );
+					taskStates.add( tempMap );
+				}else {
+					for( Map<String,Object> m1 : taskStates ) {
+						String remark1 = (String) m1.get( "time" );
+						String state = (String) m1.get( "state" );
+						if( "0".equals( state ) && tempRemark1.equals( remark1.trim() ) && "1".equals( tempState )  ) {
+							m1.remove( "state" );
+							m1.put( "state", "1" );
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}					
+		}
+		logger.info( "S--------任务完成列表------------:" + taskStates.toString() );
+		
+		/*
+		 * 添加最后的完成时间
+		 */
+		List<Map<String, Object>> lastDotimes = getTaskLastDotimeByPlanidAndTime( planId, time );
+		for( Map<String, Object> m0 : lastDotimes ) {
+			String time0 = "";
+			Object timeObj =  m0.get( "REMARK2" );
+			if( timeObj != null ) {
+				time0 = timeObj.toString();
+			}
+			String completTime0 = "";
+			Object completObj =  m0.get( "MAXTIME" );
+			if( completObj != null ) {
+				completTime0 = completObj.toString();
+			}
+			for( Map<String, Object> m1 : taskStates ) {
+				String time1 = (String) m1.get( "time" );
+				if( time1 != null && time1.equals( time0 )) {
+					m1.put( "complentTime", completTime0 );
+					break;
+				}
+			}
+		}
+		
+		logger.info( "S--------任务完成列表（加完成时间）------------:" + taskStates.toString() );
+		return taskStates;
+	}
+	
+	/**   
+	 * @Title: formatInspectState   
+	 * @Description:  格式化数据，方便前端展示（定制1天12个任务，查询出的结果可能不是） 
+	 * @return: List<Map<String,Object>>        
+	 */  
+	public List<Map<String,Object>> formatInspectState( List<Map<String,Object>> lists){
+		logger.info( "S--------格式化数据，方便前端展示------------");
+	
+		return null;
+	}
+	
+	/**   
+	 * @Title: getTaskLastDotimeByPlanidAndTime   
+	 * @Description:   
+	 * @return: List<Map<String,Object>>        
+	 */  
+	public List<Map<String,Object>> getTaskLastDotimeByPlanidAndTime( String planId, String time ){
+		logger.info( "S--------查看任务各时间点最后执行时间------------");
+		List<Map<String,Object>> tempDotimes = new ArrayList<Map<String,Object>>();
+		try {			
+			try {
+				tempDotimes = inpectValueRepos.findTaskLastDotimeByPlanidAndTime( planId, time );
+			} catch (Exception e) {
+				e.printStackTrace(); 
+			}
+			if( tempDotimes != null ) {
+				tempDotimes.forEach(t->logger.debug( "S-查看任务各时间点最后执行时间----" + t.get("MAXTIME")+"," +t.get("REMARK2")));
+			}else { 
+				logger.debug( "S-查看任务各时间点最后执行时间结果为空------------:");
+			}
+			return tempDotimes;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}

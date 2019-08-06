@@ -14,8 +14,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.validation.annotation.Validated;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Entity
 @Table( name = "CZ_TASK_INSPECTION_VALUE" )
@@ -46,12 +52,20 @@ public class InpectionValue implements Serializable {
 	private String remark1 ;
 	
 	private String remark2 ;
-		
+	
+	private String state ;
+	
+	private String completor ;
+	
+	private String remark3 ;
+	
+	private String remark4 ;
+	
 	public InpectionValue() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public InpectionValue(Long ivid, String plan_id, Date record_time, String position_num, String value,
 			String unit, String remark1, String remark2) {
 		super();
@@ -65,6 +79,24 @@ public class InpectionValue implements Serializable {
 		this.remark2 = remark2;
 	}
 
+
+	public InpectionValue(Long ivid, String plan_id, Date record_time, String position_num, String value,
+			String unit, String remark1, String remark2, String state, String completor, String remark3, String remark4) {
+		super();
+		this.ivid = ivid;
+		this.plan_id = plan_id;
+		this.record_time = record_time;
+		this.position_num = position_num;
+		this.value = value;
+		this.unit = unit;
+		this.remark1 = remark1;
+		this.remark2 = remark2;
+		this.state = state;
+		this.completor = completor;
+		this.remark3 = remark3;
+		this.remark4 = remark4;
+	}
+
 	/**  
 	 * @Title:  getIvid <BR>  
 	 * @Description: please write your description <BR>  
@@ -73,7 +105,6 @@ public class InpectionValue implements Serializable {
 	@Id
 	@GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_CTIV" )	
 	@SequenceGenerator( name = "SEQUENCE_CTIV", sequenceName = "SEQUENCE_CTIV", allocationSize = 1 )
-
 	public Long getIvid() {
 		return ivid;
 	}
@@ -129,6 +160,7 @@ public class InpectionValue implements Serializable {
 		return unit;
 	}
 
+
 	/**  
 	 * @Title:  getRemark1 <BR>  
 	 * @Description: please write your description <BR>  
@@ -147,6 +179,22 @@ public class InpectionValue implements Serializable {
 	@Column( name = "REMARK2")
 	public String getRemark2() {
 		return remark2;
+	}
+	@Column( name = "STATE")
+	public String getState() {
+		return state;
+	}
+	@Column( name = "COMPLETOR")
+	public String getCompletor() {
+		return completor;
+	}
+	@Column( name = "REMARK3")
+	public String getRemark3() {
+		return remark3;
+	}
+	@Column( name = "REMARK4")
+	public String getRemark4() {
+		return remark4;
 	}
 
 	/**  
@@ -203,6 +251,7 @@ public class InpectionValue implements Serializable {
 		this.unit = unit;
 	}
 
+
 	/**  
 	 * @Title:  setRemark1 <BR>  
 	 * @Description: please write your description <BR>  
@@ -220,6 +269,19 @@ public class InpectionValue implements Serializable {
 	public void setRemark2(String remark2) {
 		this.remark2 = remark2;
 	}
+	public void setRemark3(String remark3) {
+		this.remark3 = remark3;
+	}
+	
+	public void setRemark4(String remark4) {
+		this.remark4 = remark4;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	public void setCompletor(String completor) {
+		this.completor = completor;
+	}
 
 	/**   
 	 * <p>Title: toString</p>   
@@ -230,9 +292,8 @@ public class InpectionValue implements Serializable {
 	@Override
 	public String toString() {
 		return "InpectionValue [ivid=" + ivid + ", plan_id=" + plan_id + ", record_time=" + record_time
-				+ ", position_num=" + position_num + ", value=" + value + ", unit=" + unit + ", remark1=" + remark1
-				+ ", remark2=" + remark2 + "]";
+				+ ", position_num=" + position_num + ", value=" + value + ", unit=" + unit+  ", remark1=" + remark1
+				+ ", remark2=" + remark2+ ", state=" + state+ ", completor=" + completor+ ", remark3=" + remark3+ ", remark4=" + remark4 + "]";
 	}
-	
 	
 }

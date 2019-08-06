@@ -4,16 +4,16 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>净化现场巡检方案</title>
-	<link rel="stylesheet" href="../../../package/layui-v2.4.2/css/layui.css">
-	<link rel="stylesheet" href="../../../css/project.css">
-	<link rel="stylesheet" href="../../../css/productionReport/purificationScheme/sitePureScheme.css">
-	<script type="text/javascript" src="../../../package/layui-v2.4.2/layui.all.js"></script>
-	<script type="text/javascript" src="../../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="../../../package/own/universal.js"></script>
-	<script type="text/javascript" src="../../../javaScript/project.js"></script>
+	<title>净化现场巡检方案任务跟踪</title>
+	<link rel="stylesheet" href="/iot_inspection/package/layui-v2.4.2/css/layui.css">
+	<link rel="stylesheet" href="/iot_inspection/css/project.css">
+	<link rel="stylesheet" href="/iot_inspection/css/taskTrack/pureScheme.css">
+	<script type="text/javascript" src="/iot_inspection/package/layui-v2.4.2/layui.all.js"></script>
+	<script type="text/javascript" src="/iot_inspection/package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="/iot_inspection/package/own/universal.js"></script>
+	<script type="text/javascript" src="/iot_inspection/javaScript/project.js"></script>
 	<script type="text/javascript" 
-		src="../../../javaScript/productionReport/purificationScheme/sitePureScheme.js"></script>	
+		src="/iot_inspection/javaScript/taskTrack/pureScheme.js"></script>	
 </head>
 <body>
 	<div class="layui-fluid " style="overflow:visible"> 	   	
@@ -47,14 +47,15 @@
 							</div>	
 							<div class="layui-inline" id="search_button_search">
 								<button class="layui-btn" name="search">
-				  					<i class="layui-icon">&#xe615;</i> 查询
+				  					<i class="layui-icon">&#xe615;</i>   查询
 								</button>
 					   		</div>
+					   		<!-- 
 					   		<div class="layui-inline" id="search_button_export">
 								<button class="layui-btn">
 				  					<i class="layui-icon">&#xe60a;</i>打印页面
 								</button>
-					   		</div>	
+					   		</div>	 -->
   						</div>
   					</form>
 				</fieldset>
@@ -73,11 +74,28 @@
 	  	<!-- 表格-->
 		<div class="layui-row" >
 	   		<div class="layui-col-md12 " id="table_parent" > 
-				<div class="component_container" id="search_pure_table" >
+				<div class="component_container" id="search_pure_table" lay-filter="search_pure_table">
 
 				</div>
 	   		</div>
-	   	</div>
+	   	</div>		
 	</div>
+	
+	<!-- 表格按钮 -->
+	<script type="text/html" id="barDemo">
+		<a class="layui-btn layui-btn-xs" lay-event="detail">&nbsp&nbsp&nbsp查&nbsp&nbsp&nbsp看&nbsp&nbsp&nbsp</a>
+	</script>
+	
+	<script type="text/html" id="stateTpl">
+  		{{#  if(d.state == 0){ }}
+			<div style="color:blue;font-size:15px;font-weight:bold ">未完成</div>
+  		{{#  } else { }}
+    		<div style="color:green;font-size:15px;font-weight:bold ">已完成</div>
+  		{{#  } }}
+	</script>
+	
+	<script type="text/html" id="timeTpl">
+		<div >{{d.time}} : 00</div>
+	</script>
 </body>
 </html>			

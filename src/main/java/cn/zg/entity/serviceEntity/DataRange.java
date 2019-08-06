@@ -32,6 +32,7 @@ public class DataRange implements Serializable{
 	public DataRange() {
 		super();
 		this.align = "center";
+		this.width = 100;
 	}
 
 	public DataRange(String title, String colspan, String align) {
@@ -65,7 +66,7 @@ public class DataRange implements Serializable{
 	 * @return: String <BR>  
 	 */
 	public String getAlign() {
-		return align;
+		return "center";
 	}
 
 	/**  
