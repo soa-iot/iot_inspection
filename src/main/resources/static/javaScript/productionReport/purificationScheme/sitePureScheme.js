@@ -69,6 +69,8 @@ $(function(){
 	 * 表格配置参数生成表格
 	 */
 	generateTable();
+	
+	$( '#search_button_search' ).click();
 		
 })
 
@@ -291,30 +293,18 @@ function generateTable(){
 	    cols : currentTableHead ,
 	    done : function( res , curr , count ){
 	    	//去掉数据的多余列
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//	    		.find( '.layui-table-box > .layui-table-main  td' )
-//	    		.filter( 'td[data-key^="1-1"]' ).remove();
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//    		.find( '.layui-table-box > .layui-table-main td' )
-//    		.filter( 'td[data-key^="1-2"]' ).remove();
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//    		.find( '.layui-table-box > .layui-table-main td' )
-//    		.filter( 'td[data-key^="1-3"]' ).remove();
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//    		.find( '.layui-table-box > .layui-table-main td' )
-//    		.filter( 'td[data-key^="1-4"]' ).remove();
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//    		.find( '.layui-table-box > .layui-table-main td' )
-//    		.filter( 'td[data-key^="1-5"]' ).remove();
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//    		.find( '.layui-table-box > .layui-table-main td' )
-//    		.filter( 'td[data-key^="1-6"]' ).remove();
-	    	
-	    	//去掉数据行的左右padding
-//	    	$( '#search_pure_table' ).next( '.layui-form' )
-//	    		.find( '.layui-table-box > .layui-table-header tr:nth-child(7) th div' )
-//	    		.css( { "padding" : "0px" } );
-	    	
+	    	$( '#search_pure_table' ).next( '.layui-form' )
+    		.find( '.layui-table-box > .layui-table-main  td' )
+    		.filter( 'td[data-key^="1-1"]' ).remove();
+    	$( '#search_pure_table' ).next( '.layui-form' )
+		.find( '.layui-table-box > .layui-table-main td' )
+		.filter( 'td[data-key^="1-2"]' ).remove();
+    	$( '#search_pure_table' ).next( '.layui-form' )
+		.find( '.layui-table-box > .layui-table-main td' )
+		.filter( 'td[data-key^="1-3"]' ).remove();
+    	$( '#search_pure_table' ).next( '.layui-form' )
+		.find( '.layui-table-box > .layui-table-main td' )
+		.filter( 'td[data-key^="1-4"]' ).remove();
 	    	//获取表格返回数据
 	    	currentTableBody = res.data;
 	    },

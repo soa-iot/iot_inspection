@@ -56,14 +56,14 @@ function searchButtonClickEvent(){
 				dataName: 'data'
 			},      	
 		    cols : [[
-				  {type:'numbers',width:'10%', title: '序号'}
+		    	{type:'numbers',width:'10%', title: '序号'}
 			      ,{field:'id', width:'180', title: 'ID', hide: true}
 			      ,{field:'', width:'20%', title: '方案名称',align:'center',templet: 
 			         				'<span style="color: #c00;">'+ currentTableHeadTitle +'</span>'
 			      				}
 			      ,{field:'time', width:'10%', title: '任务时间',align:'center',templet: '#timeTpl'}
-			      ,{field:'completor', width:'15%', title: '执行人',align:'center'}
-			      ,{field:'complentTime', width:'20%', title: '完成时间',align:'center'}
+			      ,{field:'state', width:'15%', title: '执行人',align:'center'}
+			      ,{field:'remark3', width:'20%', title: '完成时间',align:'center'}
 			      ,{field:'state', width:'10%', title: '状态',align:'center',  templet: '#stateTpl'}
 			      ,{fixed: 'right', width:'15%', title: '详情查看',align:'center', toolbar: '#barDemo'}
 			    ]] 
@@ -224,8 +224,8 @@ function generateTable(){
 		         				'<span style="color: #c00;">'+ currentTableHeadTitle +'</span>'
 		      				}
 		      ,{field:'time', width:'10%', title: '任务时间',align:'center',templet: '#timeTpl'}
-		      ,{field:'completor', width:'15%', title: '执行人',align:'center'}
-		      ,{field:'complentTime', width:'20%', title: '完成时间',align:'center'}
+		      ,{field:'state', width:'15%', title: '执行人',align:'center'}
+		      ,{field:'remark3', width:'20%', title: '完成时间',align:'center',templet: '#compeletTimeTpl'}
 		      ,{field:'state', width:'10%', title: '状态',align:'center',  templet: '#stateTpl'}
 		      ,{fixed: 'right', width:'15%', title: '详情查看',align:'center', toolbar: '#barDemo'}
 		    ]] ,	   
