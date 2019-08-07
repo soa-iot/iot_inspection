@@ -32,6 +32,7 @@ public class Unit implements Serializable{
 	public Unit() {
 		super();
 		this.align = "center";
+		this.width = 100;
 	}
 
 	public Unit(String title, String colspan, String align) {
@@ -65,7 +66,7 @@ public class Unit implements Serializable{
 	 * @return: String <BR>  
 	 */
 	public String getAlign() {
-		return align;
+		return "center";
 	}
 
 	/**  

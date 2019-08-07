@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.zg.entity.daoEntity.StatusRecord;
 import cn.zg.entity.dataExchange.ResultJson;
 import cn.zg.service.impl.PurificationSchemeService;
 import cn.zg.service.inter.PurificationSchemeInter;
+import cn.zg.service.inter.StatusRecordS;
 
 /**
  * 
@@ -33,6 +35,9 @@ public class PurificationSchemeController {
 	
 	@Autowired
 	private PurificationSchemeInter psi;
+	
+	@Autowired
+	private StatusRecordS statusRecordS;
 	
 	/**   
 	 * @Title: getTableHead   
@@ -84,4 +89,21 @@ public class PurificationSchemeController {
 		return new ResultJson<List<Map<String,Object>>>( 0, "查询方案数据成功", lists );
 	}
 	
+	
+	/**   
+	 * @Title: getTableStatusC   
+	 * @Description: 查看任务状态    
+	 * @return: ResultJson<List<Map<String,Object>>>        
+	 */  
+	@GetMapping("/status")
+	public ResultJson<List<StatusRecord>> getTableStatusC (
+			@RequestParam( "time" ) String time,
+			@RequestParam( "currentScheme" ) String currentScheme) throws ParseException {
+		logger.debug( "C-查看任务状态   -time-currentScheme" + time + "-" + currentScheme );		
+		List<StatusRecord> list = statusRecordS.findTaskStateByPlanidAndTime( currentScheme, time );
+		logger.debug( "C-查看任务状态   -list:" + list.toString() );		
+		return new ResultJson<List<StatusRecord>>( list );
+	}
+	
+
 }

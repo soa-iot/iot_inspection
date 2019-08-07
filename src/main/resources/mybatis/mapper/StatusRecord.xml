@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.zg.dao.StatusRecordMapper">
+
+	<!-- ===========================1、查询===============================  -->
+	
+	<!-- 1.1、查看任务状态      -->
+	<select id="findTaskStateByPlanidAndTime" resultType="cn.zg.entity.daoEntity.StatusRecord">
+		select * from CZ_TASK_INSPECTION_STATE
+		where PLAN_ID = #{planId}
+		and RECORD_TIME like to_date( #{time} ,'YYYY-MM-DD')
+	</select>
+	
+	<!-- ===========================2、新增===============================  -->
+	
+	<!-- 2.1、根据id增加用户组织 -->
+	
+	
+	
+	<!-- ===========================3、修改===============================  -->	
+	
+	
+	
+	<!-- ===========================4、删除===============================  -->		
+
+
+	
+</mapper>
