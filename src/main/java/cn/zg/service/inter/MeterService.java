@@ -11,7 +11,7 @@ package cn.zg.service.inter;
 
 import java.util.List;
 
-
+import cn.zg.entity.daoEntity.InspectionScheme;
 import cn.zg.entity.daoEntity.MeterInspectionResult;
 import cn.zg.entity.serviceEntity.QueryCondition;
 
@@ -23,5 +23,12 @@ public interface MeterService {
 	 * @param condition
 	 */
 	List<MeterInspectionResult> getMeterInspectionResult(QueryCondition condition);
+
+	/**
+	 * 获取方案数据
+	 * @param condition
+	 * @return
+	 */
+	List<InspectionScheme> getSchemeInfo(QueryCondition condition);
 
 }

@@ -8,6 +8,38 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	var currentTableHead;
 	var currentTableBody;
 
+	/**
+	 * 方案名称渲染
+	 */
+	$.ajax({
+				url : '/iot_inspection/meter/getSchemeInfo',
+				type : 'post',
+				async : false,
+				data : {
+					schemeType : '2'
+				},
+				dataType : 'json',
+				success : function(res) {
+					if (res.code != 0) {
+						layer.msg("数据请求失败，请联系管理员！！！");
+						return;
+					}
+					var option_html = "";
+					$.each(res.data, function(index, item) {
+								option_html += '<option value = "'
+										+ item.schemeId + '">'
+										+ item.schemeName + '</option>'
+
+							});
+					$('#inspection').html(option_html);
+					form.render();
+
+				},
+				error : function() {
+					layer.msg("数据请求失败，请联系管理员！！！");
+				}
+			});
+
 	// 记录时间渲染
 	laydate.render({
 				elem : '#record_day',
@@ -17,7 +49,8 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	/**
 	 * 渲染表格
 	 */
-	loadTable($('#inspection').val(), $('#record_day').val());
+	loadTable($('#inspection').find('option:selected').text(),
+			getNowFormatDate());
 
 	/**
 	 * 监听查询按钮事件
@@ -27,7 +60,8 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 				 * 获取表单数据
 				 */
 
-				var scheme_name = $('#inspection').val();
+				var scheme_name = $('#inspection').find('option:selected')
+						.text();
 				var record_day = $('#record_day').val();
 				console.log(scheme_name);
 				console.log(record_day);
@@ -49,22 +83,10 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 			});
 
 	/**
-	 * 监听下拉选选择事件
-	 */
-	form.on('select(inspection)', function(data) {
-				// loadDate(data.value);
-
-				var date = date_picker._data.value1;// 日期
-				var schemeRemark = $('#inspection').val();// 方案标识
-				loadTaskTimesOptions(schemeRemark, date);
-
-			});
-
-	/**
 	 * 监听导出按钮事件
 	 */
 	$('#search_button_export').on('click', function() {
-				exportExcelBCE(currentTableHead, currentTableBody);
+				// 点击了导出按钮
 				return false;
 			});
 
@@ -72,19 +94,104 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	 * 渲染表格数据
 	 */
 	function loadTable(scheme_name, record_day) {
-		// 渲染报表
-		var moving_equipment_table = table.render({
+
+		switch (scheme_name) {
+			case 'DCS、SIS、F&GS系统巡检方案' :
+				$.ajax({
+					url : '/iot_inspection/meter/getMeterInspectionResult',
+					type : 'post',
+					data : {
+						schemeId : $('#inspection').val(),
+						recordDay : record_day
+					},
+					dataType : 'json',
+					success : function(res) {
+						console.log(res);
+						var data = res.data;
+						var formatData = [];
+						var theadData = [];
+						$.each(data, function(index, item) {
+							var formatData_item = {};
+							formatData_item.requireContext = item.requireContext;
+							formatData_item[item.contentName] = item.inspectionResult;
+							formatData.push(formatData_item);
+							if (!(theadData.indexOf(item.contentName) > -1)) {
+								console
+										.log(theadData
+												.indexOf(item.contentName));
+								theadData.push(item.contentName);
+							}
+						});
+
+						var cols = [[{
+									type : 'numbers',
+									title : '序号',
+									width : 80
+								}, {
+									field : 'requireContext',
+									title : '巡检内容'
+								}]];
+
+						if (theadData.length == 0) {
+							cols[0].push({
+										field : 'inspectionResult',
+										title : '巡检结果'
+									});
+
+						} else {
+							$.each(theadData, function(index, item) {
+										var thead_item = {};
+										thead_item.field = item;
+										thead_item.title = item;
+										cols[0].push(thead_item);
+									});
+
+						}
+						console.log(cols);
+
+						var meter_table = table.render({
+									elem : '#meter_record_table',
+									data : formatData,
+									toolbar : true,
+									height : 'full-160',
+									title : $('#inspection').val().replace(
+											'巡检方案', '')
+											+ '巡检记录_' + $('#record_day').val(),
+									cols : cols,
+									page : false,
+									curr : 0,
+									limit : 5,
+									limits : [5, 10, 15, 20, 25, 30],
+									layout : ['prev', 'page', 'next', 'skip',
+											'count', 'limit'],
+									done : function(res, curr, count) {
+									}
+								});
+					},
+					error : function() {
+						layer.msg("服务器处理异常，请联系管理员！！！");
+
+					}
+
+				});
+
+			case '' :
+				break;
+			default :
+				// 渲染报表
+				var meter_table = table.render({
 					elem : '#meter_record_table',
 					url : '/iot_inspection/meter/getMeterInspectionResult',
 					where : {
-						schemeName : scheme_name,
+						schemeId : $('#inspection').val(),
 						recordDay : record_day
 					},
 					toolbar : true,
 					height : 'full-160',
-					title : '动设备巡检记录',
+					title : $('#inspection').val().replace('巡检方案', '')
+							+ '巡检记录_' + $('#record_day').val(),
 					cols : [[{
-								type : 'number',
+								type : 'numbers',
 								title : '序号',
 								width : 80
 							}, {
@@ -94,15 +201,18 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 								field : 'inspectionResult',
 								title : '巡检结果'
 							}]],
-					// page : true,
+					page : false,
 					curr : 0,
 					limit : 5,
 					limits : [5, 10, 15, 20, 25, 30],
 					layout : ['prev', 'page', 'next', 'skip', 'count', 'limit'],
 					done : function(res, curr, count) {
-						currentTableBody = res.data;
 					}
 				});
+				break;
+
+		}
+
 	}
 
 	function getNowFormatDate() {
@@ -119,350 +229,6 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 		}
 		var currentdate = year + seperator1 + month + seperator1 + strDate;
 		return currentdate;
-	}
-
-	/**
-	 * 加载日期控件
-	 */
-	function loadDate(schemeRemark) {
-		$.ajax({
-			url : '/iot_inspection/movingEquipment/getDatesOfData',
-			type : 'post',
-			dataType : 'json',
-			data : {
-				schemeRemark : schemeRemark
-			},
-			success : function(res) {
-
-				var markObj = {};
-
-				$.each(res.data, function(index, item) {
-							markObj[item] = '';
-						});
-
-				// console.log(markObj);
-
-				$('#timeConponent').remove();
-				$('#date_div')
-						.html('<input type="text" class="layui-input" id="timeConponent" name="timeConponent" placeholder="yyyy-mm-dd">');
-
-				var ins1 = laydate.render({
-							elem : '#timeConponent',// 指定元素
-							value : getNowFormatDate(),
-							mark : markObj
-						});
-
-			},
-			error : function() {
-			}
-		});
-
-	}
-
-	function exportExcelBCE(currentTableHead, currentTableBody) {
-		console.log('导出报表按钮单击事件触发……');
-		console.log(currentTableHead);
-		console.log(currentTableBody);
-		generStaticTable(currentTableHead, currentTableBody);
-		// 使用outerHTML属性获取整个table元素的HTML代码（包括<table>标签），然后包装成一个完整的HTML文档，
-		// 设置charset为urf-8以防止中文乱码
-		var html = "<html><head><meta charset='utf-8' /></head><body>"
-				+ $("#excelTempDiv").html() + "</body></html>";
-		// 实例化一个Blob对象，其构造函数的第一个参数是包含文件内容的数组，第二个参数是包含文件类型属性的对象
-		var blob = new Blob([html], {
-					type : "application/vnd.ms-excel"
-				});
-		$('body').append('<a id="aExport" style="display:none"></a>');
-		var a = $('#aExport')[0];
-		// 利用URL.createObjectURL()方法为a元素生成blob URL
-		a.href = URL.createObjectURL(blob);
-		// 设置文件名
-		a.download = $('#inspection>option:checked').text() + '_'
-				+ $('#timeConponent').val() + ".xls";
-		document.getElementById("aExport").click();
-		// $( '#aExport' ).click();
-		return false;
-	}
-
-	/**
-	 * 生成静态表格
-	 */
-	function generStaticTable(tableHeadData, tableBodyData) {
-
-		/**
-		 * 根据表头排序
-		 */
-		tableHeadData = tableHeadData.sort(function(a, b) {
-
-					if (a.classNum == b.classNum) {
-						return parseInt(a.sortNum) - parseInt(b.sortNum);
-					} else {
-						return parseInt(a.classNum) - parseInt(b.classNum);
-
-					}
-
-				});
-
-		console.log(tableHeadData);
-
-		console.log('生成静态表格……');
-		var tableBefore = "<table>", tableEnd = "</table>";
-		var tableBody = "";
-		var colspan;
-		var rowspan;
-
-		var tr1 = "<tr>";
-		var tr2 = "<tr>";
-
-		$.each(tableHeadData, function(index, item) {
-					console.log(item);
-					colspan = item.colspan ? item.colspan : 1;
-					rowspan = item.rowspan ? item.rowspan : 1;
-					if (item.classNum == '1') {
-						tr1 = tr1 + '<td colspan=' + colspan + ' rowspan='
-								+ rowspan + ' align=' + item.align + '>'
-								+ item.title + '</td>';
-					} else if (item.classNum == '2') {
-						tr2 = tr2 + '<td colspan=' + colspan + ' rowspan='
-								+ rowspan + ' align=' + item.align + '>'
-								+ item.title + '</td>';
-					}
-				});
-
-		tr1 = tr1 + "</tr>";
-		tr2 = tr2 + "</tr>";
-		tableBody += tr1;
-		tableBody += tr2;
-
-		// console.log( '生成静态表格-生成表头……tableBody' + tableBody );
-
-		/**
-		 * 获取有序的filed
-		 */
-
-		/*
-		 * var sort_field = []; $.each(tableHeadData, function(index, item) {
-		 * 
-		 * if (index.classNum == '1' && index.rolspan > 1) {
-		 * sort_field.push(index); } }); $.each(tableHeadData, function(index,
-		 * item) {
-		 * 
-		 * if (index.classNum == '2') { sort_field.push(index); } });
-		 */
-
-		/**
-		 * 根据值排序
-		 */
-
-		class1_data = tableHeadData.filter(function(item) {
-					return item.classNum == "1";
-				});
-		class2_data = tableHeadData.filter(function(item) {
-					return item.classNum == "2";
-				});
-		class1_data = class1_data.sort(function(a, b) {
-					return parseInt(a.sortNum) - parseInt(b.sortNum);
-
-				});
-		class2_data = class2_data.sort(function(a, b) {
-					return parseInt(a.sortNum) - parseInt(b.sortNum);
-
-				});
-
-		var position = "", flagData = class1_data, num = 1;
-
-		$.each(tableBodyData, function(index, item) {
-					tableBody = tableBody + "<tr>";
-
-					var begin = 0;
-					for (var o in flagData) {
-						position = flagData[o].field;
-
-						if (flagData[o].colspan == 1) {
-							if (item[position]) {
-								tableBody = tableBody + '<td align="center">'
-										+ item[position] + '</td>';
-							} else {
-								if (flagData[o].type == 'numbers') {
-									tableBody = tableBody
-											+ '<td align="center">' + num
-											+ '</td>';
-									num++;
-								} else {
-									tableBody = tableBody
-											+ '<td align="center">' + ''
-											+ '</td>';
-								}
-							}
-
-						} else {
-							for (var i = begin; i < flagData[o].colspan + begin; i++) {
-								position = class2_data[i].field;
-								if (item[position]) {
-									tableBody = tableBody
-											+ '<td align="center">'
-											+ item[position] + '</td>';
-								} else {
-									if (flagData[o].type == 'numbers') {
-										tableBody = tableBody
-												+ '<td align="center">' + num
-												+ '</td>';
-										num++;
-									} else {
-										tableBody = tableBody
-												+ '<td align="center">' + ''
-												+ '</td>';
-									}
-								}
-							}
-
-							begin += flagData[o].colspan;
-						}
-
-					}
-					/*
-					 * $.each( flagData, function( index1, item1 ){ console.log(
-					 * '生成静态表格……item.field' + item1.field ); position =
-					 * item1[field]; tableBody = tableBody + '<td align="center">' +
-					 * item[position] + '</td>'; } )
-					 */
-					tableBody = tableBody + "</tr>";
-				})
-
-		// console.log( '生成静态表格-生成数据……tableBody' + tableBody );
-		$('body').append('<div id="excelTempDiv" style="display:none"></div>');
-		$('#excelTempDiv').html('');
-		$('#excelTempDiv').append(tableBefore + tableBody + tableEnd);
-	}
-
-	// jQuery HTML导出Excel文件(兼容IE及所有浏览器)
-	function HtmlExportToExcel(tableid) {
-		var filename = $('.datatitle').text();
-		if (getExplorer() == 'ie' || getExplorer() == undefined) {
-			HtmlExportToExcelForIE(tableid, filename);
-		} else {
-			HtmlExportToExcelForEntire(tableid, filename)
-		}
-	}
-	// IE浏览器导出Excel
-	function HtmlExportToExcelForIE(tableid, filename) {
-		try {
-			var curTbl = document.getElementById(tableid);
-			var oXL;
-			try {
-				oXL = new ActiveXObject("Excel.Application"); // 创建AX对象excel
-			} catch (e) {
-				alert("无法启动Excel!\n\n如果您确信您的电脑中已经安装了Excel，"
-						+ "那么请调整IE的安全级别。\n\n具体操作：\n\n"
-						+ "工具 → Internet选项 → 安全 → 自定义级别 → 对没有标记为安全的ActiveX进行初始化和脚本运行 → 启用");
-				return false;
-			}
-			var oWB = oXL.Workbooks.Add(); // 获取workbook对象
-			var oSheet = oWB.ActiveSheet;// 激活当前sheet
-			var sel = document.body.createTextRange();
-			sel.moveToElementText(curTbl); // 把表格中的内容移到TextRange中
-			try {
-				sel.select(); // 全选TextRange中内容
-			} catch (e1) {
-				e1.description
-			}
-			sel.execCommand("Copy");// 复制TextRange中内容
-			oSheet.Paste();// 粘贴到活动的EXCEL中
-			oXL.Visible = true; // 设置excel可见属性
-			var fname = oXL.Application.GetSaveAsFilename(filename + ".xls",
-					"Excel Spreadsheets (*.xls), *.xls");
-			oWB.SaveAs(fname);
-			oWB.Close();
-			oXL.Quit();
-
-		} catch (e) {
-			alert(e.description);
-		}
-	}
-
-	// 非IE浏览器导出Excel
-	var HtmlExportToExcelForEntire = (function() {
-		var uri = 'data:application/vnd.ms-excel;base64,', template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>', base64 = function(
-				s) {
-			return window.btoa(unescape(encodeURIComponent(s)))
-		}, format = function(s, c) {
-			return s.replace(/{(\w+)}/g, function(m, p) {
-						return c[p];
-					})
-		}
-		return function(table, name) {
-			if (!table.nodeType) {
-				table = document.getElementById(table);
-			}
-			var ctx = {
-				worksheet : name || 'Worksheet',
-				table : table.innerHTML
-			}
-			document.getElementById("dlink").href = uri
-					+ base64(format(template, ctx));
-			document.getElementById("dlink").download = name + ".xls";
-			document.getElementById("dlink").click();
-		}
-	})()
-
-	function getExplorer() {
-		var explorer = window.navigator.userAgent;
-		// ie
-		if (explorer.indexOf("MSIE") >= 0) {
-			return 'ie';
-		}
-		// firefox
-		else if (explorer.indexOf("Firefox") >= 0) {
-			return 'Firefox';
-		}
-		// Chrome
-		else if (explorer.indexOf("Chrome") >= 0) {
-			return 'Chrome';
-		}
-		// Opera
-		else if (explorer.indexOf("Opera") >= 0) {
-			return 'Opera';
-		}
-		// Safari
-		else if (explorer.indexOf("Safari") >= 0) {
-			return 'Safari';
-		}
-	}
-
-	function loadTaskTimesOptions(schemeRemark, date) {
-
-		$.ajax({
-					url : '/iot_inspection/movingEquipment/getTaskInstIds',
-					type : 'post',
-					data : {
-						schemeRemark : schemeRemark,
-						date : date
-					},
-					dataType : 'json',
-					success : function(res) {
-						var html = '';
-						console.log(res);
-						if (res.count == 0) {
-							console.log('>>>>>>>>>>>>>>>>>><<<<<<');
-							html += '<option value="error">无数据</option>'
-						} else {
-							$.each(res.data, function(i, item) {
-										html += '<option value="' + item
-												+ '">第' + (i + 1)
-												+ '次任务</option>'
-									});
-						}
-						console.log($('#taskTimes'));
-						$('#taskTimes').html(html);
-						form.render();
-
-					},
-					error : function() {
-						layer.msg("加载数据遇到错误，请联系管理员！！！");
-					}
-
-				});
-
 	}
 
 });

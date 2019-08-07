@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>溶液周报</title>
+<link rel="stylesheet" href="../../package/layui-v2.4.2/css/layui.css">
+<link rel="stylesheet" href="../../css/elementUI/index.css">
+</head>
+<body>
+	<div class="layui-fluid " style="overflow: visible">
+		<!-- 搜索条件 -->
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12 ">
+				<fieldset
+					style="border-radius: 13px; margin-top: 10px; vertical-align: middle;">
+					<legend>查询条件</legend>
+					<form class="layui-form" action="" style="margin-top: 15px;">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+								<label class="layui-form-label">选择周：</label>
+								<div class="layui-input-inline" id="app">
+									<el-date-picker v-model="value1" type="week" format="yyyy第WW周"
+										value-format="yyyy-MM-dd" placeholder="选择周"></el-date-picker>
+								</div>
+							</div>
+
+							<div class="layui-inline" style="margin-left: 50px;">
+								<button class="layui-btn" lay-submit
+									lay-filter="search_button_search">
+									<i class="layui-icon">&#xe615;</i> 查询
+								</button>
+							</div>
+							<div class="layui-inline" id="search_button_export"
+								name="search_button_export">
+								<button class="layui-btn">
+									<i class="layui-icon">&#xe60a;</i>导出
+								</button>
+							</div>
+							<div class="layui-inline" id="search_button_print"
+								name="search_button_export">
+								<button class="layui-btn">
+									<i class="layui-icon">&#xe609;</i>打印
+								</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+
+		<!-- 表格-->
+		<div class="layui-row">
+			<div class="layui-col-md12 " id="meter_record">
+				<div class="component_container" id="solution_record_table"></div>
+			</div>
+		</div>
+	</div>
+</body>
+<!-- import Vue before Element -->
+<script src="../../javaScript/vue/vue.js"></script>
+<!-- import JavaScript -->
+<script src="../../javaScript/elementUI/index.js"></script>
+<script type="text/javascript" src="../../package/layui-v2.4.2/layui.js"></script>
+<script type="text/javascript"
+	src="../../javaScript/report_forms/solution.js"></script>
+</html>

@@ -19,6 +19,8 @@ public class MeterInspectionResult {
 	private String requireId;
 
 	private String requireContext;
+	
+	private String contentName;
 
 	private String inspectionResult;
 

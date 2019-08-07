@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import cn.zg.entity.daoEntity.InspectionScheme;
 import cn.zg.entity.daoEntity.MeterInspectionResult;
 import cn.zg.entity.serviceEntity.QueryCondition;
 import cn.zg.entity.serviceEntity.ResponseEntity;
@@ -37,12 +38,12 @@ public class MeterController {
 	 */
 	@RequestMapping("/getMeterInspectionResult")
 	public ResponseEntity<List<MeterInspectionResult>> getMeterInspectionResult(
-			@RequestParam(name = "schemeName", required = true) String schemeName,
+			@RequestParam(name = "schemeId", required = true) String schemeId,
 			@RequestParam(name = "recordDay", required = true) String recordDay) {
 
 		QueryCondition condition = new QueryCondition();
 		condition.setRecordDate(recordDay);
-		condition.setSchemeName(schemeName);
+		condition.setSchemeId(schemeId);
 		System.out.println(condition);
 
 		ResponseEntity<List<MeterInspectionResult>> resObj = new ResponseEntity<List<MeterInspectionResult>>();
@@ -63,6 +64,39 @@ public class MeterController {
 
 		return resObj;
 
+	}
+
+	/**
+	 * 根据条件获取方案信息
+	 * 
+	 * @param schemeType
+	 *            方案类型
+	 * @return
+	 */
+	@RequestMapping("/getSchemeInfo")
+	public ResponseEntity<List<InspectionScheme>> getSchemeInfo(
+			@RequestParam(name = "schemeType", required = false) String schemeType) {
+
+		QueryCondition condition = new QueryCondition();
+		condition.setSchemeType(schemeType);
+
+		ResponseEntity<List<InspectionScheme>> resObj = new ResponseEntity<List<InspectionScheme>>();
+
+		try {
+			List<InspectionScheme> result = service.getSchemeInfo(condition);
+			resObj.setCode(0);
+			resObj.setCount(result.size());
+			resObj.setData(result);
+			resObj.setMsg("query data success");
+		} catch (Exception e) {
+			resObj.setCode(1);
+			resObj.setCount(0);
+			resObj.setData(null);
+			resObj.setMsg("query data failed>>>>>>>>" + e.getMessage());
+			e.printStackTrace();
+		}
+
+		return resObj;
 	}
 
 }

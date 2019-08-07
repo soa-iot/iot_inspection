@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>净化气趋势</title>
+<link rel="stylesheet" type="text/css"
+	href="../../package/layui-v2.4.2/css/layui.css" />
+</head>
+<body>
+	<div id="" class="layui-row" style="margin: 10px 10px;">
+		<fieldset class="layui-elem-field"
+			style="border-radius: 13px; margin-top: 10px; vertical-align: middle;">
+			<legend>查询条件</legend>
+			<div class="layui-field-box">
+				<div class="layui-form">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始日期</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="begin_date">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">结束日期：</label>
+							<div class="layui-input-inline">
+								<input type="text" class="layui-input" id="end_date">
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label">选择参数：</label>
+							<div class="layui-input-inline">
+								<select name="param" lay-verify="" id="param">
+								</select>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<button type="button" class="layui-btn" id="search">查询</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<div id="main" style="height: 500px; margin-top: 100px;"></div>
+	</div>
+</body>
+<script src="../../javaScript/report_forms/common.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="../../javaScript/report_forms/echarts.min.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="../../package/layui-v2.4.2/layui.js" type="text/javascript"
+	charset="utf-8"></script>
+<script src="../../javaScript/report_forms/jquery-2.1.1.min.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="../../javaScript/report_forms/clean_gas_trend.js"
+	type="text/javascript" charset="utf-8"></script>
+</html>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.ProcessControlParaValueMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.ProcessControlParaValue">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="PARA_ID" jdbcType="VARCHAR" property="paraId" />
+		<result column="RECORD_DAY" jdbcType="TIMESTAMP"
+			property="recordDay" />
+		<result column="RECORD_NUM" jdbcType="VARCHAR"
+			property="recordNum" />
+		<result column="PARA_VALUE" jdbcType="VARCHAR"
+			property="paraValue" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PARA_ID, RECORD_DAY, RECORD_NUM, PARA_VALUE, STANDBY1,
+		STANDBY2,
+		STANDBY3
+	</sql>
+
+
+
+
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PROCESS_CONTROL_PARA_VALUE
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<!-- 根据条件查询记录数据 -->
+	<select id="selectByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultType="Map">
+		<choose>
+			<when test="queryType == '1'.toString()">
+				SELECT T1.*,T2.* FROM (
+				select ID, PARA_NAME_CN, PARA_NAME_EN,
+				PARA_UNIT, GAS_CLASS1, GAS_CLASS2,
+				case INDICATOR_SYMBOL
+				when 'lt'
+				then '&lt;' || INDICATOR_UPPER_LIMIT
+				when 'gt' then '&gt;' ||
+				INDICATOR_LOWER_LIMIT
+				when 'le' then '≤' || INDICATOR_UPPER_LIMIT
+				when 'ge' then '≥' || INDICATOR_LOWER_LIMIT
+				when 'sim' then
+				INDICATOR_LOWER_LIMIT || '~' || INDICATOR_UPPER_LIMIT
+				when 'desc'
+				then INDICATOR_UPPER_LIMIT
+				else ''
+				end as INDICATOR, PARA_TYPE,
+				STANDBY1, STANDBY2, STANDBY3
+				from PROCESS_CONTROL_PARA_CONFIG
+				<where>
+					<if test="paraId != null and paraId != ''">
+						AND ID = #{paraId,jdbcType=VARCHAR}
+					</if>
+					<if test="paraType != null and paraType != ''">
+						AND
+						PARA_TYPE=#{paraType,jdbcType=VARCHAR}
+					</if>
+				</where>
+
+				) T1 LEFT
+				JOIN (
+				SELECT
+				ID,PARA_ID,TO_CHAR(RECORD_DAY,'YYYY/MM/DD') AS
+				RECORD_DAY,RECORD_NUM,PARA_VALUE,STANDBY1,STANDBY2,STANDBY3 FROM
+				PROCESS_CONTROL_PARA_VALUE
+				<where>
+					<if test="beginDate != null and beginDate != ''">
+						AND TO_CHAR(RECORD_DAY,'YYYY-MM-DD') &gt;=
+						#{beginDate,jdbcType=TIMESTAMP}
+					</if>
+					<if test="endDate != null and endDate != ''">
+						AND TO_CHAR(RECORD_DAY,'YYYY-MM-DD')
+						&lt;=
+						#{endDate,jdbcType=TIMESTAMP}
+					</if>
+				</where>
+
+				) T2
+				ON T1.ID = T2.PARA_ID
+			</when>
+			<when test="queryType == '2'.toString()">
+				SELECT T1.*,T2.* FROM (
+				select * from PROCESS_CONTROL_PARA_CONFIG
+				<where>
+					<if test="paraId != null and paraId != ''">
+						AND ID = #{paraId,jdbcType=VARCHAR}
+					</if>
+					<if test="paraType != null and paraType != ''">
+						AND
+						PARA_TYPE=#{paraType,jdbcType=VARCHAR}
+					</if>
+				</where>
+
+				) T1 LEFT
+				JOIN (
+				SELECT
+				PARA_ID,TO_CHAR(RECORD_DAY,'YYYY/MM/DD') AS
+				RECORD_DAY,avg(PARA_VALUE) AS PARA_VALUE FROM
+				PROCESS_CONTROL_PARA_VALUE
+				<where>
+					<if test="beginDate != null and beginDate != ''">
+						AND TO_CHAR(RECORD_DAY,'YYYY-MM-DD') &gt;=
+						#{beginDate,jdbcType=TIMESTAMP}
+					</if>
+					<if test="endDate != null and endDate != ''">
+						AND TO_CHAR(RECORD_DAY,'YYYY-MM-DD')
+						&lt;=
+						#{endDate,jdbcType=TIMESTAMP}
+					</if>
+				</where>
+				group by PARA_ID,TO_CHAR(RECORD_DAY,'YYYY/MM/DD')
+
+				) T2
+				ON T1.ID =
+				T2.PARA_ID
+			</when>
+			<otherwise>
+				select * from dual
+			</otherwise>
+		</choose>
+	</select>
+
+
+	<delete id="deleteRecord" parameterType="Map">
+		delete from PROCESS_CONTROL_PARA_VALUE
+		where PARA_ID in
+		<foreach collection="list" index="index" item="item" open="("
+			close=")" separator=",">
+			#{item.PARA_ID,jdbcType=VARCHAR}
+		</foreach>
+		and to_char(RECORD_DAY,'YYYY/MM/DD') in
+		<foreach collection="list" index="index" item="item" open="("
+			close=")" separator=",">
+			#{item.RECORD_DAY,jdbcType=TIMESTAMP}
+		</foreach>
+		and RECORD_NUM in
+		<foreach collection="list" index="index" item="item" open="("
+			close=")" separator=",">
+			#{item.RECORD_NUM,jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+
+
+	<insert id="addRecore" parameterType="Map"
+		useGeneratedKeys="false">
+		insert into
+		PROCESS_CONTROL_PARA_VALUE
+		(
+		PARA_ID,
+		RECORD_DAY,
+		RECORD_NUM,
+		PARA_VALUE
+		)
+		<foreach collection="list" item="item" index="index"
+			separator="union all">
+			(
+
+			SELECT
+			#{item.PARA_ID,jdbcType=VARCHAR},
+			TO_DATE(#{item.RECORD_DAY,jdbcType=TIMESTAMP},'YYYY/MM/DD'),
+			#{item.RECORD_NUM,jdbcType=VARCHAR},
+			#{item.PARA_VALUE,jdbcType=VARCHAR}
+			FROM DUAL
+			)
+		</foreach>
+	</insert>
+
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		PROCESS_CONTROL_PARA_VALUE
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaValue">
+		insert into PROCESS_CONTROL_PARA_VALUE (ID, PARA_ID,
+		RECORD_DAY,
+		RECORD_NUM, PARA_VALUE, STANDBY1,
+		STANDBY2, STANDBY3)
+		values
+		(#{id,jdbcType=VARCHAR}, #{paraId,jdbcType=VARCHAR},
+		#{recordDay,jdbcType=TIMESTAMP},
+		#{recordNum,jdbcType=VARCHAR},
+		#{paraValue,jdbcType=VARCHAR}, #{standby1,jdbcType=VARCHAR},
+		#{standby2,jdbcType=VARCHAR}, #{standby3,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaValue">
+		insert into PROCESS_CONTROL_PARA_VALUE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="paraId != null">
+				PARA_ID,
+			</if>
+			<if test="recordDay != null">
+				RECORD_DAY,
+			</if>
+			<if test="recordNum != null">
+				RECORD_NUM,
+			</if>
+			<if test="paraValue != null">
+				PARA_VALUE,
+			</if>
+			<if test="standby1 != null">
+				STANDBY1,
+			</if>
+			<if test="standby2 != null">
+				STANDBY2,
+			</if>
+			<if test="standby3 != null">
+				STANDBY3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="paraId != null">
+				#{paraId,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDay != null">
+				#{recordDay,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recordNum != null">
+				#{recordNum,jdbcType=VARCHAR},
+			</if>
+			<if test="paraValue != null">
+				#{paraValue,jdbcType=VARCHAR},
+			</if>
+			<if test="standby1 != null">
+				#{standby1,jdbcType=VARCHAR},
+			</if>
+			<if test="standby2 != null">
+				#{standby2,jdbcType=VARCHAR},
+			</if>
+			<if test="standby3 != null">
+				#{standby3,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaValue">
+		update PROCESS_CONTROL_PARA_VALUE
+		<set>
+			<if test="paraId != null">
+				PARA_ID = #{paraId,jdbcType=VARCHAR},
+			</if>
+			<if test="recordDay != null">
+				RECORD_DAY = #{recordDay,jdbcType=TIMESTAMP},
+			</if>
+			<if test="recordNum != null">
+				RECORD_NUM = #{recordNum,jdbcType=VARCHAR},
+			</if>
+			<if test="paraValue != null">
+				PARA_VALUE = #{paraValue,jdbcType=VARCHAR},
+			</if>
+			<if test="standby1 != null">
+				STANDBY1 = #{standby1,jdbcType=VARCHAR},
+			</if>
+			<if test="standby2 != null">
+				STANDBY2 = #{standby2,jdbcType=VARCHAR},
+			</if>
+			<if test="standby3 != null">
+				STANDBY3 = #{standby3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaValue">
+		update PROCESS_CONTROL_PARA_VALUE
+		set PARA_ID =
+		#{paraId,jdbcType=VARCHAR},
+		RECORD_DAY =
+		#{recordDay,jdbcType=TIMESTAMP},
+		RECORD_NUM =
+		#{recordNum,jdbcType=VARCHAR},
+		PARA_VALUE =
+		#{paraValue,jdbcType=VARCHAR},
+		STANDBY1 = #{standby1,jdbcType=VARCHAR},
+		STANDBY2 = #{standby2,jdbcType=VARCHAR},
+		STANDBY3 =
+		#{standby3,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

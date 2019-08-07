@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //
 //@MapperScan("cn.zg.dao.inter") 
@@ -13,20 +14,21 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //spring注解扫描
 @SpringBootApplication(scanBasePackages = "cn.zg")
 
-//开启spring-data-JPA
-@EnableJpaRepositories( "cn.zg.dao.inter" )
+// 开启spring-data-JPA
+@EnableJpaRepositories("cn.zg.dao.inter")
 
-//JPA实体类扫描
+// JPA实体类扫描
 @EntityScan("cn.zg.entity")
-public class ElectricInspection extends SpringBootServletInitializer{
+@EnableTransactionManagement
+public class ElectricInspection extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ElectricInspection.class, args);
-	}			
+	}
 
-	 @Override
-	 protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-	        // 注意这里要指向原先用main方法执行的Application启动类
-	        return builder.sources(ElectricInspection.class); 
-	 }
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+		// 注意这里要指向原先用main方法执行的Application启动类
+		return builder.sources(ElectricInspection.class);
+	}
 }

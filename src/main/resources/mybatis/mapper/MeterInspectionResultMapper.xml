@@ -10,8 +10,10 @@
 			property="schemeName" />
 		<result column="REQUIRE_ID" jdbcType="VARCHAR"
 			property="requireId" />
-		<result column="REQUIRE_CONTEXT" jdbcType="VARCHAR"
+		<result column="TASK_REQUIRE_CONTEXT" jdbcType="VARCHAR"
 			property="requireContext" />
+		<result column="TASK_CONTENT_NAME" jdbcType="VARCHAR"
+			property="contentName" />
 		<result column="INSPECTION_RESULT" jdbcType="VARCHAR"
 			property="inspectionResult" />
 		<result column="RECORD_DAY" jdbcType="TIMESTAMP"
@@ -29,12 +31,31 @@
 	<select id="findRecordBySchemeAndDate"
 		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
 		resultMap="BaseResultMap">
-		select t1.* ,t2.REQUIRE_CONTEXT from (select * from
-		IOT_INSPECTION_VALUE_YB where SCHEME_NAME =
-		#{schemeName,jdbcType=VARCHAR} and to_char(RECORD_DAY,'yyyy-mm-dd') = #{recordDate,jdbcType =
-		TIMESTAMP}) t1 LEFT JOIN
-		CZ_INSPECTION_REQUIRE t2
-		ON t1.REQUIRE_ID = t2.REQUIRE_ID
+		SELECT T1.*
+		,T2.TASK_REQUIRE_CONTEXT,T2.TASK_CONTENT_ID,T3.TASK_CONTENT_NAME FROM
+		(
+		SELECT *
+		FROM
+		IOT_INSPECTION_VALUE_YB
+		<where>
+			<if test="schemeId != null and schemeId != ''">
+				AND SCHEME_NAME = #{schemeId,jdbcType=VARCHAR}
+			</if>
+			<if test="recordDate != null and recordDate != ''">
+				AND to_char(RECORD_DAY,'yyyy-mm-dd') =
+				#{recordDate,jdbcType =
+				TIMESTAMP}
+			</if>
+		</where>
+		)
+		T1 LEFT JOIN
+		CZ_TASK_INSPECTION_REQUIRE
+		T2
+		ON
+		T1.REQUIRE_ID =
+		T2.TASK_REQUIRE_ID
+		LEFT JOIN CZ_TASK_INSPECTION_CONTENT T3 ON
+		T2.TASK_CONTENT_ID = T3.TASK_CONTENT_ID
 
 	</select>
 

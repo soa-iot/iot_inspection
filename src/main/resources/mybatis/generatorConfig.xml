@@ -46,7 +46,7 @@
 			<property name="enableSubPackages" value="false" />
 		</javaClientGenerator>
 		<!-- 指定数据库表 -->
-		<table tableName="IOT_INSPECTION_VALUE_YB" domainObjectName="MeterInspectionResult"
+		<table tableName="CZ_INSPECTION_SCHEME" domainObjectName="InspectionScheme"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false"></table>

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.ProcessControlParaConfigMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.ProcessControlParaConfig">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="PARA_NAME_CN" jdbcType="VARCHAR"
+			property="paraNameCn" />
+		<result column="PARA_NAME_EN" jdbcType="VARCHAR"
+			property="paraNameEn" />
+		<result column="PARA_UNIT" jdbcType="VARCHAR"
+			property="paraUnit" />
+		<result column="GAS_CLASS1" jdbcType="VARCHAR"
+			property="gasClass1" />
+		<result column="GAS_CLASS2" jdbcType="VARCHAR"
+			property="gasClass2" />
+		<result column="INDICATOR_SYMBOL" jdbcType="VARCHAR"
+			property="indicatorSymbol" />
+		<result column="INDICATOR_UPPER_LIMIT" jdbcType="VARCHAR"
+			property="indicatorUpperLimit" />
+		<result column="INDICATOR_LOWER_LIMIT" jdbcType="VARCHAR"
+			property="indicatorLowerLimit" />
+		<result column="PARA_TYPE" jdbcType="VARCHAR"
+			property="paraType" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ID, PARA_NAME_CN, PARA_NAME_EN, PARA_UNIT, GAS_CLASS1, GAS_CLASS2,
+		INDICATOR_SYMBOL,
+		INDICATOR_UPPER_LIMIT, INDICATOR_LOWER_LIMIT, PARA_TYPE, STANDBY1, STANDBY2, STANDBY3
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from PROCESS_CONTROL_PARA_CONFIG
+		where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="selectByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"></include>
+		from PROCESS_CONTROL_PARA_CONFIG
+		<where>
+			<if test="paraType != '' and paraType != null">
+				AND PARA_TYPE = #{paraType,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from PROCESS_CONTROL_PARA_CONFIG
+		where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaConfig">
+		insert into PROCESS_CONTROL_PARA_CONFIG (ID, PARA_NAME_CN, PARA_NAME_EN,
+		PARA_UNIT, GAS_CLASS1, GAS_CLASS2,
+		INDICATOR_SYMBOL, INDICATOR_UPPER_LIMIT, INDICATOR_LOWER_LIMIT,
+		PARA_TYPE, STANDBY1, STANDBY2,
+		STANDBY3)
+		values (#{id,jdbcType=VARCHAR}, #{paraNameCn,jdbcType=VARCHAR},
+		#{paraNameEn,jdbcType=VARCHAR},
+		#{paraUnit,jdbcType=VARCHAR}, #{gasClass1,jdbcType=VARCHAR}, #{gasClass2,jdbcType=VARCHAR},
+		#{indicatorSymbol,jdbcType=VARCHAR},
+		#{indicatorUpperLimit,jdbcType=VARCHAR},
+		#{indicatorLowerLimit,jdbcType=VARCHAR},
+		#{paraType,jdbcType=VARCHAR}, #{standby1,jdbcType=VARCHAR}, #{standby2,jdbcType=VARCHAR},
+		#{standby3,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaConfig">
+		insert into PROCESS_CONTROL_PARA_CONFIG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="paraNameCn != null">
+				PARA_NAME_CN,
+			</if>
+			<if test="paraNameEn != null">
+				PARA_NAME_EN,
+			</if>
+			<if test="paraUnit != null">
+				PARA_UNIT,
+			</if>
+			<if test="gasClass1 != null">
+				GAS_CLASS1,
+			</if>
+			<if test="gasClass2 != null">
+				GAS_CLASS2,
+			</if>
+			<if test="indicatorSymbol != null">
+				INDICATOR_SYMBOL,
+			</if>
+			<if test="indicatorUpperLimit != null">
+				INDICATOR_UPPER_LIMIT,
+			</if>
+			<if test="indicatorLowerLimit != null">
+				INDICATOR_LOWER_LIMIT,
+			</if>
+			<if test="paraType != null">
+				PARA_TYPE,
+			</if>
+			<if test="standby1 != null">
+				STANDBY1,
+			</if>
+			<if test="standby2 != null">
+				STANDBY2,
+			</if>
+			<if test="standby3 != null">
+				STANDBY3,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="paraNameCn != null">
+				#{paraNameCn,jdbcType=VARCHAR},
+			</if>
+			<if test="paraNameEn != null">
+				#{paraNameEn,jdbcType=VARCHAR},
+			</if>
+			<if test="paraUnit != null">
+				#{paraUnit,jdbcType=VARCHAR},
+			</if>
+			<if test="gasClass1 != null">
+				#{gasClass1,jdbcType=VARCHAR},
+			</if>
+			<if test="gasClass2 != null">
+				#{gasClass2,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorSymbol != null">
+				#{indicatorSymbol,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorUpperLimit != null">
+				#{indicatorUpperLimit,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorLowerLimit != null">
+				#{indicatorLowerLimit,jdbcType=VARCHAR},
+			</if>
+			<if test="paraType != null">
+				#{paraType,jdbcType=VARCHAR},
+			</if>
+			<if test="standby1 != null">
+				#{standby1,jdbcType=VARCHAR},
+			</if>
+			<if test="standby2 != null">
+				#{standby2,jdbcType=VARCHAR},
+			</if>
+			<if test="standby3 != null">
+				#{standby3,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaConfig">
+		update PROCESS_CONTROL_PARA_CONFIG
+		<set>
+			<if test="paraNameCn != null">
+				PARA_NAME_CN = #{paraNameCn,jdbcType=VARCHAR},
+			</if>
+			<if test="paraNameEn != null">
+				PARA_NAME_EN = #{paraNameEn,jdbcType=VARCHAR},
+			</if>
+			<if test="paraUnit != null">
+				PARA_UNIT = #{paraUnit,jdbcType=VARCHAR},
+			</if>
+			<if test="gasClass1 != null">
+				GAS_CLASS1 = #{gasClass1,jdbcType=VARCHAR},
+			</if>
+			<if test="gasClass2 != null">
+				GAS_CLASS2 = #{gasClass2,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorSymbol != null">
+				INDICATOR_SYMBOL = #{indicatorSymbol,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorUpperLimit != null">
+				INDICATOR_UPPER_LIMIT = #{indicatorUpperLimit,jdbcType=VARCHAR},
+			</if>
+			<if test="indicatorLowerLimit != null">
+				INDICATOR_LOWER_LIMIT = #{indicatorLowerLimit,jdbcType=VARCHAR},
+			</if>
+			<if test="paraType != null">
+				PARA_TYPE = #{paraType,jdbcType=VARCHAR},
+			</if>
+			<if test="standby1 != null">
+				STANDBY1 = #{standby1,jdbcType=VARCHAR},
+			</if>
+			<if test="standby2 != null">
+				STANDBY2 = #{standby2,jdbcType=VARCHAR},
+			</if>
+			<if test="standby3 != null">
+				STANDBY3 = #{standby3,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="cn.zg.entity.daoEntity.ProcessControlParaConfig">
+		update PROCESS_CONTROL_PARA_CONFIG
+		set PARA_NAME_CN = #{paraNameCn,jdbcType=VARCHAR},
+		PARA_NAME_EN = #{paraNameEn,jdbcType=VARCHAR},
+		PARA_UNIT = #{paraUnit,jdbcType=VARCHAR},
+		GAS_CLASS1 = #{gasClass1,jdbcType=VARCHAR},
+		GAS_CLASS2 = #{gasClass2,jdbcType=VARCHAR},
+		INDICATOR_SYMBOL = #{indicatorSymbol,jdbcType=VARCHAR},
+		INDICATOR_UPPER_LIMIT = #{indicatorUpperLimit,jdbcType=VARCHAR},
+		INDICATOR_LOWER_LIMIT = #{indicatorLowerLimit,jdbcType=VARCHAR},
+		PARA_TYPE = #{paraType,jdbcType=VARCHAR},
+		STANDBY1 = #{standby1,jdbcType=VARCHAR},
+		STANDBY2 = #{standby2,jdbcType=VARCHAR},
+		STANDBY3 = #{standby3,jdbcType=VARCHAR}
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

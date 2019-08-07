@@ -14,7 +14,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cn.zg.dao.InspectionSchemeMapper;
 import cn.zg.dao.MeterInspectionResultMapper;
+import cn.zg.entity.daoEntity.InspectionScheme;
 import cn.zg.entity.daoEntity.MeterInspectionResult;
 import cn.zg.entity.serviceEntity.QueryCondition;
 import cn.zg.service.inter.MeterService;
@@ -22,16 +24,36 @@ import cn.zg.service.inter.MeterService;
 @Service
 public class MeterServiceImpl implements MeterService {
 
-	
 	@Autowired
 	private MeterInspectionResultMapper meterIMapper;
-	/* (non-Javadoc)
-	 * @see cn.zg.service.inter.MeterService#getMeterInspectionResult(cn.zg.entity.serviceEntity.QueryCondition)
+
+	@Autowired
+	private InspectionSchemeMapper inspectionSchemeMapper;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see cn.zg.service.inter.MeterService#getMeterInspectionResult(cn.zg.entity.
+	 * serviceEntity.QueryCondition)
 	 */
 	@Override
 	public List<MeterInspectionResult> getMeterInspectionResult(QueryCondition condition) {
-		
+
 		List<MeterInspectionResult> result = meterIMapper.findRecordBySchemeAndDate(condition);
+		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * cn.zg.service.inter.MeterService#getSchemeInfo(cn.zg.entity.serviceEntity.
+	 * QueryCondition)
+	 */
+	@Override
+	public List<InspectionScheme> getSchemeInfo(QueryCondition condition) {
+
+		List<InspectionScheme> result = inspectionSchemeMapper.findByCondition(condition);
 		return result;
 	}
 

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.InspectionSchemeMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.InspectionScheme">
+		<id column="SCHEME_ID" jdbcType="VARCHAR" property="schemeId" />
+		<result column="SCHEME_NAME" jdbcType="VARCHAR"
+			property="schemeName" />
+		<result column="EQU_UNIT" jdbcType="VARCHAR" property="equUnit" />
+		<result column="SCHEME_TYPE" jdbcType="VARCHAR"
+			property="schemeType" />
+		<result column="SCHEME_CREATOR" jdbcType="VARCHAR"
+			property="schemeCreator" />
+		<result column="SCHEME_CREATE_TIME" jdbcType="TIMESTAMP"
+			property="schemeCreateTime" />
+		<result column="SCHEME_DESC" jdbcType="VARCHAR"
+			property="schemeDesc" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="REMARKONE" jdbcType="VARCHAR"
+			property="remarkone" />
+		<result column="REMARKTWO" jdbcType="VARCHAR"
+			property="remarktwo" />
+		<result column="REMARKTHREE" jdbcType="VARCHAR"
+			property="remarkthree" />
+		<result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		SCHEME_ID, SCHEME_NAME, EQU_UNIT, SCHEME_TYPE, SCHEME_CREATOR,
+		SCHEME_CREATE_TIME,
+		SCHEME_DESC, REMARK, REMARKONE, REMARKTWO, REMARKTHREE, ENABLE
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from CZ_INSPECTION_SCHEME
+		where SCHEME_ID = #{schemeId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 根据条件查询方案信息 -->
+	<select id="findByCondition"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from CZ_INSPECTION_SCHEME
+		<where>
+			<if test="schemeType != null and schemeType != ''">
+				SCHEME_TYPE = #{schemeType,jdbcType=VARCHAR}
+			</if>
+		</where>
+
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from CZ_INSPECTION_SCHEME
+		where SCHEME_ID = #{schemeId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="cn.zg.entity.daoEntity.InspectionScheme">
+		insert into CZ_INSPECTION_SCHEME (SCHEME_ID, SCHEME_NAME, EQU_UNIT,
+		SCHEME_TYPE, SCHEME_CREATOR, SCHEME_CREATE_TIME,
+		SCHEME_DESC, REMARK, REMARKONE,
+		REMARKTWO, REMARKTHREE, ENABLE
+		)
+		values (#{schemeId,jdbcType=VARCHAR}, #{schemeName,jdbcType=VARCHAR},
+		#{equUnit,jdbcType=VARCHAR},
+		#{schemeType,jdbcType=VARCHAR}, #{schemeCreator,jdbcType=VARCHAR},
+		#{schemeCreateTime,jdbcType=TIMESTAMP},
+		#{schemeDesc,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{remarkone,jdbcType=VARCHAR},
+		#{remarktwo,jdbcType=VARCHAR}, #{remarkthree,jdbcType=VARCHAR}, #{enable,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective"
+		parameterType="cn.zg.entity.daoEntity.InspectionScheme">
+		insert into CZ_INSPECTION_SCHEME
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="schemeId != null">
+				SCHEME_ID,
+			</if>
+			<if test="schemeName != null">
+				SCHEME_NAME,
+			</if>
+			<if test="equUnit != null">
+				EQU_UNIT,
+			</if>
+			<if test="schemeType != null">
+				SCHEME_TYPE,
+			</if>
+			<if test="schemeCreator != null">
+				SCHEME_CREATOR,
+			</if>
+			<if test="schemeCreateTime != null">
+				SCHEME_CREATE_TIME,
+			</if>
+			<if test="schemeDesc != null">
+				SCHEME_DESC,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="remarkone != null">
+				REMARKONE,
+			</if>
+			<if test="remarktwo != null">
+				REMARKTWO,
+			</if>
+			<if test="remarkthree != null">
+				REMARKTHREE,
+			</if>
+			<if test="enable != null">
+				ENABLE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="schemeId != null">
+				#{schemeId,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeName != null">
+				#{schemeName,jdbcType=VARCHAR},
+			</if>
+			<if test="equUnit != null">
+				#{equUnit,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeType != null">
+				#{schemeType,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeCreator != null">
+				#{schemeCreator,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeCreateTime != null">
+				#{schemeCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="schemeDesc != null">
+				#{schemeDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="remarkone != null">
+				#{remarkone,jdbcType=VARCHAR},
+			</if>
+			<if test="remarktwo != null">
+				#{remarktwo,jdbcType=VARCHAR},
+			</if>
+			<if test="remarkthree != null">
+				#{remarkthree,jdbcType=VARCHAR},
+			</if>
+			<if test="enable != null">
+				#{enable,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="cn.zg.entity.daoEntity.InspectionScheme">
+		update CZ_INSPECTION_SCHEME
+		<set>
+			<if test="schemeName != null">
+				SCHEME_NAME = #{schemeName,jdbcType=VARCHAR},
+			</if>
+			<if test="equUnit != null">
+				EQU_UNIT = #{equUnit,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeType != null">
+				SCHEME_TYPE = #{schemeType,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeCreator != null">
+				SCHEME_CREATOR = #{schemeCreator,jdbcType=VARCHAR},
+			</if>
+			<if test="schemeCreateTime != null">
+				SCHEME_CREATE_TIME = #{schemeCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="schemeDesc != null">
+				SCHEME_DESC = #{schemeDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="remarkone != null">
+				REMARKONE = #{remarkone,jdbcType=VARCHAR},
+			</if>
+			<if test="remarktwo != null">
+				REMARKTWO = #{remarktwo,jdbcType=VARCHAR},
+			</if>
+			<if test="remarkthree != null">
+				REMARKTHREE = #{remarkthree,jdbcType=VARCHAR},
+			</if>
+			<if test="enable != null">
+				ENABLE = #{enable,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where SCHEME_ID = #{schemeId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="cn.zg.entity.daoEntity.InspectionScheme">
+		update CZ_INSPECTION_SCHEME
+		set SCHEME_NAME = #{schemeName,jdbcType=VARCHAR},
+		EQU_UNIT = #{equUnit,jdbcType=VARCHAR},
+		SCHEME_TYPE = #{schemeType,jdbcType=VARCHAR},
+		SCHEME_CREATOR = #{schemeCreator,jdbcType=VARCHAR},
+		SCHEME_CREATE_TIME = #{schemeCreateTime,jdbcType=TIMESTAMP},
+		SCHEME_DESC = #{schemeDesc,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		REMARKONE = #{remarkone,jdbcType=VARCHAR},
+		REMARKTWO = #{remarktwo,jdbcType=VARCHAR},
+		REMARKTHREE = #{remarkthree,jdbcType=VARCHAR},
+		ENABLE = #{enable,jdbcType=VARCHAR}
+		where SCHEME_ID = #{schemeId,jdbcType=VARCHAR}
+	</update>
+</mapper>
