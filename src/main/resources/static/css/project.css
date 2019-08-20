@@ -32,12 +32,12 @@ fieldset legend{
 
 
 #search_button_search {
-	margin-left: 5%;
-	margin-right: 5%;
+	margin-left: 1%;
+	margin-right: 1%;
 }
 
 #search_button_export {
-	margin-right: 5%;
+	margin-right: 1%;
 }
 
 .layui-form-item {

@@ -107,7 +107,21 @@ function searchPlan( jsonData ){
 	console.log( '------- 初始化方案--------' );
 	if( jsonData.state == 0 ){
 		if( jsonData.data != null){
-			$.each( jsonData.data, function( index, item ){	
+			//排序
+			var orderBase=["1","2","3","4","5","6","7"]
+			,orderedInspectName = [];
+			$.each( orderBase, function( index0, item0 ){	
+				$.each( jsonData.data, function( index1, item1 ){	
+					if( contains( item1.SCHEME_NAME, item0 ) ){
+						var tempInspect = {};
+						tempInspect.SCHEME_NAME = item1.SCHEME_NAME;
+						tempInspect.SCHEME_ID = item1.SCHEME_ID;
+						orderedInspectName.push( tempInspect );
+					}
+				})
+			})
+			
+			$.each( orderedInspectName, function( index, item ){	
 				var flag = '';
 				if( item.SCHEME_NAME == paramJson.currentScheme ){
 					console.log( paramJson.currentScheme );
@@ -116,7 +130,7 @@ function searchPlan( jsonData ){
 				$( '#inspection' ).append( 
 						'<option value="' + item.SCHEME_ID + '"' + flag + '>' + item.SCHEME_NAME + '</option>' 
 				); 
-			})			
+			})				
 			element.init();
 			form.render();
 		}else{

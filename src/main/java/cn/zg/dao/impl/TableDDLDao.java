@@ -66,7 +66,7 @@ public class TableDDLDao {
 	 */  
 	public List<Map<String, Object>> findInspectionNames(){
 		String sql = " select distinct(inspectionName) from CZ_INSPECTION_HEADCONFIG "
-				+ " group by inspectionName"; 
+				+ " group by inspectionName "; 
 		return jdbcTemplate.queryForList( sql );
 	}
 	

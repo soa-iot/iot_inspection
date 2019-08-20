@@ -11,6 +11,7 @@
 		select * from CZ_TASK_INSPECTION_STATE
 		where PLAN_ID = #{planId}
 		and RECORD_TIME like to_date( #{time} ,'YYYY-MM-DD')
+		order by to_number(REMARK2)
 	</select>
 	
 	<!-- ===========================2、新增===============================  -->

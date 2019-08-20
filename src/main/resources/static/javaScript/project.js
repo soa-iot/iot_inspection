@@ -2,8 +2,8 @@
  * 参数定义
  */
 //项目ip
-//var ip = "10.89.90.118",
-var ip = "localhost",
+var ip = "10.89.90.118",
+//var ip = "localhost",
 	//项目端口
 	port = "10238",
 	//port = "8080",
