@@ -22,7 +22,7 @@ public class AnalysisDao {
 	 */  
 	public List<Map<String, Object>> selectPointType( String name ) {
 		String sql = " select distinct(CHECKPOSITON) from IOT_INSPECTION_HEADCONFIG_FXHY "
-				+ "  where INSPECTIONNAME = '" + name + "' ";
+				+ "  where INSPECTIONNAME = '" + name + "' ORDER BY CHECKPOSITON";
 		return jdbcTemplate.queryForList( sql );
 	}
 	
