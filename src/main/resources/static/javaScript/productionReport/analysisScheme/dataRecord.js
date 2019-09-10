@@ -166,6 +166,8 @@ $(function(){
 				console.log( '------sf.saveValue--------' );
 				if( jsonData ){
 					if( jsonData.state == 0 && jsonData.data ){
+						$("#value").empty();
+						cf.addRow();
 						layer.msg( '保存数据成功', {icon:1} );
 					}else{
 						layer.msg( '保存数据失败', {icon:2} );
