@@ -205,3 +205,24 @@ comment on column "IOT_INSPECTION_HCORDER"."REMARK2"        is '备注';
 			REMARK2 VARCHAR2(38 CHAR) DEFAULT '' NOT NULL
 		)
  
+ 
+润滑文件及地址
+#####################################################################################################
+ 新增文件
+ cn.zg.controller.IubricateController
+ cn.zg.dao.IubricateMapper
+ Iubricate.xml
+ /iot_inspection/src/main/resources/static/html/productionReport/lubricate/lubricate_result.html
+ /iot_inspection/src/main/resources/static/html/productionReport/monthly/equ_lubrication.html
+ /iot_inspection/src/main/resources/static/html/productionReport/monthly/monthly_result.html
+ /iot_inspection/src/main/resources/static/javaScript/lubricate/header.js
+ /iot_inspection/src/main/resources/static/javaScript/lubricate/lubricate_result.js
+ /iot_inspection/src/main/resources/static/javaScript/monthly/equ_lubrication.js
+ /iot_inspection/src/main/resources/static/javaScript/monthly/monthly_result.js
+ 
+ http://localhost:10238/iot_inspection/html/productionReport/lubricate/lubricate_result.html
+ 
+ http://localhost:10238/iot_inspection/html/productionReport/monthly/monthly_result.html
+ 
+ http://localhost:10238/iot_inspection/html/productionReport/monthly/equ_lubrication.html
+ 
