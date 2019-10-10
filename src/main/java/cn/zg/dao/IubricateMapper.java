@@ -46,8 +46,12 @@ public interface IubricateMapper {
 	 */
 	public List<Map<String,Object>> selectMonthlyResult( String year);
 
-	
-	
+	/**
+	 * 获取润滑换油月度记录
+	 * @param year 年份
+	 * @return
+	 */
+	public List<Map<String,Object>> selectMonthlhResult( String year);
 	
 	/**
 	 * 获取设备润滑油记录表

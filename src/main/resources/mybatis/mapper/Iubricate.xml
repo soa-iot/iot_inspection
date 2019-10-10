@@ -59,17 +59,31 @@
 		hh24:mi:ss'),'yyyy-mm')
 	</select>
 
+	<!-- 1.3、获取润滑换油月度记录 -->
+	<select id="selectMonthlhResult" resultType="hashMap">
+		select
+		i2.ONAME,to_char(i1.RTIME,'yyyy-mm')
+		times,SUM(RAMOUNT) as amount from IOT_EQUIPMENT_OIL_RECORD
+		i1,IOT_EQUIPMENT_LUBRICATION_OIL i2
+		where i1.oid=i2.oid and to_char(i1.RTIME,'yyyy')=#{year}
+		GROUP BY i2.ONAME,to_char(i1.RTIME,'yyyy-mm')
+	</select>
+
 	<!-- 1.4、获取设备润滑油记录表 -->
 	<select id="selectEquLubricatio" resultType="hashMap">
 		select
-		i1.lnamekey,i1.lname,i2.pplace,i2.requireoil1
-		,i3.OSIGN,i3.MANUFACTURE
+		i3.oid,i1.lnamekey,i1.lname,i2.pplace,i2.requireoil1
+		,i3.OSIGN,i3.MANUFACTURE,i4.RINOUT,i4.RTIME,i4.RAMOUNT,i4.USERID,i4.RNOTE
+		,(select sum(RAMOUNT) from IOT_EQUIPMENT_OIL_RECORD where i3.oid=oid
+		and RINOUT='加') as SUPPLEMENT
+		,(select sum(RAMOUNT) from IOT_EQUIPMENT_OIL_RECORD where i3.oid=oid and
+		RINOUT='减') as EXCHANGES
 		from
 		IOT_EQUIPMENT_LUBRICATE i1,
 		IOT_EQUIPMENT_LUBRICATE_PLACE i2,
-		IOT_EQUIPMENT_LUBRICATION_OIL i3
-
-		where i1.lid=i2.lid and i2.REQUIREOIL1=i3.ONAME
+		IOT_EQUIPMENT_LUBRICATION_OIL i3,
+		IOT_EQUIPMENT_OIL_RECORD i4
+		where i1.lid=i2.lid and i2.REQUIREOIL1=i3.ONAME and i3.oid=i4.oid
 	</select>
 
 

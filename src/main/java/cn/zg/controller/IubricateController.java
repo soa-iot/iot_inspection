@@ -139,20 +139,31 @@ public class IubricateController {
 			logger.info(lubeList.toString());
 			List<Map<String, Object>> MonthList = iubricate.selectMonthlyResult(year);
 			logger.info(MonthList.toString());
+			List<Map<String, Object>> MonthhList = iubricate.selectMonthlhResult(year);
+			logger.info(MonthhList.toString());
 			for (Map<String, Object> lube : lubeList) {
 				Map<String, Object> lubes = new HashMap<String, Object>();
 				lubes.put("name", lube.get("ONAME"));
 				for (Map.Entry<String, String> entry : mapMonet.entrySet()) {
 					String mapKey = entry.getKey();
 					String mapValue = entry.getValue();
-					String reg = 0 + lube.get("OUNIT").toString();
+					int reg = 0;
+					//巡检换油记录
 					for (Map<String, Object> Month : MonthList) {
 						if (lube.get("ONAME").equals(Month.get("OILS"))
 								&& Month.get("TIMES").equals(year + "-" + mapValue)) {
-							reg = Month.get("AMOUNT").toString() + lube.get("OUNIT");
+							reg = Integer.parseInt(Month.get("AMOUNT").toString()) ;
 						}
 					}
-					lubes.put(mapKey, reg);
+					//换油记录
+					for (Map<String, Object> Months : MonthhList) {
+						if (lube.get("ONAME").equals(Months.get("ONAME"))
+								&& Months.get("TIMES").equals(year + "-" + mapValue)) {
+							reg = reg+Integer.parseInt(Months.get("AMOUNT").toString()) ;
+						}
+					}
+					
+					lubes.put(mapKey, ""+reg+lube.get("OUNIT").toString());
 				}
 				lis1.add(lubes);
 			}
