@@ -75,7 +75,13 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	 */
 	$('#search_button_export').on('click', function() {
 		// 点击了导出按钮
-		return false;
+		table.exportFile(['名字','性别','年龄'], [
+			  ['张三','男','20'],
+			  ['李四','女','18'],
+			  ['王五','女','19']
+			],'xls','121212'); 
+		//默认导出 csv，也可以为：xls
+//		return false;
 	});
 
 	/**

@@ -70,9 +70,16 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 		{align : 'center', title: '润滑油(脂)',colspan : 2},
 		{align : 'center', title: '数量',colspan : 2}
       ,{field:'RTIME',align : 'center', title: '时间',rowspan : 2}
-      ,{field:'USERID',align : 'center', title: '操作人员',rowspan : 2}
+      ,{field:'EXCUTOR',align : 'center', title: '操作人员',rowspan : 2}
       ,{field:'RNOTE',align : 'center',  title: '备注',rowspan : 2}
-    ], [ {
+    ], [ 
+//    	{
+//    	field : 'ONAME',
+//		align : 'center',
+//		title : '油品',
+//		width : 200
+//		},
+		{
 			field : 'OSIGN',
 			align : 'center',
 			title : '牌号',

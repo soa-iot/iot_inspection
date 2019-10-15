@@ -137,8 +137,8 @@ public class IubricateController {
 		try {
 			List<Map<String, Object>> lubeList = iubricate.selectLubeList();
 			logger.info(lubeList.toString());
-			List<Map<String, Object>> MonthList = iubricate.selectMonthlyResult(year);
-			logger.info(MonthList.toString());
+//			List<Map<String, Object>> MonthList = iubricate.selectMonthlyResult(year);
+//			logger.info(MonthList.toString());
 			List<Map<String, Object>> MonthhList = iubricate.selectMonthlhResult(year);
 			logger.info(MonthhList.toString());
 			for (Map<String, Object> lube : lubeList) {
@@ -149,12 +149,12 @@ public class IubricateController {
 					String mapValue = entry.getValue();
 					int reg = 0;
 					//巡检换油记录
-					for (Map<String, Object> Month : MonthList) {
-						if (lube.get("ONAME").equals(Month.get("OILS"))
-								&& Month.get("TIMES").equals(year + "-" + mapValue)) {
-							reg = Integer.parseInt(Month.get("AMOUNT").toString()) ;
-						}
-					}
+//					for (Map<String, Object> Month : MonthList) {
+//						if (lube.get("ONAME").equals(Month.get("OILS"))
+//								&& Month.get("TIMES").equals(year + "-" + mapValue)) {
+//							reg = Integer.parseInt(Month.get("AMOUNT").toString()) ;
+//						}
+//					}
 					//换油记录
 					for (Map<String, Object> Months : MonthhList) {
 						if (lube.get("ONAME").equals(Months.get("ONAME"))
