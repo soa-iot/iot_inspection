@@ -7,6 +7,8 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	var currentTableHead;
 	var currentTableBody;
 
+	
+	
 	/**
 	 * 方案名称渲染
 	 */
@@ -15,7 +17,7 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 		type: 'post',
 		async: false,
 		data: {
-			schemeType: '2'
+			schemeType: '1'
 		},
 		dataType: 'json',
 		success: function(res) {
@@ -86,15 +88,18 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 
 	/**
 	 * 渲染表格数据
+	 * schemeId: $('#inspection').val(),
+				recordDay: record_day
 	 */
 	function loadTable(scheme_name, record_day) {
-
-		$.post('/iot_inspection/meter/getMeterInspectionResult', {
+		layer.load(1);
+		$.post('/iot_inspection/ibricate/getIubricateResult', {
 				schemeId: $('#inspection').val(),
 				recordDay: record_day
 			},
 			function(res) {
 				if (res.code == 0) {
+					 layer.closeAll();
 					table_render(res.data);
 				}
 			});
@@ -102,63 +107,23 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	}
 
 
-
 	function table_render(data) {
-		var arr = [];
-		var arr2 = [];
-		//创建数组
-		$.each(data, function(i, item) {
-			if (!isInArray(arr, item.requireContext)) {
-				arr.push(item.requireContext);
-			}
-		});
-
-		var table_html = '';
-		table_html += '<table class="layui-table">';
-		table_html += ' <colgroup>';
-		table_html += ' <col width="80">';
-		table_html += ' <col width="550">';
-		table_html += ' <col>';
-		table_html += '</colgroup>';
-		table_html += '<thead>';
-		table_html += ' <tr>';
-		table_html += ' <th>序号</th>';
-		table_html += ' <th>巡检内容</th>';
-		var a = 0;
-		$.each(data, function(i, item) {
-			if (item.requireContext == arr[0]) {
-				if (item.contentName != '其它') {
-					table_html += ' <th>' + item.contentName + '</th>';
-					a++;
+		  table.render({
+			    elem: '#meter_record_table',
+			    data:data,
+			    toolbar : true,  
+				height : 'full-160',
+				cols: tab_code.header($('#inspection').val()),
+				page : true,
+				curr : 0,
+				limit : 20,
+				limits : [ 10, 20, 30,40,50],
+				layout : ['prev', 'page', 'next', 'skip',
+						'count', 'limit'],
+				done : function(res, curr, count) {
 				}
-			}
-		});
-		table_html += ' </tr> ';
-		table_html += ' </thead>';
-		table_html += '<tbody>';
-
-		for (var i = 0; i < arr.length; i++) {
-			var name = arr[i];
-			table_html += ' <tr>';
-			table_html += '  <td>' + (i + 1) + '</td>';
-			table_html += '  <td>' + name + '</td>';
-			$.each(data, function(i, item) {
-				if (name == item.requireContext && item.contentName != '其它') {
-					table_html += ' <td>' + item.inspectionResult + '</td>';
-
-				} else if (name == item.requireContext && item.contentName == '其它') {
-					table_html += ' <td colspan=' + a + '>' + item.inspectionResult + '</td>';
-				}
-			});
-			table_html += ' </tr>';
-		}
-		table_html += '</tbody>';
-		table_html += '</table>';
-		$('#meter_record_table').html(table_html);
+			  });
 	}
-
-
-
 
 	function getNowFormatDate() {
 		var date = new Date();

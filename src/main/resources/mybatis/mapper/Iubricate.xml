@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.zg.dao.IubricateMapper">
+
+	<!-- ===========================1、查询=============================== -->
+
+	<select id="selectDayBycontent" resultType="hashMap">
+		select
+		C1.TASK_CONTENT_ID,C2.TASK_CONTENT_NAME,C2.EQU_NAME,C1.DISPORE,C1.OILS,C1."VALUE"
+		from
+		IOT_INSPECTION_VALUE_RH c1,CZ_TASK_INSPECTION_CONTENT
+		c2,CZ_TASK_INSPECTION_STATE c3 where
+		C1.TASK_CONTENT_ID=C2.TASK_CONTENT_ID and TASK_REQUIRE_ID='null' and
+		c3.IVID=c1.TASK_PIID
+		and c3.PLAN_ID=#{schemeId} AND
+		to_char(c3.RECORD_TIME,'yyyy-mm-dd')=#{recordDay}
+		ORDER BY
+		C2.TASK_CONTENT_ORDER
+	</select>
+
+
+
+	<!-- 1.2、查询指定月的方案时间 -->
+	<select id="selectDayByIubricat" resultType="hashMap">
+		SELECT * FROM (
+		SELECT
+		C1.TASK_REQUIRE_ID,c1.TASK_CONTENT_ID,C1.TASK_REQUIRE_CONTEXT,C1.TASK_REQUIRE_ORDER
+		FROM CZ_TASK_INSPECTION_REQUIRE C1,CZ_TASK_INSPECTION_CONTENT C2,
+		CZ_TASK_INSPECTION_POINT C3 ,CZ_TASK_INSPECTION C4
+		,CZ_TASK_INSPECTION_STATE C5
+		WHERE C1.TASK_CONTENT_ID=
+		C2.TASK_CONTENT_ID AND
+		C2.TASK_POINT_ID=C3.TASK_POINT_ID AND
+		C3.TASK_ID=C4.TASK_ID
+		AND C4.SCHEME_ID=C5.PLAN_ID AND
+		C5.PLAN_ID=#{schemeId} AND
+		TO_CHAR(C5.RECORD_TIME,'YYYY-MM-DD')=#{recordDay}
+		ORDER BY
+		TASK_REQUIRE_ORDER ) T
+		LEFT JOIN IOT_INSPECTION_VALUE_RH I1 ON
+		T.TASK_REQUIRE_ID=I1.TASK_REQUIRE_ID
+	</select>
+
+
+	<!-- 1.3、获取润滑月度记录 -->
+	<select id="selectMonthlyResult" resultType="hashMap">
+		select
+		OILS,to_char(to_date(RECORD_TIME, 'yyyy-mm-dd
+		hh24:mi:ss'),'yyyy-mm')
+		times,SUM("VALUE") as amount from
+		IOT_INSPECTION_VALUE_RH
+		where
+		TASK_REQUIRE_ID='null' and DISPORE != 'null'
+		and DISPORE != '上报问题' and
+		to_char(to_date(RECORD_TIME, 'yyyy-mm-dd hh24:mi:ss'),'yyyy')=#{year}
+		group BY OILS,to_char(to_date(RECORD_TIME, 'yyyy-mm-dd
+		hh24:mi:ss'),'yyyy-mm')
+	</select>
+
+	<!-- 1.3、获取润滑换油月度记录 -->
+	<select id="selectMonthlhResult" resultType="hashMap">
+		SELECt
+		i2.oname,to_char(i1.ptime,'yyyy-mm') times,sum(i1.ramount) amount from
+		IOT_EQUIPMENT_LUBRICATE_RECORD i1,IOT_EQUIPMENT_LUBRICATION_OIL i2
+		where i1.oid=i2.oid and to_char(i1.ptime,'yyyy')='2019'
+		GROUP BY
+		i2.oname,to_char(i1.ptime,'yyyy-mm')
+	</select>
+
+	<!-- 1.4、获取设备润滑油记录表 -->
+	<select id="selectEquLubricatio" resultType="hashMap">
+		select i1.lnamekey,i2.pplace,i3.oname,i3.OSIGN,i3.MANUFACTURE
+		,a.SUPPLEMENT,a.EXCHANGES,a.RTIME,a.EXCUTOR,a.RNOTE from (
+		SELECt
+		lid,oid,pid,to_char(ptime,'yyyy-mm-dd') RTIME,
+		sum(case when
+		OPERATETYPE ='加油' then RAMOUNT else '0' end) SUPPLEMENT,
+		sum(case when
+		OPERATETYPE ='换油' then RAMOUNT else '0' end) EXCHANGES,
+		EXCUTOR,RNOTE
+		from IOT_EQUIPMENT_LUBRICATE_RECORD
+		GROUP BY
+		lid,oid,pid,to_char(ptime,'yyyy-mm-dd'),EXCUTOR,RNOTE
+		) a
+		LEFT JOIN
+		IOT_EQUIPMENT_LUBRICATE i1 on i1.lid=a.lid
+		LEFT JOIN
+		IOT_EQUIPMENT_LUBRICATE_PLACE i2 on i2.pid=a.pid
+		LEFT JOIN
+		IOT_EQUIPMENT_LUBRICATION_OIL i3 on i3.OID=a.OID
+		<where>
+			<if test="eqbit != null and eqbit !='' ">
+				AND i1.lnamekey=#{eqbit,jdbcType=VARCHAR}
+			</if>
+			<if test="eqname != null and eqname !=''">
+				AND I1.LNAME=#{eqname,jdbcType=VARCHAR}
+			</if>
+			<if test="beginTime != null and beginTime !=''">
+				AND TO_DATE(a.RTIME,'YYYY-MM-DD') >=
+				TO_DATE(#{beginTime,jdbcType=VARCHAR},'YYYY-MM-DD')
+
+			</if>
+			<if test="finishTime != null and finishTime !=''">
+				AND TO_DATE(a.RTIME,'YYYY-MM-DD') >=
+				TO_DATE(#{finishTime,jdbcType=VARCHAR},'YYYY-MM-DD')
+
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 1.6、查询所有油品 -->
+	<select id="selectLubeList" resultType="hashMap">
+		select * from
+		IOT_EQUIPMENT_LUBRICATION_OIL
+	</select>
+
+</mapper>
