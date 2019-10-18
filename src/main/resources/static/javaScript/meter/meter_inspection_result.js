@@ -97,6 +97,7 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 
 		switch (scheme_name) {
 			case 'DCS、SIS、F&GS系统巡检方案' :
+			case 'UPS（EPS）后备电源装置及其蓄电池巡检方案':
 				$.ajax({
 					url : '/iot_inspection/meter/getMeterInspectionResult',
 					type : 'post',
