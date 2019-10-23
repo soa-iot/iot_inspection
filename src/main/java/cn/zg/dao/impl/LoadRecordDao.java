@@ -53,7 +53,7 @@ public class LoadRecordDao {
 	 * 巡检数据
 	 */
 	public List<Map<String,Object>> findInspectionData(String plan_id,String date) {
-		String sql = "SELECT  A.PLAN_ID,A.RECORD_TIME,A.POSITION_NAME,A.RECORD_TIME_NUM,A.VALUE,B.REQUIRE_CONTEXT,B.REQUIRE_MIX,B.REQUIRE_MAX,B.REQUIRE_UNIT FROM IOT_INSPECTION_VALUE_LR A,CZ_INSPECTION_REQUIRE B WHERE PLAN_ID='"+plan_id+"' AND TO_CHAR(RECORD_TIME,'YYYY-MM-DD')='"+date+"' and A.REQUIRE_ID=B.REQUIRE_ID ORDER BY POSITION_NAME";
+		String sql = "SELECT  A.PLAN_ID,A.RECORD_TIME,C.CONTENT_NAME POSITION_NAME,A.REMARK2,A.VALUE,B.REQUIRE_CONTEXT,B.REQUIRE_MIX,B.REQUIRE_MAX,B.REQUIRE_UNIT FROM IOT_INSPECTION_VALUE_LR A,CZ_INSPECTION_REQUIRE B,CZ_INSPECTION_CONTENT C WHERE PLAN_ID='"+plan_id+"' AND TO_CHAR(RECORD_TIME,'YYYY-MM-DD')='"+date+"' and A.REMARK1=B.REQUIRE_ID and B.CONTENT_ID = C.CONTENT_ID ORDER BY CONTENT_NAME";
 		return jdbcTemplate.queryForList(sql);
 	}
 	
@@ -63,7 +63,7 @@ public class LoadRecordDao {
 	 */
 	public List<String> findInspectionNameByPlanId(String plan_id,String date) {
 		
-		String sql = "SELECT  POSITION_NAME  FROM IOT_INSPECTION_VALUE_LR WHERE PLAN_ID='"+plan_id+"' and to_char(RECORD_TIME,'yyyy-MM-dd')='"+date+"' GROUP BY POSITION_NAME";
+		String sql = "SELECT  CONTENT_NAME  FROM IOT_INSPECTION_VALUE_LR A,CZ_INSPECTION_REQUIRE B,CZ_INSPECTION_CONTENT C WHERE A.PLAN_ID='"+plan_id+"' and to_char(A.RECORD_TIME,'yyyy-MM-dd')='"+date+"' and A.REMARK1=B.REQUIRE_ID and B.CONTENT_ID = C.CONTENT_ID GROUP BY CONTENT_NAME";
 		return jdbcTemplate.queryForList(sql, String.class);
 	}
 	

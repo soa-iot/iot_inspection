@@ -62,7 +62,8 @@ public class LoadRecordServiceImpl implements LoadRecordService{
 					}else {//只有下限值
 						maps.put("LIMIT_MAX",min+unit);
 					}
-					maps.put((String)map.get("RECORD_TIME_NUM")+(String)map.get("REQUIRE_CONTEXT"), (String)map.get("VALUE")+unit);
+					String value = "/".equals(map.get("VALUE").toString().trim())?(String)map.get("VALUE"):(String)map.get("VALUE") +unit;
+					maps.put((String)map.get("REMARK2")+(String)map.get("REQUIRE_CONTEXT"), value);
 				}
 			}
 			lists.add(maps);

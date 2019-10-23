@@ -14,8 +14,8 @@ import cn.zg.entity.daoEntity.InpectionValue;
 /**
  * @ClassName: InpectionValueRepos
  * @Description: TODO(这里用一句话描述这个类的作用)
- * @author zhugang
- * @date 2018年11月13日
+ * @author Bru.Lo
+ * @date 2019年10月23日
  */
 public interface InpectionValueRepos  extends JpaRepository< InpectionValue , String >{
 
