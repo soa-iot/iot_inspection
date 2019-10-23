@@ -2,6 +2,7 @@
  * 参数定义
  */
 var laydate = layui.laydate
+    ,user = userID == 'admin' ? '刘进' : userID
 	,form = layui.form
 	,table = layui.table
 	,inspectIdName={}
@@ -141,7 +142,7 @@ $(function(){
 	/*
 	 * 动态生成方案名称
 	 */
-	ajaxByGet( inspectionUrl , {'userId':currentUser} , searchPlan , false );
+	ajaxByGet( inspectionUrl , {'userId':user} , searchPlan , false );
 	
 	/*
 	 * 标题加时间
