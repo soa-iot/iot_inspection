@@ -108,7 +108,7 @@ function searchPlan( jsonData ){
 	if( jsonData.state == 0 ){
 		if( jsonData.data != null){
 			//排序
-			var orderBase=["1","2","3","4","5","6","7"]
+			var orderBase=["1","2","3","4","5","6","7","辅助单元"]
 			,orderedInspectName = [];
 			$.each( orderBase, function( index0, item0 ){	
 				$.each( jsonData.data, function( index1, item1 ){	
