@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>重庆天然气净化总厂遂宁龙王庙净化厂润滑油巡检记录表</title>
+<link rel="stylesheet"
+	href="../../../package/layui-v2.4.2/css/layui.css">
+<style type="text/css">
+/*模拟对角线*/
+.out {
+	border-top: 40px #D6D3D6 solid; /*上边框宽度等于表格第一行行高*/
+	width: 0px; /*让容器宽度为0*/
+	height: 0px; /*让容器高度为0*/
+	border-left: 80px #BDBABD solid; /*左边框宽度等于表格第一行第一格宽度*/
+	position: relative; /*让里面的两个子容器绝对定位*/
+}
+
+b {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: -40px;
+	left: -40px;
+	width: 150px;
+}
+
+em {
+	font-style: normal;
+	display: block;
+	position: absolute;
+	top: -25px;
+	left: -70px;
+	width: 155px;
+}
+</style>
+</head>
+<body>
+	<div class="layui-fluid " style="overflow: visible">
+		<!-- 搜索条件 -->
+		<div class="layui-row layui-col-space15">
+			<div class="layui-col-md12 ">
+				<fieldset
+					style="border-radius: 13px; margin-top: 10px; vertical-align: middle;">
+					<legend>查询条件</legend>
+					<form class="layui-form" action="" style="margin-top: 15px;">
+						<div class="layui-form-item">
+							<div class="layui-inline">
+							      <label class="layui-form-label">年选择器</label>
+							      <div class="layui-input-inline">
+							        <input type="text" class="layui-input" id="record_day" placeholder="yyyy">
+							      </div>
+							    </div>
+							<div class="layui-inline">
+								<button class="layui-btn" lay-submit
+									lay-filter="search_button_search">
+									<i class="layui-icon">&#xe615;</i> 查询
+								</button>
+							</div>
+							<div class="layui-inline" name="search_button_export">
+								<button type="button" class="layui-btn"
+									id="search_button_export">
+									<i class="layui-icon">&#xe60a;</i>导出Excel
+								</button>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+			</div>
+		</div>
+
+		<!-- 标题-->
+		<div class="layui-row">
+			<div class="layui-col-md12  layui-col-space15">
+				<div class="component_container" id="search_pure_title">
+					<div></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 表格-->
+		<table class="layui-hide" id="test"></table>
+
+
+	</div>
+</body>
+<script type="text/javascript"
+	src="../../../package/layui-v2.4.2/layui.js"></script>
+
+<script type="text/javascript"
+	src="../../../javaScript/monthly/monthly_result.js"></script>
+</html>

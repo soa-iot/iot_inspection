@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.MeterInspectionResultMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.daoEntity.MeterInspectionResult">
+		<result column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="SCHEME_TYPE" jdbcType="VARCHAR"
+			property="schemeType" />
+		<result column="SCHEME_NAME" jdbcType="VARCHAR"
+			property="schemeName" />
+		<result column="REQUIRE_ID" jdbcType="VARCHAR"
+			property="requireId" />
+		<result column="TASK_REQUIRE_CONTEXT" jdbcType="VARCHAR"
+			property="requireContext" />
+		<result column="TASK_CONTENT_NAME" jdbcType="VARCHAR"
+			property="contentName" />
+		<result column="INSPECTION_RESULT" jdbcType="VARCHAR"
+			property="inspectionResult" />
+		<result column="RECORD_DAY" jdbcType="TIMESTAMP"
+			property="recordDay" />
+		<result column="TASK_INST_ID" jdbcType="VARCHAR"
+			property="taskInstId" />
+		<result column="STANDBY1" jdbcType="VARCHAR"
+			property="standby1" />
+		<result column="STANDBY2" jdbcType="VARCHAR"
+			property="standby2" />
+		<result column="STANDBY3" jdbcType="VARCHAR"
+			property="standby3" />
+	</resultMap>
+
+	<select id="findRecordBySchemeAndDate"
+		parameterType="cn.zg.entity.serviceEntity.QueryCondition"
+		resultMap="BaseResultMap">
+		SELECT T1.*
+		,T2.TASK_REQUIRE_CONTEXT,T2.TASK_CONTENT_ID,T3.TASK_CONTENT_NAME FROM
+		(
+		SELECT *
+		FROM
+		IOT_INSPECTION_VALUE_YB
+		<where>
+			<if test="schemeId != null and schemeId != ''">
+				AND SCHEME_NAME = #{schemeId,jdbcType=VARCHAR}
+			</if>
+			<if test="recordDate != null and recordDate != ''">
+				AND to_char(RECORD_DAY,'yyyy-mm-dd') =
+				#{recordDate,jdbcType =
+				TIMESTAMP}
+			</if>
+		</where>
+		)
+		T1 LEFT JOIN
+		CZ_TASK_INSPECTION_REQUIRE
+		T2
+		ON
+		T1.REQUIRE_ID =
+		T2.TASK_REQUIRE_ID
+		LEFT JOIN CZ_TASK_INSPECTION_CONTENT T3 ON
+		T2.TASK_CONTENT_ID = T3.TASK_CONTENT_ID
+
+	</select>
+
+
+
+</mapper>
