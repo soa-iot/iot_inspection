@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.zg.dao.CzInspectionMapper">
+	
+	<select id="selectTaskId" resultType="cn.zg.entity.Point">
+		SELECT 
+			TASK_ID,task_name
+          FROM 
+          	CZ_TASK_INSPECTION	
+          WHERE 
+			scheme_name = #{planName}
+		  
+		  
+	</select>
+	
+	<!-- ===========================2、新增===============================  -->
+	
+	<insert id="insertPoint"	parameterType="cn.zg.entity.Point">
+		INSERT INTO
+			CZ_TASK_INSPECTION_POINT
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="point.task_point_id!= null and point.task_point_id!= ''">
+					TASK_POINT_ID,
+				</if>
+				<if test="point.task_id != null and point.task_id != ''">
+					TASK_ID,
+				</if>
+				<if test="point.task_name != null and point.task_name != ''">
+					TASK_NAME,
+				</if>
+				<if test="point.task_point_name != null and point.task_point_name != ''">
+					TASK_POINT_NAME,
+				</if>
+				<if test="point.task_point_starttime != null">
+					TASK_POINT_STARTTIME,
+				</if>
+				<if test="point.task_pointorder != null and point.task_pointorder != ''">
+					TASK_POINTORDER,
+				</if>
+				
+			</trim>
+		VALUES
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="point.task_point_id!= null and point.task_point_id!= ''">
+					#{point.task_point_id},
+				</if>
+				<if test="point.task_id != null and point.task_id != ''">
+					#{point.task_id},
+				</if>
+				<if test="point.task_name != null and point.task_name != ''">
+					#{point.task_name},
+				</if>
+				<if test="point.task_point_name != null and point.task_point_name != ''">
+					#{point.task_point_name},
+				</if>
+				<if test="point.task_point_starttime != null ">
+					#{point.task_point_starttime},
+				</if>
+				<if test="point.task_pointorder != null and point.task_pointorder != ''">
+					#{point.task_pointorder},
+				</if>
+				
+			</trim>	
+	</insert>
+	
+		
+	
+</mapper>
+ 
+

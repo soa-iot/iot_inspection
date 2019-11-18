@@ -259,15 +259,15 @@ fieldset legend {
 																			//获取表格返回数据
 																			currentTableBody = res.data;
 																			/*一段10KV进线电源功率因内容样式的处理*/
-																			 var jqueryObjectArray1=$('table tbody tr td[data-field="POSITION_NAME"]:contains("一段10KV进线电源功率因")').next().nextAll();
+																			 var jqueryObjectArray1=$('table tbody tr td[data-field="POSITION_NAME"]:contains("功率因数")').next().nextAll();
 																			if(jqueryObjectArray1.length>0){
 																				specificCSS(jqueryObjectArray1);
 																			} 
 																			/*二段10KV进线电源功率因内容样式的处理*/
-																			var jqueryObjectArray2=$('table tbody tr td[data-field="POSITION_NAME"]:contains("二段10KV进线电源功率因")').next().nextAll();
+																			/* var jqueryObjectArray2=$('table tbody tr td[data-field="POSITION_NAME"]:contains("功率因")').next().nextAll();
 																			if(jqueryObjectArray2.length>0){
 																				specificCSS(jqueryObjectArray2);
-																			}
+																			} */
 																		}
 																};
 															table.init('filter', options);
@@ -358,7 +358,7 @@ fieldset legend {
 										for ( var o in flagData)
 											{
 												position = flagData[o].field;
-												if(item['POSITION_NAME']=='一段10KV进线电源功率因'||item['POSITION_NAME']=='二段10KV进线电源功率因'){
+												if(item['POSITION_NAME'].indexOf("功率因数")!=-1){
 													if(position=='POSITION_NAME'||position=='LIMIT_MAX'){
 														tableBody = tableBody + '<td align="center">' + item[position] + '</td>';
 													}else{
@@ -371,14 +371,14 @@ fieldset legend {
 												}
 												
 											}
-										/*
-										$.each( flagData, function( index1, item1 ){
-											console.log( '生成静态表格……item.field' + item1.field );
-											position = item1[field];
-											tableBody = tableBody 
+										
+										//$.each( flagData, function( index1, item1 ){
+										//	console.log( '生成静态表格……item.field' + item1.field );
+										//	position = item1[field];
+										//	tableBody = tableBody 
 												+ '<td align="center">' + item[position] + '</td>';
-										} )
-										 */
+										//} )
+										 
 										tableBody = tableBody + "</tr>";
 									})
 
