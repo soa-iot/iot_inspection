@@ -2,7 +2,7 @@
  * 参数定义
  */
 var laydate = layui.laydate
-    ,user = userID == 'admin' ? '刘进' : userID
+    ,user =  '刘进'
 	,form = layui.form
 	,table = layui.table
 	,inspectIdName={}
