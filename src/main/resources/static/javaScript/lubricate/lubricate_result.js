@@ -27,9 +27,11 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 			}
 			var option_html = "";
 			$.each(res.data, function(index, item) {
-				option_html += '<option value = "' +
+				if (item.schemeName.indexOf("润滑") != -1) {
+					option_html += '<option value = "' +
 					item.schemeId + '">' +
 					item.schemeName + '</option>'
+				}
 
 			});
 			$('#inspection').html(option_html);
