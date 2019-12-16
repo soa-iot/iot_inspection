@@ -106,5 +106,20 @@ public class TailAfterSchemeController {
 		return new ResultJson<List<StatusRecord>>( list );
 	}
 	
+	/**   
+	 * @Title: getTableStatusC   
+	 * @Description: 查看任务状态    
+	 * @return: ResultJson<List<Map<String,Object>>>        
+	 */  
+	@GetMapping("/lubstatus")
+	public ResultJson<List<StatusRecord>> getTableStatusLubC (
+			@RequestParam( "time" ) String time,
+			@RequestParam( "currentScheme" ) String currentScheme) throws ParseException {
+		logger.debug( "C-查看任务状态   -time-currentScheme" + time + "-" + currentScheme );		
+		List<StatusRecord> list = statusRecordS.findTaskStateByPlanidAndMonth( currentScheme, time );
+		logger.debug( "C-查看任务状态   -list:" + list.toString() );		
+		return new ResultJson<List<StatusRecord>>( list );
+	}
+	
 
 }

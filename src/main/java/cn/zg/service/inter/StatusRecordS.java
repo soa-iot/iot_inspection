@@ -16,4 +16,11 @@ public interface StatusRecordS {
 	 */  
 	List<StatusRecord> findTaskStateByPlanidAndTime(String planId, String time);
 	
+	/**   
+	 * @Title: findTaskStateByPlanidAndTime   
+	 * @Description:  查看巡检任务状态  
+	 * @return: List<StatusRecord>        
+	 */  
+	List<StatusRecord> findTaskStateByPlanidAndMonth(String planId, String time);
+	
 }

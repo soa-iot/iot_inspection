@@ -18,4 +18,13 @@ public interface StatusRecordMapper {
 	public List<StatusRecord> findTaskStateByPlanidAndTime(
 			@Param("planId") String planId
 			,@Param("time") String time );
+	
+	/**   
+	 * @Title: findTaskStateByPlanidAndTime   
+	 * @Description: 查看任务状态   
+	 * @return: List<StatusRecord>        
+	 */  
+	public List<StatusRecord> findTaskStateByPlanidAndMonth(
+			@Param("planId") String planId
+			,@Param("time") String time );
 }

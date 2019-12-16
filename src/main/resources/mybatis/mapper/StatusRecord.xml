@@ -14,6 +14,13 @@
 		order by to_number(REMARK2)
 	</select>
 	
+	<select id="findTaskStateByPlanidAndMonth" resultType="cn.zg.entity.daoEntity.StatusRecord">
+		select * from CZ_TASK_INSPECTION_STATE
+		where PLAN_ID = #{planId}
+		and to_char(RECORD_TIME,'YYYY-MM') = #{time}
+		order by REMARK2
+	</select>
+	
 	<!-- ===========================2、新增===============================  -->
 	
 	<!-- 2.1、根据id增加用户组织 -->

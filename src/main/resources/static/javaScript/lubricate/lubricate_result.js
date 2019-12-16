@@ -6,9 +6,16 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	var $ = layui.jquery;
 	var currentTableHead;
 	var currentTableBody;
+	var scheme_name1 = getQueryUrlString("scheme");
+	var record_day1 = getQueryUrlString("time");
 
+	console.log(getQueryUrlString("time"));
+	console.log(getQueryUrlString("scheme"));
 	
-	
+
+	if (record_day1 != '请选择' && scheme_name1 != "请选择") {
+		loadTable(scheme_name1, record_day1);
+	}
 	/**
 	 * 方案名称渲染
 	 */
@@ -28,9 +35,17 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 			var option_html = "";
 			$.each(res.data, function(index, item) {
 				if (item.schemeName.indexOf("润滑") != -1) {
-					option_html += '<option value = "' +
-					item.schemeId + '">' +
-					item.schemeName + '</option>'
+					
+					if (scheme_name1 == item.schemeId) {
+						option_html += '<option value = "' +
+						item.schemeId + '" selected = "selected">' +
+						item.schemeName + '</option>'
+					}else{
+						option_html += '<option value = "' +
+						item.schemeId + '">' +
+						item.schemeName + '</option>'
+					}
+					
 				}
 
 			});
@@ -45,7 +60,7 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	// 记录时间渲染
 	laydate.render({
 		elem: '#record_day',
-		value: new Date()
+		value: record_day1 == '请选择' ? new Date() : record_day1
 	});
 
 	/**3C8DBF9F3A8940578C5D196124194C69
@@ -62,8 +77,7 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 		 * 获取表单数据
 		 */
 
-		var scheme_name = $('#inspection').find('option:selected')
-			.text();
+		var scheme_name = $('#inspection').val();
 		var record_day = $('#record_day').val();
 
 		loadTable(scheme_name, record_day);
@@ -93,11 +107,11 @@ layui.use(['form', 'laypage', 'table', 'laydate', 'layer'], function() {
 	 * schemeId: $('#inspection').val(),
 				recordDay: record_day
 	 */
-	function loadTable(scheme_name, record_day) {
+	function loadTable(scheme_name2, record_day2) {
 		layer.load(1);
 		$.post('/iot_inspection/ibricate/getIubricateResult', {
-				schemeId: $('#inspection').val(),
-				recordDay: record_day
+				schemeId: scheme_name2,
+				recordDay: record_day2
 			},
 			function(res) {
 				if (res.code == 0) {
