@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+.layui-form .layui-form-label{
+	padding: 9px 10px;
+	width: 90px;
+}
+
+.layui-form .layui-btn-sm{
+	padding: 0px 5px;
+}
+
+.layui-form .layui-input-one{
+	width:188px;
+}
+
+.layui-form .input-btn{
+	display: inline-block;
+}
+
+
+.layui-layer-btn>.layui-layer-btn0{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn>.layui-layer-btn1{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn>.layui-layer-btn2{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn0,.layui-layer-btn1,.layui-layer-btn2{
+	vertical-align: bottom;
+}
+
+.layui-layer-btn0:hover,.layui-layer-btn1:hover ,.layui-layer-btn2:hover {
+	color: white;
+	background-color: #3a95ca;
+}
+
+.layui-input-block .layui-upload-choose{
+	margin-top: 7px;
+}
+
+
+.layui-form .layui-input-disable{
+	background-color: rgb(251,251,251)
+}

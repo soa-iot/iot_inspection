@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>临时任务下达</title>
+<link rel="stylesheet" href="../../package/layui-v2.5.5/layui/css/layui.css">
+<link rel="stylesheet" href="../../css/temporary_task/temporary_task_track.css">
+</head>
+<body>
+<div class="layui-container" style="margin-top: 10px;padding-right: 0px;">
+<fieldset style="border-radius: 13px; margin-top: 10px;">
+  <legend>查询条件</legend>
+  <form class="layui-form layui-form-query">
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-xs12 layui-col-sm12 layui-col-md5">
+			    <label class="layui-form-label">任务下达日期</label>
+			    <div class="layui-input-block layui-input-block-one">
+			       <input type="text" id="create_start_date" name="createStartDate" autocomplete="off" placeholder="开始日期" class="layui-input layui-input-time">
+			      	 &nbsp;至&nbsp;
+			       <input type="text" id="create_end_date" name="createEndDate" autocomplete="off" placeholder="结束日期" class="layui-input layui-input-time">
+			    </div>
+		    </div>
+		    <div class="layui-col-xs12 layui-col-sm12 layui-col-md7">
+		    	<div class="layui-row">
+		    		<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+					    <label class="layui-form-label">任务名称</label>
+					    <div class="layui-input-block">
+					       <input type="text" id="taskName" name="taskName" autocomplete="off" class="layui-input layui-input-right">
+					    </div>
+				    </div>
+				    <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+					    <label class="layui-form-label" >任务下达人</label>
+					    <div class="layui-input-block">
+					       <input type="text" id="createPerson" name="createPerson" autocomplete="off" class="layui-input layui-input-right">
+					    </div>
+				    </div>
+		    	</div>
+		   </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-xs12 layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label">要求完成日期</label>
+			    <div class="layui-input-block layui-input-block-one">
+			       <input type="text" id="require_start_date" name="requireStartDate" placeholder="开始日期" autocomplete="off" class="layui-input layui-input-time">
+			         &nbsp;至&nbsp;
+			       <input type="text" id="require_end_date" name="requireEndDate" placeholder="结束日期" autocomplete="off" class="layui-input layui-input-time">
+			    </div>
+		    </div>
+		    <div class="layui-col-xs12 layui-col-sm12 layui-col-md7">
+		    	<div class="layui-row">
+		    		<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+					    <label class="layui-form-label" >任务完成人</label>
+					    <div class="layui-input-block layui-input-right">
+					       <input type="text" id="executePerson" autocomplete="off" class="layui-input">
+					    </div>
+				    </div>
+				    <div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+					    <label class="layui-form-label" >任务状态</label>
+					    <div class="layui-input-block layui-input-right">
+					       <select class="layui-input" id="taskState">
+					       	   <option selected="selected" value="">请选择</option>
+					       	   <option value="FINISHED">已完成</option>
+					       	   <option value="UNFINISHED">未完成</option>
+					       	   <option value="OVERFINISHED">超期未完成</option>
+					       </select>
+					    </div>
+				    </div>
+		    	</div>
+		    </div>
+		    
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-xs12 layui-col-sm6 layui-col-md6">
+			    <label class="layui-form-label">任务完成日期</label>
+			    <div class="layui-input-block layui-input-block-one">
+			       <input type="text" id="finish_start_date" placeholder="开始日期" autocomplete="off" class="layui-input layui-input-time">
+			         &nbsp;至&nbsp;
+			       <input type="text" id="finish_end_date" placeholder="结束日期" autocomplete="off" class="layui-input layui-input-time">
+			    </div>
+		    </div>
+	  	</div>
+  	 </div>
+  	 <div class="layui-row">
+	  	<div class="layui-col-md2 layui-col-md-offset10">
+	  		<button type="button" id="queryBtn" class="layui-btn layui-col-md-offset4"><i class="layui-icon">&#xe615;</i>查询</button>
+	  	</div>
+	 </div>
+   </form>
+  </fieldset>
+  <br/> <br/>
+  <div class="total-div">
+	<span style="color: green; font-weight: bolder;">
+		&nbsp; &nbsp;<i class="layui-icon" id="finish-num">0</i>
+	</span>
+	<b>- 已完成</b>  &nbsp; &nbsp; &nbsp;
+	<span style="color: orange; font-weight: bolder;">
+		<i class="layui-icon" id="unfinish-num">0</i>
+	</span> 
+	<b>- 未完成</b> &nbsp; &nbsp; &nbsp;
+	<span style="color: red;; font-weight: bolder;">
+		<i class="layui-icon" id="overfinish-num">0</i>
+	</span>
+	<b>- 超期未完成</b>
+  </div>
+  <div>
+  	<table id="taskList" lay-filter="taskList"></table>
+  </div>
+  
+  <form class="layui-form layui-form-pane" id="task-detail" style="display: none; padding-left: 100px; padding-top: 20px;">
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label layui-form-label-detail">下达人员:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="createPerson_" disabled="disabled" autocomplete="off" class="layui-input layui-input-detail">
+			    </div>
+		    </div>
+		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
+			    <label class="layui-form-label">下达部门:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="departmentName_" autocomplete="off" disabled="disabled" class="layui-input">
+			    </div>
+		    </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label layui-form-label-detail">下达时间:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="createTime_" autocomplete="off" disabled="disabled" class="layui-input layui-input-detail">
+			    </div>
+		    </div>
+		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
+			    <label class="layui-form-label">任务类型:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="taskType_" autocomplete="off" disabled="disabled" class="layui-input">
+			    </div>
+		    </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row" id="layui-row-equip" style="display: none;">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label layui-form-label-detail" >设备位号:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="equNumber_" disabled="disabled" autocomplete="off" class="layui-input layui-input-detail">
+			    </div>
+		    </div>
+		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
+			    <label class="layui-form-label">设备名称:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="equName_" autocomplete="off" disabled="disabled"  class="layui-input">
+			    </div>
+		    </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label layui-form-label-detail" >要求完成日期:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="require_date_" disabled="disabled" autocomplete="off" class="layui-input layui-input-detail">
+			    </div>
+		    </div>
+		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
+			    <label class="layui-form-label">执行人员:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="executePerson_" autocomplete="off" disabled="disabled" class="layui-input">
+			    </div>
+		    </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm6 layui-col-md5">
+			    <label class="layui-form-label layui-form-label-detail">任务状态:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="taskState_" disabled="disabled" autocomplete="off" class="layui-input layui-input-detail">
+			    </div>
+		    </div>
+		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
+			    <label class="layui-form-label">完成时间:</label>
+			    <div class="layui-input-block">
+			       <input type="text" id="actualFinishTime_" autocomplete="off" disabled="disabled"  class="layui-input">
+			    </div>
+		    </div>
+	  	</div>
+  	</div>
+  	<div class="layui-row">
+	  	<div class="layui-form-item layui-col-md10">
+		    <label class="layui-form-label layui-form-label-detail">任务名称：</label>
+		    <div class="layui-input-block">
+		      <input type="text" id="taskName_" disabled="disabled" autocomplete="off" class="layui-input layui-input-right">
+		    </div>
+	  	</div>
+    </div>
+    <div class="layui-row">
+	  	<div class="layui-form-item layui-col-md10">
+		    <label class="layui-form-label layui-form-label-detail">任务内容：</label>
+		    <div class="layui-input-block">
+		      <textarea id="taskContent_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
+		    </div>
+	  	</div>
+    </div>
+    <div class="layui-row">
+	  	<div class="layui-form-item layui-col-md10">
+		    <label class="layui-form-label layui-form-label-detail">风险提示：</label>
+		    <div class="layui-input-block">
+		      <textarea id="riskWarning_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
+		    </div>
+	  	</div>
+    </div>
+    <div class="layui-row" id="layui-row-describe" style="display: none;">
+	  	<div class="layui-form-item layui-col-md10">
+		    <label class="layui-form-label layui-form-label-detail">完成描述：</label>
+		    <div class="layui-input-block">
+		      <textarea id="resultDescribe_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
+		    </div>
+	  	</div>
+    </div>
+    <div class="layui-row">
+	  	<div class="layui-form-item layui-col-md10">
+		    <div class="layui-input-block" style="margin-left: 0px;">
+		      <div class="layui-upload">
+				 <div class="layui-upload-list">
+				    <table class="layui-table" id="fileTable" style="display: none;">
+				      <thead>
+				        <tr>
+				        <th width="600px;">文件名</th>
+				        <th width="140px;">上传者</th>
+				        <th width="140px;">操作</th>
+				        </tr>
+				      </thead>
+				      <tbody id="fileList"></tbody>
+				    </table>
+				 </div>
+			  </div> 
+		    </div>
+	  	</div>
+    </div>
+  </form>
+  
+</div>
+<script type="text/html" id="barBtn">
+  	<a class="layui-btn layui-btn-xs" lay-event="detail">&nbsp;查看详情&nbsp;</a>
+</script>
+<script type="text/javascript" src="../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="../../package/layui-v2.5.5/layui/layui.js"></script>
+<script type="text/javascript" src="../../javaScript/temporary_task/temporary_task_track.js"></script>
+</body>
+</html>

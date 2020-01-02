@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.zg.dao.TemporaryTaskDao">
+
+	<!-- ===========================1、查询===============================  -->
+	
+	<!-- 1.1、条件查询临时任务列表 -->
+	<!-- List<TemporaryTask> selectTaskList(
+			@Param("con") TaskQueryCondition con, 
+			@Param("page") Integer page, 
+			@Param("limit") Integer limit); -->
+	<resultMap type="cn.zg.entity.task.TemporaryTask" id="selectTaskListMap">
+		<id column="TASK_ID" property="taskID"/>
+		<result column="TASK_NAME" property="taskName"/>
+		<result column="TASK_TYPE" property="taskType"/>
+		<result column="CREATE_PERSON" property="createPerson"/>
+		<result column="DEPARTMENT_NAME" property="departmentName"/>
+		<result column="EQU_NUMBER" property="equNumber"/>
+		<result column="EQU_NAME" property="equName"/>
+		<result column="CREATE_TIME" property="createTime"/>
+		<result column="TASK_CONTENT" property="taskContent"/>
+		<result column="RISK_WARNING" property="riskWarning"/>
+		<result column="REQUIRE_FINISH_TIME" property="requireFinishTime"/>
+		<result column="REMIND_MINUTE" property="remindMinute"/>
+		<result column="ACTUAL_FINISH_TIME" property="actualFinishTime"/>
+		<result column="EXECUTE_DEPARTMENT_ID" property="executeDepartmentID"/>
+		<result column="EXECUTE_PERSON" property="executePerson"/>
+		<result column="TASK_STATE" property="taskState"/>
+		<result column="IS_PROBLEM" property="isProblem"/>
+		<result column="IS_FINISHED" property="isFinished"/>
+		<result column="RESULT_DESCRIBE" property="resultDescribe"/>
+		<result column="REMARK" property="remark"/>
+	</resultMap>
+	
+	<select id="selectTaskList" resultMap="selectTaskListMap">
+		SELECT
+			*
+		FROM
+			(
+				SELECT
+					task.*, ROWNUM rownum1
+				FROM
+					(
+						SELECT
+							*
+						FROM
+							IOT_TEMPORARY_TASK
+						<where>
+							<if test="con != null">
+								<if test="con.taskName != null and con.taskName != ''">
+									LOWER(TASK_NAME) LIKE LOWER('%${con.taskName}%')
+								</if>
+								<if test="con.taskState != null and con.taskState != ''">
+									<choose>
+										<when test="con.taskState == 'UNFINISHED'">
+											AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+										</when>
+										<when test="con.taskState == 'OVERFINISHED'">
+											AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &lt; CURRENT_DATE
+										</when>
+										<otherwise>
+											AND TASK_STATE = #{con.taskState}
+										</otherwise>
+									</choose>
+								</if>
+								<if test="con.createPerson != null and con.createPerson != ''">
+									AND LOWER(CREATE_PERSON) LIKE LOWER('%${con.createPerson}%')
+								</if>
+								<if test="con.executePerson != null and con.executePerson != ''">
+									AND LOWER(EXECUTE_PERSON) LIKE LOWER('%${con.executePerson}%')
+								</if>
+								<if test="con.createStartDate != null and con.createStartDate != ''">
+									AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &gt;=#{con.createStartDate}
+								</if>
+								<if test="con.createEndDate != null and con.createEndDate != ''">
+									AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &lt;=#{con.createEndDate}
+								</if>
+								<if test="con.finishStartDate != null and con.finishStartDate != ''">
+									AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.finishStartDate}
+								</if>
+								<if test="con.finishEndDate != null and con.finishEndDate != ''">
+									AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.finishEndDate}
+								</if>
+								<if test="con.requireStartDate != null and con.requireStartDate != ''">
+									AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.requireStartDate}
+								</if>
+								<if test="con.requireEndDate != null and con.requireEndDate != ''">
+									AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.requireEndDate}
+								</if>
+							</if>
+						</where>
+						<choose>
+							<when test="con != null and con.orderField != null and con.orderField != '' and con.orderName != null and con.orderName != ''">
+								ORDER BY ${con.orderField} ${con.orderName}
+							</when>
+							<otherwise>
+								ORDER BY CREATE_TIME DESC
+							</otherwise>
+						</choose>
+					) task
+				<where>
+					<if test="page != null and limit != null">
+						ROWNUM &lt;= (${limit}*${page})
+					</if>
+				</where>
+			) task
+		<where>
+			<if test="page != null and limit != null">
+				rownum1 &gt; (${limit}*(${page}-1))
+			</if>
+		</where>
+	</select>
+	
+	<!-- 1.2、统计条件查询临时任务的数据量 -->
+	<!-- PageInfo<TemporaryTask> selectTaskCount(@Param("con") TaskQueryCondition con); -->
+	<resultMap type="cn.zg.entity.PageInfo" id="selectTaskCountMap">
+		<result column="count" property="count"/>
+		<result column="finishCount" property="finishCount"/>
+		<result column="unFinishCount" property="unFinishCount"/>
+		<result column="overFinishCount" property="overFinishCount"/>
+	</resultMap>
+	<select id="selectTaskCount" resultMap="selectTaskCountMap">
+		SELECT
+		(
+			SELECT
+				COUNT(1)
+			FROM
+				IOT_TEMPORARY_TASK
+			<where>
+				<if test="con != null">
+					<if test="con.taskName != null and con.taskName != ''">
+						LOWER(TASK_NAME) LIKE LOWER('%${con.taskName}%')
+					</if>
+					<if test="con.taskState != null and con.taskState != ''">
+						<choose>
+							<when test="con.taskState == 'UNFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+							</when>
+							<when test="con.taskState == 'OVERFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<otherwise>
+								AND TASK_STATE = #{con.taskState}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="con.createPerson != null and con.createPerson != ''">
+						AND LOWER(CREATE_PERSON) LIKE LOWER('%${con.createPerson}%')
+					</if>
+					<if test="con.executePerson != null and con.executePerson != ''">
+						AND LOWER(EXECUTE_PERSON) LIKE LOWER('%${con.executePerson}%')
+					</if>
+					<if test="con.createStartDate != null and con.createStartDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &gt;=#{con.createStartDate}
+					</if>
+					<if test="con.createEndDate != null and con.createEndDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &lt;=#{con.createEndDate}
+					</if>
+					<if test="con.finishStartDate != null and con.finishStartDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.finishStartDate}
+					</if>
+					<if test="con.finishEndDate != null and con.finishEndDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.finishEndDate}
+					</if>
+					<if test="con.requireStartDate != null and con.requireStartDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.requireStartDate}
+					</if>
+					<if test="con.requireEndDate != null and con.requireEndDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.requireEndDate}
+					</if>
+				</if>
+			</where>
+		) count, 
+		(
+			SELECT
+				COUNT(1)
+			FROM
+				IOT_TEMPORARY_TASK
+			<where>
+				<if test="con != null">
+					<if test="con.taskName != null and con.taskName != ''">
+						LOWER(TASK_NAME) LIKE LOWER('%${con.taskName}%')
+					</if>
+					<if test="con.taskState != null and con.taskState != ''">
+						<choose>
+							<when test="con.taskState == 'UNFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+							</when>
+							<when test="con.taskState == 'OVERFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<otherwise>
+								AND TASK_STATE = #{con.taskState}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="con.createPerson != null and con.createPerson != ''">
+						AND LOWER(CREATE_PERSON) LIKE LOWER('%${con.createPerson}%')
+					</if>
+					<if test="con.executePerson != null and con.executePerson != ''">
+						AND LOWER(EXECUTE_PERSON) LIKE LOWER('%${con.executePerson}%')
+					</if>
+					<if test="con.createStartDate != null and con.createStartDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &gt;=#{con.createStartDate}
+					</if>
+					<if test="con.createEndDate != null and con.createEndDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &lt;=#{con.createEndDate}
+					</if>
+					<if test="con.finishStartDate != null and con.finishStartDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.finishStartDate}
+					</if>
+					<if test="con.finishEndDate != null and con.finishEndDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.finishEndDate}
+					</if>
+					<if test="con.requireStartDate != null and con.requireStartDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.requireStartDate}
+					</if>
+					<if test="con.requireEndDate != null and con.requireEndDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.requireEndDate}
+					</if>
+				</if>
+				AND TASK_STATE = 'FINISHED'
+			</where>
+		) finishCount,
+		(
+			SELECT
+				COUNT(1)
+			FROM
+				IOT_TEMPORARY_TASK
+			<where>
+				<if test="con != null">
+					<if test="con.taskName != null and con.taskName != ''">
+						LOWER(TASK_NAME) LIKE LOWER('%${con.taskName}%')
+					</if>
+					<if test="con.taskState != null and con.taskState != ''">
+						<choose>
+							<when test="con.taskState == 'UNFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+							</when>
+							<when test="con.taskState == 'OVERFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<otherwise>
+								AND TASK_STATE = #{con.taskState}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="con.createPerson != null and con.createPerson != ''">
+						AND LOWER(CREATE_PERSON) LIKE LOWER('%${con.createPerson}%')
+					</if>
+					<if test="con.executePerson != null and con.executePerson != ''">
+						AND LOWER(EXECUTE_PERSON) LIKE LOWER('%${con.executePerson}%')
+					</if>
+					<if test="con.createStartDate != null and con.createStartDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &gt;=#{con.createStartDate}
+					</if>
+					<if test="con.createEndDate != null and con.createEndDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &lt;=#{con.createEndDate}
+					</if>
+					<if test="con.finishStartDate != null and con.finishStartDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.finishStartDate}
+					</if>
+					<if test="con.finishEndDate != null and con.finishEndDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.finishEndDate}
+					</if>
+					<if test="con.requireStartDate != null and con.requireStartDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.requireStartDate}
+					</if>
+					<if test="con.requireEndDate != null and con.requireEndDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.requireEndDate}
+					</if>
+				</if>
+				AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+			</where>
+		) unFinishCount,
+		(
+			SELECT
+				COUNT(1)
+			FROM
+				IOT_TEMPORARY_TASK
+			<where>
+				<if test="con != null">
+					<if test="con.taskName != null and con.taskName != ''">
+						LOWER(TASK_NAME) LIKE LOWER('%${con.taskName}%')
+					</if>
+					<if test="con.taskState != null and con.taskState != ''">
+						<choose>
+							<when test="con.taskState == 'UNFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &gt;= CURRENT_DATE
+							</when>
+							<when test="con.taskState == 'OVERFINISHED'">
+								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<otherwise>
+								AND TASK_STATE = #{con.taskState}
+							</otherwise>
+						</choose>
+					</if>
+					<if test="con.createPerson != null and con.createPerson != ''">
+						AND LOWER(CREATE_PERSON) LIKE LOWER('%${con.createPerson}%')
+					</if>
+					<if test="con.executePerson != null and con.executePerson != ''">
+						AND LOWER(EXECUTE_PERSON) LIKE LOWER('%${con.executePerson}%')
+					</if>
+					<if test="con.createStartDate != null and con.createStartDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &gt;=#{con.createStartDate}
+					</if>
+					<if test="con.createEndDate != null and con.createEndDate != ''">
+						AND TO_CHAR(CREATE_TIME,'YYYY-MM-DD') &lt;=#{con.createEndDate}
+					</if>
+					<if test="con.finishStartDate != null and con.finishStartDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.finishStartDate}
+					</if>
+					<if test="con.finishEndDate != null and con.finishEndDate != ''">
+						AND TO_CHAR(ACTUAL_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.finishEndDate}
+					</if>
+					<if test="con.requireStartDate != null and con.requireStartDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &gt;=#{con.requireStartDate}
+					</if>
+					<if test="con.requireEndDate != null and con.requireEndDate != ''">
+						AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt;=#{con.requireEndDate}
+					</if>
+				</if>
+				AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+			</where>
+		) overFinishCount
+		FROM
+			dual
+	</select>
+	
+	<!-- 1.3、查询临时任务相关的文件 -->
+	<!-- List<TaskFileManagement> selectTaskFileList(String taskID); -->
+	<resultMap type="cn.zg.entity.task.TaskFileManagement" id="selectTaskFileListMap">
+		<id column="FID" property="fID"/>
+		<result column="TASK_ID" property="taskID"/>
+		<result column="FILE_CLASS" property="fileClass"/>
+		<result column="FILE_ORIGINAL_NAME" property="fileOriginalName"/>
+		<result column="FILE_PATH" property="filePath"/>
+		<result column="UPLOAD_PERSON" property="uploadPerson"/>
+		<result column="UPLOAD_TIME" property="uploadTime"/>
+	</resultMap>
+	
+	<select id="selectTaskFileList" resultMap="selectTaskFileListMap">
+		SELECT
+			*
+		FROM
+			IOT_TASK_FILE_MANAGEMENT
+		WHERE
+			TASK_ID = #{taskID, jdbcType=VARCHAR}
+		ORDER BY FILE_CLASS ASC
+	</select>
+	
+	<!-- 1.4、根据任务ID查询临时任务信息 -->
+	<!-- TemporaryTask selectTaskInfo(String taskID); -->
+	<select id="selectTaskInfo" resultMap="selectTaskListMap">
+		SELECT
+			*
+		FROM
+			IOT_TEMPORARY_TASK
+		WHERE
+			TASK_ID = #{taskID, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- ===========================2、新增===============================  -->
+	<!-- 2.1、添加临时任务文件信息 -->
+	<!-- Integer insertTaskFile(TaskFileManagement file); -->
+	<insert id="insertTaskFile" parameterType="cn.zg.entity.task.TaskFileManagement">
+		<selectKey order="BEFORE" keyProperty="fID" resultType="string">
+			select sys_guid() from dual 
+		</selectKey>
+		INSERT INTO
+			IOT_TASK_FILE_MANAGEMENT
+			(FID, TASK_ID, FILE_CLASS, FILE_ORIGINAL_NAME, FILE_PATH, UPLOAD_PERSON, UPLOAD_TIME)
+		VALUES
+			(
+				#{fID, jdbcType=VARCHAR},
+				<if test="taskID != null and taskID != ''">
+					#{taskID},
+				</if>
+				<if test="fileClass != null">
+					#{fileClass},
+				</if>
+				<if test="fileOriginalName != null and fileOriginalName != ''">
+					#{fileOriginalName},
+				</if>
+				<if test="filePath != null and filePath != ''">
+					#{filePath},
+				</if>
+				<if test="uploadPerson != null and uploadPerson != ''">
+					#{uploadPerson},
+				</if>
+				<if test="uploadTime != null">
+					#{uploadTime}
+				</if>
+			)
+	</insert>
+	
+	
+	<!-- 2.2、添加临时任务 -->
+	<!-- Integer insertTaskInfo(TemporaryTask task); -->
+	<insert id="insertTaskInfo" parameterType="cn.zg.entity.task.TemporaryTask">
+		<selectKey order="BEFORE" keyProperty="taskID" resultType="string">
+			select sys_guid() from dual 
+		</selectKey>
+		INSERT INTO
+			IOT_TEMPORARY_TASK
+			(TASK_ID, TASK_NAME, CREATE_PERSON, DEPARTMENT_NAME, CREATE_TIME, TASK_TYPE,
+			EQU_NUMBER, EQU_NAME, TASK_CONTENT, RISK_WARNING, REQUIRE_FINISH_TIME, EXECUTE_PERSON, TASK_STATE)
+		VALUES
+			(
+				#{taskID, jdbcType=VARCHAR},
+				<if test="taskName != null and taskName != ''">
+					#{taskName},
+				</if>
+				<if test="createPerson != null and createPerson != ''">
+					#{createPerson},
+				</if>
+				#{departmentName, jdbcType=VARCHAR},
+				<if test="createTime != null">
+					#{createTime},
+				</if>
+				<if test="taskType != null">
+					#{taskType},
+				</if>
+				<if test="equNumber != null and equNumber != ''">
+					#{equNumber},
+				</if>
+				<if test="equName != null and equName != ''">
+					#{equName},
+				</if>
+				<if test="taskContent != null and taskContent != ''">
+					#{taskContent},
+				</if>
+				#{riskWarning, jdbcType=VARCHAR},
+				<if test="requireFinishTime != null">
+					#{requireFinishTime},
+				</if>
+				<if test="executePerson != null and executePerson != ''">
+					#{executePerson},
+				</if>
+				<if test="taskState != null and taskState != ''">
+					#{taskState}
+				</if>
+			)
+	</insert>
+	
+	<!-- ===========================3、修改===============================  -->	
+	
+	
+	
+	<!-- ===========================4、删除===============================  -->		
+
+
+	
+</mapper>

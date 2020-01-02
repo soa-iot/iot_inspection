@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.UserOrganizationTreeMapper">
+	<resultMap id="BaseResultMap"
+		type="cn.zg.entity.UserOrganization">
+		<id column="ORGID" jdbcType="VARCHAR" property="orgid" />
+		<result column="USERNUM" jdbcType="VARCHAR" property="usernum" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PARENT_ID" jdbcType="VARCHAR"
+			property="parent_id" />
+		<result column="USER_PASSWORD" jdbcType="VARCHAR"
+			property="user_password" />
+		<result column="STATE" jdbcType="DECIMAL" property="state" />
+		<result column="IS_PARENT" jdbcType="DECIMAL"
+			property="is_parent" />
+		<result column="NOTE" jdbcType="VARCHAR" property="note" />
+		<result column="REMARK1" jdbcType="DECIMAL" property="remark1" />
+		<result column="REMARK2" jdbcType="VARCHAR" property="remark2" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ORGID, USERNUM, NAME, PARENT_ID, USER_PASSWORD, STATE,
+		IS_PARENT, NOTE,
+		REMARK1,
+		REMARK2
+	</sql>
+	<select id="findAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"></include>
+		from IOT_USER_ORGANIZATION
+		where USERNUM not in (select userid from
+		IOT_USER_USER_ROLE where rolid = (select ROLID from IOT_USER_ROLE
+		where NAME = '流程_问题评估_部门领导'))
+	</select>
+</mapper>

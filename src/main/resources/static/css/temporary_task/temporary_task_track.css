@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+body{
+	min-width: 600px;
+}
+
+.total-div b{
+	color: gray;
+}
+
+.layui-form-query .layui-form-label{
+	padding: 9px 7px;
+	width: 95px;
+}
+
+.layui-form-pane .layui-form-label-detail{
+	width: 120px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.layui-form-pane .layui-input-right{
+	width: 614px;
+}
+
+.layui-form-pane .layui-input-detail{
+	width: 183px;
+}
+
+.layui-form-query .layui-input-block{
+	width: 330px;
+}
+
+.layui-form-query .layui-input-time{
+	width: 120px;
+	display: inline-block;
+}
+.layui-form-query .layui-input-right{
+	width: 160px;
+}
+
+.layui-form-query .layui-input-block-one{
+	/* padding-top: 10px; */
+}

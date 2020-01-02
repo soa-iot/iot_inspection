@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cn.zg.dao.EquipmentInfoMapper">
+
+	<!-- ===========================1、查询===============================  -->
+	<!-- 1.1、根据条件查找出设备信息数据	-->
+	<!-- List<EquipmentInfo> findEquInfo(EquipmentInfo equinfo, Integer page, Integer limit)-->
+	<sql id="equInfoSelect">
+		EQU_ID equID,
+		WEL_NAME welName,
+		WEL_UNIT welUnit,
+		EQU_MODEL equModel,
+		EQU_INSTALL_POSITION equInstallPosition,
+		EQU_MANUFACTURER equManufacturer,
+		EQU_POSITION_NUM equPositionNum,
+		MEDUIM_TYPE meduimType,
+		EQU_WORK_TEMP equWorkTemp,
+		SERIAL_NUM serialNum,
+		EQU_MEMO_ONE equMemoOne,
+		EQUIPMENT_ATTACH_URL equipmentAttachURL,
+		EQU_NAME equName
+	</sql>
+	
+	<select id="findEquInfo" resultType="cn.zg.entity.EquipmentInfo">
+		SELECT
+			<include refid="equInfoSelect"></include>
+		FROM
+			(
+				SELECT ROWNUM rownum1, CZ_EQUIPMENT_INFO.*
+				FROM CZ_EQUIPMENT_INFO
+				<where>
+					<if test="equinfo != null">
+						<if test="equinfo.equID != null and equinfo.equID != ''">
+							EQU_ID = #{equinfo.equID}
+						</if>
+						<if test="equinfo.welName != null and equinfo.welName != ''">
+							and WEL_NAME = #{equinfo.welName}
+						</if>
+						<if test="equinfo.welUnit != null and equinfo.welUnit != ''">
+							and WEL_UNIT = #{equinfo.welUnit}
+						</if>
+						<if test="equinfo.equModel != null and equinfo.equModel != ''">
+							and EQU_MODEL = #{equinfo.equModel}
+						</if>
+						<if test="equinfo.equInstallPosition != null and equinfo.equInstallPosition != ''">
+							and EQU_INSTALL_POSITION = #{equinfo.equInstallPosition}
+						</if>
+						<if test="equinfo.equManufacturer != null and equinfo.equManufacturer != ''">
+							and EQU_MANUFACTURER = #{equinfo.equManufacturer}
+						</if>
+						<if test="equinfo.equPositionNum != null and equinfo.equPositionNum != ''">
+							and lower(EQU_POSITION_NUM) LIKE lower('%${equinfo.equPositionNum}%')
+						</if>
+						<if test="equinfo.meduimType != null and equinfo.meduimType != ''">
+							and MEDUIM_TYPE = #{equinfo.meduimType}
+						</if>
+						<if test="equinfo.equWorkTemp != null and equinfo.equWorkTemp != ''">
+							and EQU_WORK_TEMP = #{equinfo.equWorkTemp}
+						</if>
+						<if test="equinfo.serialNum != null and equinfo.serialNum != ''">
+							and SERIAL_NUM = #{equinfo.serialNum}
+						</if>
+						<if test="equinfo.equMemoOne != null and equinfo.equMemoOne != ''">
+							and lower(EQU_MEMO_ONE) LIKE lower('%${equinfo.equMemoOne}%')
+						</if>
+						<if test="equinfo.equipmentAttachURL != null and equinfo.equipmentAttachURL != ''">
+							and EQUIPMENT_ATTACH_URL = #{equinfo.equipmentAttachURL}
+						</if>
+						<if test="equinfo.equName != null and equinfo.equName != ''">
+							and lower(EQU_NAME) LIKE lower('%${equinfo.equName}%')
+						</if>
+					</if>
+					<if test="limit != null and limit != '' and page != null and page != ''">
+						and ROWNUM &lt;= ${limit*page}
+					</if>
+				</where>
+			) equInfo
+		<where>
+			<if test="limit != null and limit != '' and page != null and page != ''">
+				rownum1 &gt; ${limit*(page-1)}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 1.2、根据条件查统计设备信息条数   	-->
+	<!-- Integer countEquipmentInfo(EquipmentInfo info) -->
+	<select id="countEquipmentInfo" resultType="int">
+		SELECT
+			count(1)
+		FROM
+			CZ_EQUIPMENT_INFO
+		<where>
+			<if test="equID != null and equID != ''">
+				EQU_ID = #{equID}
+			</if>
+			<if test="welName != null and welName != ''">
+				and WEL_NAME = #{welName}
+			</if>
+			<if test="welUnit != null and welUnit != ''">
+				and WEL_UNIT = #{welUnit}
+			</if>
+			<if test="equModel != null and equModel != ''">
+				and EQU_MODEL = #{equModel}
+			</if>
+			<if test="equInstallPosition != null and equInstallPosition != ''">
+				and EQU_INSTALL_POSITION = #{equInstallPosition}
+			</if>
+			<if test="equManufacturer != null and equManufacturer != ''">
+				and EQU_MANUFACTURER = #{equManufacturer}
+			</if>
+			<if test="equPositionNum != null and equPositionNum != ''">
+				and lower(EQU_POSITION_NUM) LIKE lower('%${equPositionNum}%')
+			</if>
+			<if test="meduimType != null and meduimType != ''">
+				and MEDUIM_TYPE = #{meduimType}
+			</if>
+			<if test="equWorkTemp != null and equWorkTemp != ''">
+				and EQU_WORK_TEMP = #{equWorkTemp}
+			</if>
+			<if test="serialNum != null and serialNum != ''">
+				and SERIAL_NUM = #{serialNum}
+			</if>
+			<if test="equMemoOne != null and equMemoOne != ''">
+				and lower(EQU_MEMO_ONE) LIKE lower('%${equMemoOne}%')
+			</if>
+			<if test="equipmentAttachURL != null and equipmentAttachURL != ''">
+				and EQUIPMENT_ATTACH_URL = #{equipmentAttachURL}
+			</if>
+			<if test="equName != null and equName != ''">
+				and lower(EQU_NAME) LIKE lower('%${equName}%')
+			</if>
+		</where>
+	</select>
+	
+	<!-- 1.3、根据条件查统计设备信息条数   	-->
+	<!-- Integer findNumByRfid(String rfid) -->
+	<select id="findNumByRfid" resultType="int">
+		SELECT 
+			COUNT(1)
+		FROM
+			CZ_EQUIPMENT_INFO
+		WHERE
+			EQU_POSITION_NUM = #{rfid, jdbcType=VARCHAR}
+	</select>
+	
+	<!-- ===========================2、新增===============================  -->
+	
+	<!-- ===========================3、修改===============================  -->
+	<!-- 3.1、修改暂存问题图片数据 	-->
+	<!--  -->
+	
+	
+	<!-- ===========================4、删除===============================  -->
+	<!-- 4.1、删除问题图片数据 	-->
+	<!-- -->
+			
+	
+</mapper>
+ 
+
