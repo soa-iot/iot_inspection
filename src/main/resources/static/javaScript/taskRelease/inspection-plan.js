@@ -112,6 +112,11 @@
 			console.log("编辑")
 			obj["title"]="编辑计划"
 			add_or_edit(obj);
+			plan_table.reload({
+				page: {
+					curr: 1 //重新从第 1 页开始
+				}
+			});
 		} else if (obj.event == "del"){
 			console.log("删除")
 			get_role(obj);
@@ -129,6 +134,11 @@
 				
 				if (res.code == 0) {
 					layer.msg('删除成功！！',{time: 3000,offset:"200px"});
+					plan_table.reload({
+						page: {
+							curr: 1 //重新从第 1 页开始
+						}
+					});
 				}else{
 					layer.msg('删除失败！！',{time: 3000,offset:"200px"});
 				}
