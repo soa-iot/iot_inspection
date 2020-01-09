@@ -63,4 +63,11 @@ public interface TemporaryTaskDao {
 	 * @return
 	 */
 	List<TaskFileManagement> selectTaskFileList(String taskID);
+	
+	/**
+	 * 更新临时任务信息
+	 * @param task - 临时任务对象
+	 * @return
+	 */
+	Integer updateTaskInfo(TemporaryTask task);
 }

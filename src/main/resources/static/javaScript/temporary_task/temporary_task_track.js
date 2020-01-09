@@ -144,7 +144,8 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	/**
 	 * 监听每一行工具事件
 	 */
-	var fileList = $("#fileList");
+	var fileListCreate = $("#fileList-create");
+	var fileListFinish = $("#fileList-finish");
 	table.on('tool(taskList)', function(obj){
 		console.log(obj);
 	    var data = obj.data;
@@ -160,8 +161,8 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	    	area: ['1000px','600px'],
 	        content: $("#task-detail"),
 	        yes: function(index, layero){
-	        	fileList.empty();
-	        	$("#fileTable").css("display", "none");
+	        	fileListCreate.empty();
+	        	fileListFinish.empty();
 	            layer.close(index); //如果设定了yes回调，需进行手工关闭
 	        },
 	        success: function(layero, index){
@@ -196,6 +197,8 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	        	}
 	        	
 	        	//异步请求文件列表
+	        	$("#create-task-file").css("display", "none");
+	        	$("#finish-task-file").css("display", "none");
 	        	$.ajax({
 	        		type: "GET",
 	        		url: "/iot_inspection/temporarytask/file/showlist",
@@ -206,16 +209,29 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	        		success: function(json){
 	        			if(json.state == 0){
 	        				if(json.data != null && json.data.length != 0){
-	        					$("#fileTable").css("display", "block");
 	        					for(var i=0;i<json.data.length;i++){
-	        						var tr = $(['<tr>'
-	  	  	        		          ,'<td>'+ json.data[i].fileOriginalName +'</td>'
-	  	  	        		          ,'<td>'+ json.data[i].uploadPerson +'</td>'
-	  	  	        		          ,'<td>'
-	  	  	        		            ,'<a href="'+'/iot_inspection/temporarytask/file/download/?fileName='+json.data[i].fileOriginalName+'&filePath='+json.data[i].filePath+'"><button type="button" class="layui-btn layui-btn-xs layui-btn-normal">下载</button></a>'
-	  	  	        		          ,'</td>'
-	  	  	        		          ,'</tr>'].join(''));
-			  	        			fileList.append(tr);
+	        						if(json.data[i].fileClass == 0){
+	        							$("#create-task-file").css("display", "block");
+	        							var tr = $(['<tr>'
+	  	  	  	        		          ,'<td>'+ json.data[i].fileOriginalName +'</td>'
+	  	  	  	        		          ,'<td>'+ json.data[i].uploadPerson +'</td>'
+	  	  	  	        		          ,'<td>'
+	  	  	  	        		            ,'<a href="'+'/iot_inspection/temporarytask/file/download/?fileName='+json.data[i].fileOriginalName+'&filePath='+json.data[i].filePath+'"><button type="button" class="layui-btn layui-btn-xs">下载</button></a>'
+	  	  	  	        		          ,'</td>'
+	  	  	  	        		          ,'</tr>'].join(''));
+	  	        						fileListCreate.append(tr);
+		        					}
+	        						if(json.data[i].fileClass == 1){
+	        							$("#finish-task-file").css("display", "block");
+	        							var tr = $(['<tr>'
+	  	  	  	        		          ,'<td>'+ json.data[i].fileOriginalName +'</td>'
+	  	  	  	        		          ,'<td>'+ json.data[i].uploadPerson +'</td>'
+	  	  	  	        		          ,'<td>'
+	  	  	  	        		            ,'<a href="'+'/iot_inspection/temporarytask/file/download/?fileName='+json.data[i].fileOriginalName+'&filePath='+json.data[i].filePath+'"><button type="button" class="layui-btn layui-btn-xs">下载</button></a>'
+	  	  	  	        		          ,'</td>'
+	  	  	  	        		          ,'</tr>'].join(''));
+	  	        						fileListFinish.append(tr);
+		        					}
 	        					}
 	        				}
 	        			}else{

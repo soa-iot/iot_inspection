@@ -14,13 +14,13 @@
   	<div class="layui-row">
 	  	<div class="layui-form-item">
 	  		<div class="layui-col-sm6 layui-col-md4">
-			    <label class="layui-form-label">下达人员:</label>
+			    <label class="layui-form-label">下达人员</label>
 			    <div class="layui-input-block">
 			       <input type="text" id="createPerson" value="张三" disabled="disabled" autocomplete="off" class="layui-input layui-input-disable">
 			    </div>
 		    </div>
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset2">
-			    <label class="layui-form-label">下达时间:</label>
+			    <label class="layui-form-label">下达时间</label>
 			    <div class="layui-input-block">
 			       <input type="text" id="createTime" autocomplete="off" disabled="disabled" class="layui-input layui-input-disable">
 			    </div>
@@ -30,7 +30,7 @@
   	<div class="layui-row">
 	  	<div class="layui-form-item">
 	  		<div class="layui-col-sm6 layui-col-md4">
-			    <label class="layui-form-label">任务类型:</label>
+			    <label class="layui-form-label">任务类型<span style="color: red;vertical-align: middle;">*</span></label>
 			    <div class="layui-input-block">
 			       <select class="layui-input" id="taskType">
 			       		<option selected="selected" value="">请选择</option>
@@ -40,7 +40,7 @@
 			    </div>
 		    </div>
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset2">
-			    <label class="layui-form-label">执行人员:</label>
+			    <label class="layui-form-label">执行人员<span style="color: red;vertical-align: middle;">*</span></label>
 			    <div class="layui-input-block">
 			       <input type="text" id="executePerson" autocomplete="off" disabled="disabled" placeholder="请选择执行人" class="layui-input  layui-input-one input-btn">
 			       <button type="button" id="userBtn" class="layui-btn layui-btn-sm primary-btn input-btn">
@@ -53,13 +53,13 @@
   	<div class="layui-row">
 	  	<div class="layui-form-item">
 	  		<div class="layui-col-sm6 layui-col-md4">
-			    <label class="layui-form-label" >要求完成日期:</label>
+			    <label class="layui-form-label" >要求完成日期<span style="color: red;vertical-align: middle;">*</span></label>
 			    <div class="layui-input-block">
 			       <input type="text" id="require_date" placeholder="请选择完成日期" autocomplete="off" class="layui-input">
 			    </div>
 		    </div>
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset2">
-			    <label class="layui-form-label">设备位号:</label>
+			    <label class="layui-form-label">设备位号<span style="color: red;vertical-align: middle;">*</span></label>
 			    <div class="layui-input-block">
 			       <input type="text" id="equNumber" autocomplete="off" disabled="disabled" placeholder="请定位设备" class="layui-input layui-input-one input-btn">
 			       <button type="button" id="rfid-btn" class="layui-btn layui-btn-sm primary-btn input-btn">
@@ -71,7 +71,7 @@
   	</div>
   	<div class="layui-row">
 	  	<div class="layui-form-item layui-col-md10">
-		    <label class="layui-form-label">任务名称：</label>
+		    <label class="layui-form-label">任务名称<span style="color: red;vertical-align: middle;">*</span></label>
 		    <div class="layui-input-block">
 		      <input type="text" id="taskName" placeholder="请输入任务名称" autocomplete="off" class="layui-input">
 		    </div>
@@ -79,7 +79,7 @@
     </div>
     <div class="layui-row">
 	  	<div class="layui-form-item layui-col-md10">
-		    <label class="layui-form-label">任务内容：</label>
+		    <label class="layui-form-label">任务内容<span style="color: red;vertical-align: middle;">*</span></label>
 		    <div class="layui-input-block">
 		      <textarea id="taskContent" placeholder="请输入任务内容" class="layui-textarea"></textarea>
 		    </div>
@@ -87,7 +87,7 @@
     </div>
     <div class="layui-row">
 	  	<div class="layui-form-item layui-col-md10">
-		    <label class="layui-form-label">风险提示：</label>
+		    <label class="layui-form-label">风险提示</label>
 		    <div class="layui-input-block">
 		      <textarea id="riskWarning" placeholder="请输入风险提示" class="layui-textarea"></textarea>
 		    </div>
@@ -95,10 +95,10 @@
     </div>
     <div class="layui-row">
 	  	<div class="layui-form-item layui-col-md10">
-		    <label class="layui-form-label">文件上传：</label>
+		    <label class="layui-form-label">文件上传</label>
 		    <div class="layui-input-block">
 		      <div class="layui-upload">
-				 <button type="button" class="layui-btn layui-btn-normal" id="fileupload">选择多文件</button> 
+				 <button type="button" class="layui-btn layui-btn-normal" id="fileupload" style="padding: 0px 8px;"><i class="layui-icon">&#xe67c;</i>选择文件</button> 
 				 <div class="layui-upload-list">
 				    <table class="layui-table" style="display: none" id="fileTable">
 				      <thead>
@@ -116,9 +116,9 @@
 	  	</div>
     </div>
     <div class="layui-row">
-	  	<div class="layui-form-item layui-col-md2 layui-col-md-offset7">
+	  	<div class="layui-form-item layui-col-md2 layui-col-md-offset8">
 		    <div class="layui-input-block">
-		      <button type="button" class="layui-btn" id="saveBtn">任务下达</button>
+		      <button type="button" class="layui-btn layui-btn-normal" id="saveBtn" style="padding: 0px 8px; margin-left: -12px;"><i class="layui-icon">&#x1005;</i>任务下达</button>
 		    </div>
 	  	</div>
     </div>

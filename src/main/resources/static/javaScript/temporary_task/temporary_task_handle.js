@@ -1,8 +1,9 @@
 /**
  * 临时任务处理
  */
-var taskID = "1B1675C41F964871A2C240778D660DAD";
-
+//var taskID = "1B1675C41F964871A2C240778D660DAD";
+var taskID = getQueryUrlString("taskID");
+var userAccount = "李某某";
 layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	
 	var layer = layui.layer
@@ -66,7 +67,8 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 		type: "GET",
 		url: "/iot_inspection/temporarytask/file/showlist",
 		data: { 
-			"taskID": taskID
+			"taskID": taskID,
+			"fileClass": 0
 		},
 		dataType: "json",
 		success: function(json){
@@ -136,14 +138,16 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	 * 任务完成按钮点击事件
 	 */
 	$("#saveBtn").click(function(){
-		if($.trim($("#resultDescrible").val()) == ''){
+		if($.trim($("#resultDescribe").val()) == ''){
 			  layer.msg("完成描述不能为空", {icon: 7, offset: '150px'});
 			  return;
 		}
 		
 		//ajax异步保存临时任务
 		var formData = new FormData();
-		formData.append("resultDescrible", $.trim($("#resultDescrible").val()));
+		formData.append("taskID", taskID);
+		formData.append("executePerson", userAccount);
+		formData.append("resultDescribe", $.trim($("#resultDescribe").val()));
 
 		//遍历上传的文件
 		for(var index in fileObject){
@@ -152,7 +156,7 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 		
 		layer.confirm("是否确定完成任务?", function(){
 			$.ajax({
-	            url: "/iot_inspection/temporarytask/task/finish",
+	            url: "/iot_inspection/temporarytask/finish/task",
 	            data: formData,
 	            type: "POST",
 	            dataType: "json",
@@ -160,8 +164,8 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	            contentType: false, //必须
 	            success: function (json) {
 	               if(json.state == 0){
-	            	   layer.msg("任务下达成功",{icon: 1, offset:'100px'}); 
-	            	   $("#executePerson").val("resultDescrible");
+	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px'}); 
+	            	   $("#resultDescribe").val("");
 
 	            	   for(var index in fileObject){
 	            		 delete fileObject[index];
@@ -180,3 +184,17 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 
 	})
 })
+
+/**
+ * 根据浏览器urlf的参数名，获取参数值
+ */
+function getUrlParamValueByName ( name ) {
+    var reg = new RegExp( "(^|&)" + name + "=([^&]*)(&|$)", "i" );
+    var r = window.location.search.substr( 1 ).match( reg ); //获取url中"?"符后的字符串并正则匹配
+    var context = "";
+    if ( r != null )
+    context = r[2];
+    reg = null;
+    r = null;
+    return context == null || context == "" || context == "undefined" ? "" : context;
+}

@@ -1,0 +1,201 @@
+.layui-this {
+    color: #fff !important;
+    background-color: #1e9fff;
+}
+
+.layui-tab-title li {
+    font-family: 'Arial Negreta', 'Arial Normal', 'Arial';
+    font-weight: 700;
+    font-style: normal;
+    font-size: 20px;
+}
+
+.layui-tab-title {
+    border-bottom-width: 3px !important;
+    border-bottom-color: #1e9fff !important;
+}
+
+.layui-this:after {
+    border-bottom-color: #1e9fff !important;
+}
+
+.layui-form-select dl dd.layui-this {
+    background-color: #1e9fff;
+}
+
+.layui-form-checked[lay-skin=primary] i {
+    border-color: #1e9fff;
+    background-color: #1e9fff;
+    color: #fff;
+}
+
+.layui-form-checkbox[lay-skin=primary] i:hover, .layui-form-checkbox span:hover {
+    border-color: #1e9fff !important;
+}
+
+.layui-form-radio > i:hover, .layui-form-radioed > i {
+    color: #1e9fff;
+}
+
+#addImg, #addZmImg, #addImgdz, #addImgpz, #addImgyy {
+    margin-left: 0 !important;
+    font-size: 144px;
+    line-height: 150px;
+    color: darkgrey
+}
+
+#imgList, #imgZmList, #imgListdz, #imgListpz, #imgListyy {
+    width: 860px;
+    position: relative;
+    margin: 0px auto;
+    min-height: 150px;
+}
+
+    #imgList li, #imgZmList li, #imgListdz li #imgListpz li #imgListyy li {
+        width: 180px;
+        height: 150px;
+        float: left;
+        margin-right:3px;
+        margin-bottom:3px;
+        list-style: none;
+        list-style-type: none;
+        display: inline-block;
+        position:absolute;
+    }
+
+        #imgList li:hover, #imgZmList li:hover, #imgListdz li:hover, #imgListpz li:hover, #imgListyy li:hover {
+            border-color: #9a9fa4;
+            box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.85);
+        }
+
+    #imgList .active, #imgZmList .active, #imgListdz .active, #imgListpz .active, #imgListyy .active {
+        border: 1px dashed red;
+    }
+
+.title_cover {
+    height: 30px;
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    bottom: 0;
+    width: 140px;
+    color: #fff;
+    line-height: 30px;
+    font-size: 14px;
+    padding-left: 10px;
+    overflow: hidden; /*超出部分隐藏*/
+    white-space: nowrap; /*不换行*/
+    text-overflow: ellipsis; /*超出部分文字以...显示*/
+}
+
+    .title_cover:hover {
+        cursor: pointer;
+    }
+
+.img_close {
+    height: 20px;
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    top: 0;
+    right: 0px;
+    width: 20px;
+    color: #fff;
+    line-height: 18px;
+    font-size: 14px;
+    text-align: center;
+}
+
+    .img_close:hover {
+        cursor: pointer;
+    }
+
+.img_edit {
+    height: 20px;
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 20px;
+    color: #fff;
+    line-height: 18px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.img_edit:hover {
+        cursor: pointer;
+}
+
+#base{
+	padding-left:0px;
+	margin-left:0px; 
+	min-width:900px; 
+	/* border: 1px solid red; */
+}
+
+#base>.layui-row{
+	border:1px solid rgb(230,230,230); 
+	background-color:#fafdfd;
+	margin-right: 10%;
+}
+
+#problemmass{
+	background-color:#fafdfd;
+}
+
+.primary-btn{
+	background-color: #EDF6FA !important;
+	color: black !important;
+	border:1px solid rgb(230,230,230) !important;
+	border-radius: 10px !important;
+}
+
+.layui-icon{
+	color: green;
+}
+
+.primary-btn:hover{
+	background-color: #3a95ca !important;
+	color: white !important;
+}
+/* .second-btn{
+	background-color: rgb(123,194,246);
+	border-radius: 10px;
+	color: black;
+	border:1px solid rgb(183,182,184);
+} */
+
+.layui-layer-btn>.layui-layer-btn0{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn>.layui-layer-btn1{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn>.layui-layer-btn2{
+	background-color: #EDF6FA;
+	color: black;
+	border:1px solid rgb(230,230,230);
+	border-radius: 10px;
+}
+
+.layui-layer-btn0,.layui-layer-btn1,.layui-layer-btn2{
+	vertical-align: bottom;
+}
+
+.layui-layer-btn0:hover,.layui-layer-btn1:hover ,.layui-layer-btn2:hover {
+	color: white;
+	background-color: #3a95ca;
+}
+
+.layui-input-block .layui-upload-choose{
+	margin-top: 7px;
+}
+
+

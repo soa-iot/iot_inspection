@@ -13,17 +13,17 @@ body{
 	width: 95px;
 }
 
-.layui-form-pane .layui-form-label-detail{
+.layui-form-detail .layui-form-label-detail{
 	width: 120px;
 	padding-left: 5px;
 	padding-right: 5px;
 }
 
-.layui-form-pane .layui-input-right{
-	width: 614px;
+.layui-form-detail .layui-input-right{
+	width: 604px;
 }
 
-.layui-form-pane .layui-input-detail{
+.layui-form-detail .layui-input-detail{
 	width: 183px;
 }
 

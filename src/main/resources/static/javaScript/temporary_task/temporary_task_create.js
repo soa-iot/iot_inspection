@@ -222,36 +222,7 @@ layui.use(['layer', 'form', 'laydate', 'upload', 'tree'], function(){
 		  			layer.close(index);
 		  		},
 		  		success: function(){
-		  		  /**
-		  		   * 按钮css样式
-		  		   */
-		  		  $(".layui-layer-btn0").css({
-		  			  "background-color":"#f1f5f7",
-		  			  "color":"black",
-		  			  "border":"1px solid rgb(230,230,230)"
-		  		  });
-		  		  $(".layui-layer-btn0").prepend("<i class='layui-icon'>&#x1005;</i>&nbsp;");
-		  		  $(".layui-layer-btn1").prepend("<i class='layui-icon'>&#x1007;</i>&nbsp;");
-		  		 
-		  		 $(".layui-layer-btn0").mouseover(function(){
-		  			$(".layui-layer-btn0").css({
-		  				"color":"white",
-		  				"background-color":"#3a95ca"
-		  			})
-		  		 })
-		  		 $(".layui-layer-btn0").mouseout(function(){
-		  			$(".layui-layer-btn0").css({
-		  				"background-color":"#f1f5f7",
-			  			"color":"black",
-		  			})
-		  		 })
-		  		 $(".layui-layer-btn0,.layui-layer-btn1,.layui-layer-btn2").mouseover(function(){
-		  			  $(this).find("i").css({"color":"white"});
-		  		  })
-		  		   
-		  		  $(".layui-layer-btn0,.layui-layer-btn1,.layui-layer-btn2").mouseout(function(){
-		  			  $(this).find("i").css({"color":"green"});
-		  		  })
+		  		
 		  		}
 		  });
 	  });

@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -156,6 +158,32 @@ public class TemporaryTaskS implements TemporaryTaskSI {
 			log.info("-----根据任务ID获取临时任务信息发生错误-----");
 			log.info("{}", e);
 			return null;
+		}
+	}
+	
+	/**
+	 * 更新临时任务信息
+	 * @param task - 临时任务对象
+	 * @param files - 上传的文件
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Boolean updateTaskInfo(TemporaryTask task, List<TaskFileManagement> files) {
+		log.info("-----开始更新临时任务信息-----");
+		try {
+			taskDao.updateTaskInfo(task);
+			if(files != null) {
+				for(TaskFileManagement file : files) {
+					taskDao.insertTaskFile(file);
+				}
+			}
+			log.info("-----更新临时任务信息成功-----");
+			return true;
+		}catch (Exception e) {
+			log.info("-----更新临时任务信息发生错误-----");
+			log.info("{}", e);
+			throw new RuntimeException("更新临时任务信息发生异常");
 		}
 	}
 }

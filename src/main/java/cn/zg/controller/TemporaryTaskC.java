@@ -219,4 +219,70 @@ public class TemporaryTaskC {
 		}
 		return new ResultJson<>(ResultJson.ERROR, "查询临时任务详情失败", null);
 	}
+	
+	/**
+	 * 完成临时任务
+	 * @param task - 临时任务对象
+	 * @return
+	 */
+	@RequestMapping("/finish/task")
+	public ResultJson<Boolean> finishTask(@NotNull TemporaryTask task, HttpServletRequest request){
+		log.info("-----进入接口TemporaryTaskC...finishTask-----");
+		log.info("-----临时任务信息：{}", task);
+		
+		List<TaskFileManagement> fileList = new ArrayList<>();
+		
+		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）
+		CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		//检查form中是否有enctype="multipart/form-data"
+		if(multipartResolver.isMultipart(request)){	
+			try {
+				
+				//将request变成多部分request
+				MultipartHttpServletRequest multiRequest=(MultipartHttpServletRequest)request;
+				//获取multiRequest 中所有的文件名
+				Iterator iter=multiRequest.getFileNames();
+				while(iter.hasNext()){
+					//一次遍历所有文件
+					MultipartFile file=multiRequest.getFile(iter.next().toString());
+					log.info("-----临时任务上传文件原名称: {}", file.getOriginalFilename());
+					if(file!=null){
+						String uuid = UUID.randomUUID().toString();
+						String filename = uuid + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+						log.info("-----文件重新命名: {}", filename);
+						File dirParent = CommonUtil.imageSaved(filePath, null);
+						File fileCreate = new File(dirParent, filename);
+						//保存文件至硬盘
+						file.transferTo(fileCreate);
+						//生成虚拟的文件路径
+						String filePath = fileCreate.getAbsolutePath().replace("\\", "/");
+						TaskFileManagement fileMan = new TaskFileManagement();
+						fileMan.setFileClass(1);
+						fileMan.setFileOriginalName(file.getOriginalFilename());
+						fileMan.setFilePath(filePath);
+						fileMan.setTaskID(task.getTaskID());
+						fileMan.setUploadPerson(task.getExecutePerson());
+						fileMan.setUploadTime(new Date());
+						fileList.add(fileMan);
+					}
+				}
+			}catch (Exception e) {
+				log.info("-----文件保存发生错误-----");
+				log.info("{}", e);
+				return new ResultJson<Boolean>(ResultJson.ERROR, "文件保存发生异常", false);
+			}
+		}
+		task.setExecutePerson(null);
+		task.setTaskState("FINISHED");
+		task.setActualFinishTime(new Date());
+		try {
+			Boolean result = taskS.updateTaskInfo(task, fileList);
+			return new ResultJson<>(ResultJson.SUCCESS, "完成临时任务成功", result);
+		}catch (Exception e) {
+			log.info("{}", e);
+			return new ResultJson<>(ResultJson.ERROR, "完成临时任务失败", false);
+		}
+
+	}
 }

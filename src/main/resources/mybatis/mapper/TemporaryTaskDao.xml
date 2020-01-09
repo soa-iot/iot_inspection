@@ -60,6 +60,9 @@
 										<when test="con.taskState == 'OVERFINISHED'">
 											AND TASK_STATE = 'UNFINISHED' AND REQUIRE_FINISH_TIME &lt; CURRENT_DATE
 										</when>
+										<when test="con.taskState == 'TODO'">
+											AND TASK_STATE = 'UNFINISHED'
+										</when>
 										<otherwise>
 											AND TASK_STATE = #{con.taskState}
 										</otherwise>
@@ -141,6 +144,9 @@
 							<when test="con.taskState == 'OVERFINISHED'">
 								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
 							</when>
+							<when test="con.taskState == 'TODO'">
+								AND TASK_STATE = 'UNFINISHED'
+							</when>
 							<otherwise>
 								AND TASK_STATE = #{con.taskState}
 							</otherwise>
@@ -190,6 +196,9 @@
 							</when>
 							<when test="con.taskState == 'OVERFINISHED'">
 								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<when test="con.taskState == 'TODO'">
+								AND TASK_STATE = 'UNFINISHED'
 							</when>
 							<otherwise>
 								AND TASK_STATE = #{con.taskState}
@@ -242,6 +251,9 @@
 							<when test="con.taskState == 'OVERFINISHED'">
 								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
 							</when>
+							<when test="con.taskState == 'TODO'">
+								AND TASK_STATE = 'UNFINISHED'
+							</when>
 							<otherwise>
 								AND TASK_STATE = #{con.taskState}
 							</otherwise>
@@ -292,6 +304,9 @@
 							</when>
 							<when test="con.taskState == 'OVERFINISHED'">
 								AND TASK_STATE = 'UNFINISHED' AND TO_CHAR(REQUIRE_FINISH_TIME,'YYYY-MM-DD') &lt; TO_CHAR(CURRENT_DATE,'YYYY-MM-DD')
+							</when>
+							<when test="con.taskState == 'TODO'">
+								AND TASK_STATE = 'UNFINISHED'
 							</when>
 							<otherwise>
 								AND TASK_STATE = #{con.taskState}
@@ -447,8 +462,49 @@
 	</insert>
 	
 	<!-- ===========================3、修改===============================  -->	
-	
-	
+	<!-- 3.1 更新临时任务信息 -->
+	<!-- Integer updateTaskInfo(TemporaryTask task); -->
+	<update id="updateTaskInfo" parameterType="cn.zg.entity.task.TemporaryTask">
+		UPDATE
+			IOT_TEMPORARY_TASK
+		<set>
+			<if test="taskName != null and taskName != ''">
+				TASK_NAME = #{taskName},
+			</if>
+			<if test="taskContent != null and taskContent != ''">
+				TASK_CONTENT = #{taskContent},
+			</if>
+			<if test="riskWarning != null and riskWarning != ''">
+				RISK_WARNING = #{riskWarning},
+			</if>
+			<if test="requireFinishTime != null">
+				REQUIRE_FINISH_TIME = #{requireFinishTime},
+			</if>
+			<if test="actualFinishTime != null">
+				ACTUAL_FINISH_TIME = #{actualFinishTime},
+			</if>
+			<if test="executePerson != null and executePerson != ''">
+				EXECUTE_PERSON = #{executePerson},
+			</if>
+			<if test="taskState != null and taskState != ''">
+				TASK_STATE = #{taskState},
+			</if>
+			<if test="resultDescribe != null and resultDescribe != ''">
+				RESULT_DESCRIBE = #{resultDescribe},
+			</if>
+			<if test="taskType != null">
+				TASK_TYPE = #{taskType},
+			</if>
+			<if test="equNumber != null and equNumber != ''">
+				EQU_NUMBER = #{equNumber},
+			</if>
+			<if test="equName != null and equName != ''">
+				EQU_NAME = #{equName}
+			</if>
+		</set>
+		WHERE
+			TASK_ID = #{taskID, jdbcType=VARCHAR}
+	</update>
 	
 	<!-- ===========================4、删除===============================  -->		
 

@@ -45,5 +45,12 @@ public interface TemporaryTaskSI {
 	 * @param taskID - 临时任务ID
 	 */
 	TemporaryTask getTaskInfo(String taskID);
-
+	
+	/**
+	 * 更新临时任务信息
+	 * @param task - 临时任务对象
+	 * @param files - 上传的文件
+	 * @return
+	 */
+	Boolean updateTaskInfo(TemporaryTask task, List<TaskFileManagement> files);
 }
