@@ -3,7 +3,9 @@
  */
 //var taskID = "1B1675C41F964871A2C240778D660DAD";
 var taskID = getQueryUrlString("taskID");
-var userAccount = "李某某";
+var userAccount = getUrlParamValueByName("executePerson");
+
+console.log(userAccount);
 layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	
 	var layer = layui.layer
@@ -164,14 +166,16 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	            contentType: false, //必须
 	            success: function (json) {
 	               if(json.state == 0){
-	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px'}); 
+	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px', time:2000}, function(){
+	            		   history.back();
+	            	   });
 	            	   $("#resultDescribe").val("");
 
 	            	   for(var index in fileObject){
 	            		 delete fileObject[index];
 	            	   }
 	            	   $("#fileTable_upload").empty();
-	           		   $("#fileTable_upload").css("display", "none");
+	           		   $("#fileTable_upload").css("display", "none");  
 	               }else{
 	            	   layer.msg("任务完成失败",{icon: 2, offset:'100px'}); 
 	               }
@@ -196,5 +200,5 @@ function getUrlParamValueByName ( name ) {
     context = r[2];
     reg = null;
     r = null;
-    return context == null || context == "" || context == "undefined" ? "" : context;
+    return context == null || context == "" || context == "undefined" ? "" : decodeURI(context);
 }

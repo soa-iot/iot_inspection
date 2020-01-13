@@ -1,5 +1,6 @@
 package cn.zg.task;
 
+import java.io.RandomAccessFile;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import cn.zg.dao.TemporaryTaskDao;
 import cn.zg.entity.PageInfo;
@@ -30,5 +33,6 @@ public class TemporaryTaskTest {
 		System.err.println("-------------");
 		System.err.println(list);
 		System.err.println(date);
+		ObjectMapper om = null;
 	}
 }

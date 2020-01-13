@@ -37,6 +37,7 @@ layui.use(['layer','laydate'], function(){
 	  });
 })
 
+var userAccount = getCookie1("name");
 
 layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	
@@ -51,7 +52,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	var taskTable = table.render({
 	    elem: '#taskList'
 	    ,url: '/iot_inspection/temporarytask/show/list'
-	    ,height: 465
+	    /*,height: 465*/
 	    ,page: true //开启分页
 	    ,loading: true
 	    ,parseData: function(res){ //res 即为原始返回的数据

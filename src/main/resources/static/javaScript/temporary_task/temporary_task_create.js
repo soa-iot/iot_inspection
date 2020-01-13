@@ -33,6 +33,11 @@ layui.use(['layer','laydate'], function(){
 	  });
 })
 
+var userAccount = getCookie1("name");
+var organ = getCookie1("organ");
+
+$("#createPerson").val(userAccount);
+
 layui.use(['layer', 'form', 'laydate', 'upload', 'tree'], function(){
 	
 	var layer = layui.layer
@@ -141,7 +146,8 @@ layui.use(['layer', 'form', 'laydate', 'upload', 'tree'], function(){
 		
 		//ajax异步保存临时任务
 		var formData = new FormData();
-		formData.append("createPerson", $.trim($("#createPerson").val()));
+		formData.append("createPerson", userAccount);
+		formData.append("departmentName", organ);
 		formData.append("taskType", $.trim($("#taskType").val()));
 		formData.append("executePerson", $.trim($("#executePerson").val()));
 		formData.append("requireFinishTime", $.trim($("#require_date").val()));

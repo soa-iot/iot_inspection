@@ -41,7 +41,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	var taskTable = table.render({
 	    elem: '#taskList'
 	    ,url: '/iot_inspection/temporarytask/show/list'
-	    ,height: 465
+	    /*,height: 465*/
 	    ,page: true //开启分页
 	    ,loading: true
 	    ,where: {
@@ -138,7 +138,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 		console.log(obj);
 	    var data = obj.data;
 	    if(obj.event === 'detail'){
-	    	location.href = "/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID;
+	    	location.href = "/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID+"&executePerson="+userAccount;
 	    	/*var tab = window.parent.document.getElementById("layui-tab-title");
 	    	var content = window.parent.document.getElementById("layui-tab-content");
 	    	var href="/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID;
