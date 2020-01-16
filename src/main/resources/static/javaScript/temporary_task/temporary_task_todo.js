@@ -102,7 +102,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
     		    'requireStartDate':	$.trim($("#require_start_date").val()),
     		    'requireEndDate': $.trim($("#require_end_date").val()),
     		    'taskName': $.trim($("#taskName").val()),
-    		    'taskState': $.trim($("#taskState").val()),
+    		    'taskState': ($.trim($("#taskState").val())==''||$.trim($("#taskState").val())==null?'TODO':$.trim($("#taskState").val())),
     		    'createPerson': $.trim($("#createPerson").val()),
     		    'executePerson': userAccount,
     			'orderField': sortField,
@@ -138,7 +138,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 		console.log(obj);
 	    var data = obj.data;
 	    if(obj.event === 'detail'){
-	    	location.href = "/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID+"&executePerson="+userAccount;
+	    	location.href = "/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID+"&executePerson="+userAccount+"&isBack=0";
 	    	/*var tab = window.parent.document.getElementById("layui-tab-title");
 	    	var content = window.parent.document.getElementById("layui-tab-content");
 	    	var href="/iot_inspection/html/temporary_task/temporary_task_handle.html?taskID="+data.taskID;

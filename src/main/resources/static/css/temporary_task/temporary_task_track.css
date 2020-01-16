@@ -16,11 +16,11 @@ body{
 .layui-form-detail .layui-form-label-detail{
 	width: 120px;
 	padding-left: 5px;
-	padding-right: 5px;
+	padding-right: 1s5px;
 }
 
 .layui-form-detail .layui-input-right{
-	width: 604px;
+	width: 682px; 
 }
 
 .layui-form-detail .layui-input-detail{

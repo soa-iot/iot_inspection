@@ -442,9 +442,7 @@
 				<if test="equNumber != null and equNumber != ''">
 					#{equNumber},
 				</if>
-				<if test="equName != null and equName != ''">
-					#{equName},
-				</if>
+				#{equName, jdbcType=VARCHAR},
 				<if test="taskContent != null and taskContent != ''">
 					#{taskContent},
 				</if>

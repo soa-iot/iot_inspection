@@ -4,6 +4,7 @@
 //var taskID = "1B1675C41F964871A2C240778D660DAD";
 var taskID = getQueryUrlString("taskID");
 var userAccount = getUrlParamValueByName("executePerson");
+var isBack = getQueryUrlString("isBack");
 
 console.log(userAccount);
 layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
@@ -166,16 +167,21 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	            contentType: false, //必须
 	            success: function (json) {
 	               if(json.state == 0){
-	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px', time:2000}, function(){
-	            		   history.back();
-	            	   });
 	            	   $("#resultDescribe").val("");
 
 	            	   for(var index in fileObject){
 	            		 delete fileObject[index];
 	            	   }
 	            	   $("#fileTable_upload").empty();
-	           		   $("#fileTable_upload").css("display", "none");  
+	           		   $("#fileTable_upload").css("display", "none");
+	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px', time:1500}, function(){
+	            		   if(isBack == 0){
+	            			   history.back();
+	            		   }else{
+	            			   window.parent.postMessage("close="+taskID, '*');
+	            		   }
+	            	   });
+	            	    
 	               }else{
 	            	   layer.msg("任务完成失败",{icon: 2, offset:'100px'}); 
 	               }

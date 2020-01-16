@@ -37,7 +37,15 @@ layui.use(['layer','laydate'], function(){
 	  });
 })
 
-var userAccount = getCookie1("name");
+var userAccount = getCookie1("name").replace(/"/g, '');
+console.log(window.screen.width);
+if(window.screen.width < 1500){
+	$(".layui-form-detail .layui-input-right").css({'width':'584px'});
+}else if(window.screen.width < 1700){
+	$(".layui-form-detail .layui-input-right").css({'width':'682px'});
+}else if(window.screen.width < 3000){
+	$(".layui-form-detail .layui-input-right").css({'width':'832px'});
+}
 
 layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	
@@ -88,7 +96,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	      ,{field:'taskName', title:'任务名称', width:'12%', sort:true, align:'center'}
 	      ,{field:'createPerson', title:'下达人', width:'9%', sort:true, align:'center'}
 	      ,{field:'departmentName', title:'下达部门', width:'12%', sort:true, align:'center'}
-	      ,{field:'createTime', title:'下达日期', width:'10%', sort:true, align:'center'}
+	      ,{field:'createTime', title:'下达日期', width:'10.4%', sort:true, align:'center'}
 	      ,{field:'requireFinishTime', title:'要求完成日期', width:'12%', sort:true, align:'center'}
 	      ,{field:'executePerson', title:'执行人', width:'9%', sort:true, align:'center'}
 	      ,{field:'actualFinishTime', title:'任务完成时间', width:'12%', sort:true, align:'center'}
@@ -158,8 +166,8 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	    	btnAlign: 'c',
 	    	btn: ['关闭'],
 	    	closeBtn: 0,
-	    	offset: '30px',
-	    	area: ['1000px','600px'],
+	    	offset: '10px',
+	    	area: ['85%','95%'],
 	        content: $("#task-detail"),
 	        yes: function(index, layero){
 	        	fileListCreate.empty();

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../../css/temporary_task/temporary_task_track.css">
 </head>
 <body>
-<div class="layui-container" style="margin-top: 10px;padding-right: 0px;">
+<div class="layui-container" style="margin-top: 10px;padding-right: 0px; width: 90%;">
   <form class="layui-form layui-form-query" style="background-color: #f2f2f2; border: 1px solid #e6e6e6; padding-top: 10px;">
   	<div class="layui-row">
 	  	<div class="layui-form-item">
@@ -120,7 +120,7 @@
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
 			    <label class="layui-form-label">下达部门</label>
 			    <div class="layui-input-block">
-			       <input type="text" id="departmentName_" autocomplete="off" disabled="disabled" class="layui-input">
+			       <input type="text" id="departmentName_" autocomplete="off" disabled="disabled" class="layui-input layui-input-detail">
 			    </div>
 		    </div>
 	  	</div>
@@ -136,7 +136,7 @@
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
 			    <label class="layui-form-label">任务类型</label>
 			    <div class="layui-input-block">
-			       <input type="text" id="taskType_" autocomplete="off" disabled="disabled" class="layui-input">
+			       <input type="text" id="taskType_" autocomplete="off" disabled="disabled" class="layui-input layui-input-detail">
 			    </div>
 		    </div>
 	  	</div>
@@ -152,7 +152,7 @@
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
 			    <label class="layui-form-label">设备名称</label>
 			    <div class="layui-input-block">
-			       <input type="text" id="equName_" autocomplete="off" disabled="disabled"  class="layui-input">
+			       <input type="text" id="equName_" autocomplete="off" disabled="disabled"  class="layui-input layui-input-detail">
 			    </div>
 		    </div>
 	  	</div>
@@ -168,7 +168,7 @@
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
 			    <label class="layui-form-label">执行人员</label>
 			    <div class="layui-input-block">
-			       <input type="text" id="executePerson_" autocomplete="off" disabled="disabled" class="layui-input">
+			       <input type="text" id="executePerson_" autocomplete="off" disabled="disabled" class="layui-input layui-input-detail">
 			    </div>
 		    </div>
 	  	</div>
@@ -184,21 +184,23 @@
 		    <div class="layui-col-sm6 layui-col-md4 layui-col-md-offset1">
 			    <label class="layui-form-label">完成时间</label>
 			    <div class="layui-input-block">
-			       <input type="text" id="actualFinishTime_" autocomplete="off" disabled="disabled"  class="layui-input">
+			       <input type="text" id="actualFinishTime_" autocomplete="off" disabled="disabled"  class="layui-input layui-input-detail">
 			    </div>
 		    </div>
 	  	</div>
   	</div>
   	<div class="layui-row">
-	  	<div class="layui-form-item layui-col-md10">
-		    <label class="layui-form-label layui-form-label-detail">任务名称</label>
-		    <div class="layui-input-block">
-		      <input type="text" id="taskName_" disabled="disabled" autocomplete="off" class="layui-input layui-input-right">
-		    </div>
+	  	<div class="layui-form-item">
+	  		<div class="layui-col-sm12 layui-col-md12">
+	  			<label class="layui-form-label layui-form-label-detail">任务名称</label>
+			    <div class="layui-input-block">
+			      <input type="text" id="taskName_" disabled="disabled" autocomplete="off" class="layui-input layui-input-right">
+			    </div>
+	  		</div>
 	  	</div>
     </div>
     <div class="layui-row">
-	  	<div class="layui-form-item layui-col-md10">
+	  	<div class="layui-form-item">
 		    <label class="layui-form-label layui-form-label-detail">任务内容</label>
 		    <div class="layui-input-block">
 		      <textarea id="taskContent_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
@@ -206,7 +208,7 @@
 	  	</div>
     </div>
     <div class="layui-row">
-	  	<div class="layui-form-item layui-col-md10">
+	  	<div class="layui-form-item">
 		    <label class="layui-form-label layui-form-label-detail">风险提示</label>
 		    <div class="layui-input-block">
 		      <textarea id="riskWarning_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
@@ -214,7 +216,7 @@
 	  	</div>
     </div>
     <div class="layui-row" id="layui-row-describe" style="display: none;">
-	  	<div class="layui-form-item layui-col-md10">
+	  	<div class="layui-form-item">
 		    <label class="layui-form-label layui-form-label-detail">完成描述</label>
 		    <div class="layui-input-block">
 		      <textarea id="resultDescribe_" disabled="disabled" class="layui-textarea layui-input-right"></textarea>
@@ -222,11 +224,11 @@
 	  	</div>
     </div>
     <div class="layui-row" id="create-task-file" style="display: none;">
-	  	<div class="layui-form-item layui-col-md10">
-	  		<label class="layui-form-label layui-form-label-detail" style="padding-top: 20px;">任务下达文件</label>
+	  	<div class="layui-form-item">
+	  		<label class="layui-form-label layui-form-label-detail" style="padding-top: 15px;">任务下达文件</label>
 		    <div class="layui-input-block">
-		      <div class="layui-upload" style="width: 606px;margin-left: 20px;">
-				 <div class="layui-upload-list">
+		      <div class="layui-upload ">
+				 <div class="layui-upload-list layui-input-right"  style="margin-top: -10px; padding-left: 30px;">
 				    <table class="layui-table">
 				      <thead>
 				        <tr>
@@ -243,11 +245,11 @@
 	  	</div>
     </div>
     <div class="layui-row" id="finish-task-file" style="display: none;">
-	  	<div class="layui-form-item layui-col-md10">
-	  		<label class="layui-form-label layui-form-label-detail" style="padding-top: 20px;">任务完成文件</label>
+	  	<div class="layui-form-item">
+	  		<label class="layui-form-label layui-form-label-detail" style="padding-top: 15px;">任务完成文件</label>
 		    <div class="layui-input-block">
-		      <div class="layui-upload" style="width: 606px;margin-left: 20px;">
-				 <div class="layui-upload-list">
+		      <div class="layui-upload">
+				 <div class="layui-upload-list layui-input-right" style="margin-top: -10px; padding-left: 30px;">
 				    <table class="layui-table">
 				      <thead>
 				        <tr>

@@ -33,10 +33,18 @@ layui.use(['layer','laydate'], function(){
 	  });
 })
 
-var userAccount = getCookie1("name");
-var organ = getCookie1("organ");
+var userAccount = getCookie1("name").replace(/"/g, '');
+var organ = getCookie1("organ").replace(/"/g, '');
 
 $("#createPerson").val(userAccount);
+console.log(window.screen.width);
+if(window.screen.width < 1500){
+	$(".layui-input-block .layui-input-one").css({'width':'145px'});
+}else if(window.screen.width < 1700){
+	$(".layui-input-block .layui-input-one").css({'width':'220px'});
+}else if(window.screen.width < 3000){
+	$(".layui-input-block .layui-input-one").css({'width':'317px'});
+}
 
 layui.use(['layer', 'form', 'laydate', 'upload', 'tree'], function(){
 	
