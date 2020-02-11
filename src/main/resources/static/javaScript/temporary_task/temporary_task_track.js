@@ -180,7 +180,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	        	$("#layui-row-describe").css("display", "none");
 	        	
 	        	$("#createPerson_").val(data.createPerson);
-	        	$("#departmentName_").val(data.departmentName);
+	        	$("#departmentName_").val((data.departmentName==null?'':data.departmentName));
 	        	$("#createTime_").val(data.createTime);
 	        	if(data.taskType == 0){
 	        		$("#taskType_").val('单人任务');
@@ -191,7 +191,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	        	if(data.equNumber.match("其它") == null){
 	        		$("#layui-row-equip").css("display", "block");
 	        		$("#equNumber_").val(data.equNumber);
-		        	$("#equName_").val(data.equName);
+		        	$("#equName_").val((data.equName==null?'':data.equName));
 	        	}
 	        	$("#require_date_").val(data.requireFinishTime);
 	        	$("#executePerson_").val(data.executePerson);

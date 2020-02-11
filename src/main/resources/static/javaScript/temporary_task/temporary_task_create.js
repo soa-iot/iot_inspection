@@ -40,6 +40,7 @@ $("#createPerson").val(userAccount);
 console.log(window.screen.width);
 if(window.screen.width < 1500){
 	$(".layui-input-block .layui-input-one").css({'width':'145px'});
+	$("#saveBtn").css({'margin-left':'-32px'});
 }else if(window.screen.width < 1700){
 	$(".layui-input-block .layui-input-one").css({'width':'220px'});
 }else if(window.screen.width < 3000){

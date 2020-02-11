@@ -7,6 +7,9 @@ var userAccount = getUrlParamValueByName("executePerson");
 var isBack = getQueryUrlString("isBack");
 
 console.log(userAccount);
+if(window.screen.width < 1500){
+	$("#saveBtn").css({'margin-left':'-32px'});
+}
 layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	
 	var layer = layui.layer
