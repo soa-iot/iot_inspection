@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>巡检计划管理</title>
+		<link rel="stylesheet" href="../../package/layui2.5/css/layui.css" />
+		<link rel="stylesheet" href="../../css/zTreeStyle/zTreeStyle.css" />
+		<style>
+			.layui-form-label-l{
+				width: 90px;
+			}
+			.layui-form-select dl{
+				max-height: 170px;
+			}
+			.layui-form-label-ll{
+				width: 60px;
+			}
+			.msg{
+				color: red;
+				display: none; 
+			}
+			
+			
+			/* .ztree li span.button.ico_docu{
+				background-image:url(../../css/zTreeStyle/img/dc.png);
+				background-position: center;
+			} */
+		</style>
+	</head>
+	<body style="padding-left: 20px;padding-right: 20px;min-width: 1260px;">
+
+		<!-- <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+			<legend>巡检计划管理</legend>
+		</fieldset> -->
+		
+		<!-- 条件搜索 -->
+		<div style="background-color: #f2f2f2;">
+			<form class="layui-form" style="margin-top: 10px;">
+				<div class="layui-inline">
+					<label class="layui-form-label layui-form-label-ll">计划名称</label>
+					<div class="layui-input-inline">
+						<input type="text" id="panl_name_locate" placeholder="计划名称" name="panl_name_locate" lay-verify="required|phone" autocomplete="off"
+						 class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label layui-form-label-ll">方案名称</label>
+					<div class="layui-input-inline">
+						<input type="text" placeholder="方案名称" name="scheme_name_locate" id="scheme_name_locate" lay-verify="email" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label layui-form-label-ll">装置单元</label>
+					<div class="layui-input-inline">
+						<input type="text" placeholder="装置单元" name="equ_unit_locate" id="equ_unit_locate" lay-verify="email" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-inline ">
+					<label class="layui-form-label" style="width:30px">周期</label>
+					<div class="layui-input-inline">
+						<div class="layui-input-inline" style="width:110px;float:left">
+							<input type="number" id="plan_cycle_locate" placeholder="周期" name="cycle" min="0" autocomplete="off" class="layui-input layui-input-number">
+						</div>
+						<div style="width:70px;float:left;margin-left:10px">
+							<select id="plan_cycle_unit_locate">
+								<option value="">单位</option>
+								<option value="H">小时</option>
+								<option value="D">日</option>
+								<option value="E">周</option>
+								<option value="M">月</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="layui-inline">
+					<label class="layui-form-label"><a class="layui-btn layui-btn-normal" lay-event="query"  id="query">查询</a></label>
+					<label class="layui-form-label"><a class="layui-btn layui-btn-normal" id="add_plan">新增计划</a></label>
+				</div>
+			</form>
+		</div>
+		
+		<!-- 表格 -->
+		<table class="layui-table" lay-skin="line" id="plan_table" lay-filter="plan_table""></table>
+		
+		
+		<div id="user_tree_div" style="display: none;"><!-- style="display: none;" -->
+			<div id="user_tree" class="ztree"></div>	
+		</div>
+			<!-- 新增编辑 -->
+			<div id="add_or_edit" style="display: none;">
+				<form class="layui-form" style="margin-top: 10px;" id="add_or_edit_form">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">计划名称</label>
+							<div class="layui-input-inline ">
+								<input type="text" id="plan_name" name="plan_name" placeholder="计划名称" lay-verify="required|phone" autocomplete="off"
+								 class="layui-input">
+								 <span class="msg" id="plan_name_msg">*计划名称不能为空*</span>
+							</div>
+							
+						</div>
+							
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">方案名称</label>
+							<div class="layui-input-inline">
+								<div class="layui-input-inline">
+									<select id="scheme_name" name="scheme_name" lay-verify="required" lay-search="">
+										<option value="">方案名称</option>
+									</select>
+									<span class="msg" id="scheme_name_msg">*方案名称不能为空*</span>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">周期</label>
+							<div class="layui-input-inline">
+								<div style="width:110px;float:left">
+									<input type="text" id="plan_cycle" placeholder="周期" name="cycle" lay-verify="required|phone" autocomplete="off"
+									 class="layui-input">
+								</div>
+								<div style="width:70px;float:left;margin-left:10px">
+									<select name="plan_cycle_unit" id='plan_cycle_unit'>
+										<option value="">单位</option>
+										<option value="H">小时</option>
+										<option value="D">日</option>
+										<option value="E">周</option>
+										<option value="M">月</option>
+									</select>
+								</div>
+								<span class="msg" id="plan_cycle_msg">*周期不能为空*</span>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">装置单元</label>
+							<div class="layui-input-inline">
+								<div class="layui-input-inline">
+								<!-- <input type="text" id="equ_unit" name="equ_unit" placeholder="装置单元" lay-verify="required|phone" autocomplete="off"
+								 class="layui-input"> -->
+									<select name="equ_unit" id="equ_unit" lay-verify="required" lay-search="">
+										<option value="">装置单元</option>
+										<option value="主体装置一列">主体装置一列</option>
+										<option value="主体装置二列">主体装置二列</option>
+										<option value="主体装置三列">主体装置三列</option>
+										<option value="主体装置四列">主体装置四列</option>
+										<option value="主体装置五列">主体装置五列</option>
+										<option value="主体装置六列">主体装置六列</option>
+										<option value="主体装置七列">主体装置七列</option>
+										<option value="公共单元">公共单元</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">启动时间</label>
+							<div class="layui-input-inline">
+								<input type="text" name="plan_start_time" placeholder="yyyy-MM-dd HH:mm:ss" id="plan_start_time" lay-verify="email" autocomplete="off" class="layui-input">
+								<span class="msg" id="plan_start_time_msg">*启动时间不能为空*</span>
+							</div>
+						</div>
+						<div class="layui-inline">
+							<label class="layui-form-label layui-form-label-l">计划完成时间</label>
+							<div class="layui-input-inline">
+								<div style="width:110px;float:left">
+									<input type="text" name="plan_expect_time" placeholder="计划完成时间" id="plan_expect_time" lay-verify="required|phone"
+									 autocomplete="off" class="layui-input">
+								</div>
+								<div style="width:70px;float:left;margin-left:10px">
+									<select name="plan_expect_time_unit" id="plan_expect_time_unit">
+										<option value="">单位</option>
+										<option value="H">小时</option>
+										<option value="D">日</option>
+										<option value="E">周</option>
+										<option value="M">月</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item" style="margin-bottom: 0px;">
+						<div class="layui-form-item layui-form-text">
+							<label class="layui-form-label layui-form-label-l">描述</label>
+							<div class="layui-input-block">
+								<textarea placeholder="请输入内容" id = "plan_desc" class="layui-textarea" style="width:525px"></textarea>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+
+		<script type="text/javascript" src="../../package/jquery-3.3.1/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="../../package/jquery-3.3.1/jquery-migrate-1.4.1.min.js"></script>
+		<script type="text/javascript" src="../../package/layui2.5/layui.all.js"></script>
+		<script type="text/javascript" src="../../package/ztree3.5.0/jquery.ztree.core-3.5.min.js"></script>
+		<script type="text/javascript" src="../../package/ztree3.5.0/jquery.ztree.excheck-3.5.min.js"></script>
+		<script type="text/html" id="barEdit">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-xs" lay-event="del" style = "background-color: red;">删除</a>
+			<a class="layui-btn layui-btn-xs" lay-event="start">执行</a>
+		</script>
+		<script type="text/html" id="barUsers">
+			<a class="layui-btn layui-btn-xs" lay-event="users">任务执行人</a>
+		</script>
+		<script type="text/javascript" src="../../javaScript/taskRelease/inspection-plan.js"></script>
+	</body>
+</html>

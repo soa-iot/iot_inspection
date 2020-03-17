@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.InspectionPlanMapper">
+	
+	<sql id="InspectionPlan">
+		CZ_INSPECTION_PLAN.PLAN_ID planID,
+		CZ_INSPECTION_PLAN.PLAN_NAME planName,
+		CZ_INSPECTION_PLAN.SCHEME_ID schemeID,
+		CZ_INSPECTION_PLAN.SCHEME_NAME schemeName,
+		CZ_INSPECTION_PLAN.PLAN_CYCLE planCycle,
+		CZ_INSPECTION_PLAN.PLAN_START_TIME planStartTime,
+		CZ_INSPECTION_PLAN.PLAN_INTERVAL_TIME planIntervalTime,
+		CZ_INSPECTION_PLAN.PLAN_DESC planDesc,
+		CZ_INSPECTION_PLAN.PLAN_EXPECT_TIME planExpectTime,
+		CZ_INSPECTION_PLAN.PLAN_NOTICE_TIME planNoticeTime,
+		CZ_INSPECTION_PLAN.PLAN_STATE planState,
+		CZ_INSPECTION_PLAN.PLAN_VALUE planValue,
+		CZ_INSPECTION_PLAN.REMARK remark,
+		CZ_INSPECTION_PLAN.REMARKONE remarkOne,
+		CZ_INSPECTION_PLAN.REMARKTWO remarkTwo,
+		CZ_INSPECTION_SCHEME.SCHEME_TYPE schemeType,
+		CZ_INSPECTION_PLAN.REMARKTHREE remarkThree,
+		CZ_INSPECTION_PLAN.EQU_UNIT equUnit
+	</sql>
+	
+
+	<!-- 分页查询所有巡检计划数据
+	List<TaskRelease> findInspectionPlanAll(InspectionPlan inspectionPlan,Integer minNum,Integer maxNum); -->
+	<select id="findInspectionPlanAll"
+		resultType="cn.zg.entity.daoEntity.InspectionPlan">
+		
+		select * from (
+			select 
+				ROWNUM rn,a.* from (
+				select
+					<include refid="InspectionPlan" />
+				from CZ_INSPECTION_PLAN,CZ_INSPECTION_SCHEME
+					<where>
+						CZ_INSPECTION_PLAN.SCHEME_ID = CZ_INSPECTION_SCHEME.SCHEME_ID
+						<if test="inspectionPlan.planID != null and inspectionPlan.planID != ''">
+							AND PLAN_ID like concat(concat('%',#{inspectionPlan.planID}),'%')
+						</if>
+						<if test="inspectionPlan.planName != null and inspectionPlan.planName != ''">
+							AND PLAN_NAME like concat(concat('%',#{inspectionPlan.planName}),'%')
+						</if>
+						<if test="inspectionPlan.schemeID != null and inspectionPlan.schemeID != ''">
+							AND CZ_INSPECTION_PLAN.SCHEME_ID  like concat(concat('%',#{inspectionPlan.schemeID}),'%')
+						</if>
+						<if test="inspectionPlan.schemeName != null and inspectionPlan.schemeName != ''">
+							AND CZ_INSPECTION_PLAN.SCHEME_NAME like concat(concat('%',#{inspectionPlan.schemeName}),'%')
+						</if>
+						<if test="inspectionPlan.planCycle != null and inspectionPlan.planCycle != ''">
+							AND PLAN_CYCLE like concat(concat('%',#{inspectionPlan.planCycle}),'%')
+						</if>
+						<if test="inspectionPlan.planStartTime != null">
+							AND PLAN_START_TIME  = #{inspectionPlan.planStartTime}
+						</if>
+						<if test="inspectionPlan.planIntervalTime != null and inspectionPlan.planIntervalTime != ''">
+							AND PLAN_INTERVAL_TIME like concat(concat('%',#{inspectionPlan.planIntervalTime}),'%')
+						</if>
+						<if test="inspectionPlan.planDesc != null and inspectionPlan.planDesc != ''">
+							AND PLAN_DESC like concat(concat('%',#{inspectionPlan.planDesc}),'%')
+						</if>
+						<if test="inspectionPlan.planExpectTime != null and inspectionPlan.planExpectTime != ''">
+							AND PLAN_EXPECT_TIME like concat(concat('%',#{inspectionPlan.planExpectTime}),'%')
+						</if>
+						<if test="inspectionPlan.planNoticeTime != null and inspectionPlan.planNoticeTime != ''">
+							AND PLAN_NOTICE_TIME like concat(concat('%',#{inspectionPlan.planNoticeTime}),'%')
+						</if>
+						<if test="inspectionPlan.planState != null and inspectionPlan.planState != ''">
+							AND PLAN_STATE like concat(concat('%',#{inspectionPlan.planState}),'%')
+						</if>
+						<if test="inspectionPlan.planValue != null and planValue != ''">
+							AND PLAN_VALUE like concat(concat('%',#{inspectionPlan.planValue}),'%')
+						</if>
+						<if test="inspectionPlan.remark != null and inspectionPlan.remark != ''">
+							AND REMARK like concat(concat('%',#{inspectionPlan.remark}),'%')
+						</if>
+						<if test="inspectionPlan.remarkOne != null and inspectionPlan.remarkOne != ''">
+							AND CZ_INSPECTION_PLAN.REMARKONE like concat(concat('%',#{inspectionPlan.remarkOne}),'%')
+						</if>
+						<if test="inspectionPlan.remarkTwo != null and inspectionPlan.remarkTwo != ''">
+							AND CZ_INSPECTION_PLAN.REMARKTWO like concat(concat('%',#{inspectionPlan.remarkTwo}),'%')
+						</if>
+						<if test="inspectionPlan.remarkThree != null and inspectionPlan.remarkThree != ''">
+							AND CZ_INSPECTION_PLAN.REMARKTHREE like concat(concat('%',#{inspectionPlan.remarkThree}),'%')
+						</if>
+						<if test="inspectionPlan.equUnit != null and inspectionPlan.equUnit != ''">
+							AND EQU_UNIT like concat(concat('%',#{inspectionPlan.equUnit}),'%')
+						</if>
+					</where>
+				) a
+				<where>
+				<if test="maxNum != null">
+					AND ROWNUM &lt;= #{maxNum}
+				</if></where>
+		)<where>
+			<if test="maxNum != null">
+				AND rn &gt; #{minNum}
+			</if></where>
+
+	</select>
+
+	<!-- 分页查询所有巡检计划数据
+	Integer inspectionPlanCount(InspectionPlan inspectionPlan,Integer minNum,Integer maxNum); -->
+	<select id="inspectionPlanCount"
+		parameterType="cn.zg.entity.daoEntity.InspectionPlan"
+		resultType="Integer">
+		 
+		 select
+		 	count(1)
+		 from CZ_INSPECTION_PLAN
+		 	<where>
+		 		<if test="inspectionPlan.planID != null and inspectionPlan.planID != ''">
+		 			AND PLAN_ID like concat(concat('%',#{inspectionPlan.planID}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planName != null and inspectionPlan.planName != ''">
+		 			AND PLAN_NAME like concat(concat('%',#{inspectionPlan.planName}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.schemeID != null and inspectionPlan.schemeID != ''">
+		 			AND SCHEME_ID  like concat(concat('%',#{inspectionPlan.schemeID}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.schemeName != null and inspectionPlan.schemeName != ''">
+		 			AND SCHEME_NAME like concat(concat('%',#{inspectionPlan.schemeName}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planCycle != null and inspectionPlan.planCycle != ''">
+		 			AND PLAN_CYCLE like concat(concat('%',#{inspectionPlan.planCycle}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planStartTime != null">
+		 			AND PLAN_START_TIME  = #{inspectionPlan.planStartTime}
+		 		</if>
+		 		<if test="inspectionPlan.planIntervalTime != null and inspectionPlan.planIntervalTime != ''">
+		 			AND PLAN_INTERVAL_TIME like concat(concat('%',#{inspectionPlan.planIntervalTime}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planDesc != null and inspectionPlan.planDesc != ''">
+		 			AND PLAN_DESC like concat(concat('%',#{inspectionPlan.planDesc}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planExpectTime != null and inspectionPlan.planExpectTime != ''">
+		 			AND PLAN_EXPECT_TIME like concat(concat('%',#{inspectionPlan.planExpectTime}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planNoticeTime != null and inspectionPlan.planNoticeTime != ''">
+		 			AND PLAN_NOTICE_TIME like concat(concat('%',#{inspectionPlan.planNoticeTime}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planState != null and inspectionPlan.planState != ''">
+		 			AND PLAN_STATE like concat(concat('%',#{inspectionPlan.planState}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.planValue != null and planValue != ''">
+		 			AND PLAN_VALUE like concat(concat('%',#{inspectionPlan.planValue}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.remark != null and inspectionPlan.remark != ''">
+		 			AND REMARK like concat(concat('%',#{inspectionPlan.remark}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.remarkOne != null and inspectionPlan.remarkOne != ''">
+		 			AND REMARKONE like concat(concat('%',#{inspectionPlan.remarkOne}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.remarkTwo != null and inspectionPlan.remarkTwo != ''">
+		 			AND REMARKTWO like concat(concat('%',#{inspectionPlan.remarkTwo}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.remarkThree != null and inspectionPlan.remarkThree != ''">
+		 			AND REMARKTHREE like concat(concat('%',#{inspectionPlan.remarkThree}),'%')
+		 		</if>
+		 		<if test="inspectionPlan.equUnit != null and inspectionPlan.equUnit != ''">
+		 			AND EQU_UNIT like concat(concat('%',#{inspectionPlan.equUnit}),'%')
+		 		</if>
+		 	</where>
+         
+	</select>
+
+	<!-- 人员组织树数据
+	List<UserTree> userTree(); -->
+	<select id="userTree"
+		resultType="cn.zg.entity.daoEntity.UserTree">
+		select
+			NAME name,PARENT_ID parentID,USERNUM id,IS_PARENT isParent
+		from IOT_USER_ORGANIZATION where 
+			usernum not in(
+				select
+					USERID
+				from 
+					IOT_USER_USER_ROLE
+				WHERE 
+					ROLID = #{rolId}
+			)
+	</select>
+	
+	<!-- 当前角色人员
+	List<String> userRole();; -->
+	<select id="userRole"
+		resultType="cn.zg.entity.daoEntity.UserTree">
+		SELECT 
+			'true' checked,a.NAME name, a.PARENT_ID parentID,a.USERNUM id,a.IS_PARENT isParent
+		from 
+			IOT_USER_ORGANIZATION a 
+		where 
+			usernum in(
+				select
+					USERID
+				from 
+					IOT_USER_USER_ROLE
+				WHERE 
+					ROLID = #{rolId}
+			)
+	</select>
+
+	<!-- 新增巡检计划
+	Integer insertInspectionPlan(@Param("inspectionPlan")InspectionPlan inspectionPlan); -->
+	<insert id="insertInspectionPlan"
+		parameterType="cn.zg.entity.daoEntity.InspectionPlan">
+		
+		<selectKey keyProperty="inspectionPlan.planID" order="BEFORE" resultType="java.lang.String">
+			select sys_guid() from dual
+		</selectKey>
+		
+		insert into CZ_INSPECTION_PLAN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="inspectionPlan.planID != null and inspectionPlan.planID != ''">
+				PLAN_ID,
+			</if>
+			<if test="inspectionPlan.planName != null and inspectionPlan.planName != ''">
+				PLAN_NAME,
+			</if>
+			<if test="inspectionPlan.schemeID != null and inspectionPlan.schemeID != ''">
+				SCHEME_ID,
+			</if>
+			<if test="inspectionPlan.schemeName != null and inspectionPlan.schemeName != ''">
+				SCHEME_NAME,
+			</if>
+			<if test="inspectionPlan.planCycle != null and inspectionPlan.planCycle != ''">
+				PLAN_CYCLE,
+			</if>
+			<if test="inspectionPlan.planStartTime != null">
+				PLAN_START_TIME,
+			</if>
+			<if test="inspectionPlan.planIntervalTime != null and inspectionPlan.planIntervalTime != ''">
+			 PLAN_INTERVAL_TIME,
+			</if>
+			<if test="inspectionPlan.planDesc != null and inspectionPlan.planDesc != ''">
+				PLAN_DESC,
+			</if>
+			<if test="inspectionPlan.planExpectTime != null and inspectionPlan.planExpectTime != ''">
+				PLAN_EXPECT_TIME,
+			</if>
+			<if test="inspectionPlan.planNoticeTime != null and inspectionPlan.planNoticeTime != ''">
+				PLAN_NOTICE_TIME,
+			</if>
+			<if test="inspectionPlan.planState != null and inspectionPlan.planState != ''">
+				PLAN_STATE,
+			</if>
+			<if test="inspectionPlan.planValue != null and planValue != ''">
+				PLAN_VALUE,
+			</if>
+			<if test="inspectionPlan.remark != null and inspectionPlan.remark != ''">
+				REMARK,
+			</if>
+			<if test="inspectionPlan.remarkOne != null and inspectionPlan.remarkOne != ''">
+				REMARKONE,
+			</if>
+			<if test="inspectionPlan.remarkTwo != null and inspectionPlan.remarkTwo != ''">
+				REMARKTWO,
+			</if>
+			<if test="inspectionPlan.remarkThree != null and inspectionPlan.remarkThree != ''">
+				REMARKTHREE,
+			</if>
+			<if test="inspectionPlan.equUnit != null and inspectionPlan.equUnit != ''">
+				EQU_UNIT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="inspectionPlan.planID != null and inspectionPlan.planID != ''">
+				#{inspectionPlan.planID},
+			</if>
+			<if test="inspectionPlan.planName != null and inspectionPlan.planName != ''">
+				#{inspectionPlan.planName},
+			</if>
+			<if test="inspectionPlan.schemeID != null and inspectionPlan.schemeID != ''">
+				#{inspectionPlan.schemeID},
+			</if>
+			<if test="inspectionPlan.schemeName != null and inspectionPlan.schemeName != ''">
+				#{inspectionPlan.schemeName},
+			</if>
+			<if test="inspectionPlan.planCycle != null and inspectionPlan.planCycle != ''">
+				#{inspectionPlan.planCycle},
+			</if>
+			<if test="inspectionPlan.planStartTime != null">
+				#{inspectionPlan.planStartTime},
+			</if>
+			<if test="inspectionPlan.planIntervalTime != null and inspectionPlan.planIntervalTime != ''">
+				#{inspectionPlan.planIntervalTime},
+			</if>
+			<if test="inspectionPlan.planDesc != null and inspectionPlan.planDesc != ''">
+				#{inspectionPlan.planDesc},
+			</if>
+			<if test="inspectionPlan.planExpectTime != null and inspectionPlan.planExpectTime != ''">
+				#{inspectionPlan.planExpectTime},
+			</if>
+			<if test="inspectionPlan.planNoticeTime != null and inspectionPlan.planNoticeTime != ''">
+				#{inspectionPlan.planNoticeTime},
+			</if>
+			<if test="inspectionPlan.planState != null and inspectionPlan.planState != ''">
+				#{inspectionPlan.planState},
+			</if>
+			<if test="inspectionPlan.planValue != null and planValue != ''">
+				#{inspectionPlan.planValue},
+			</if>
+			<if test="inspectionPlan.remark != null and inspectionPlan.remark != ''">
+				#{inspectionPlan.remark},
+			</if>
+			<if test="inspectionPlan.remarkOne != null and inspectionPlan.remarkOne != ''">
+				#{inspectionPlan.remarkOne},
+			</if>
+			<if test="inspectionPlan.remarkTwo != null and inspectionPlan.remarkTwo != ''">
+				#{inspectionPlan.remarkTwo},
+			</if>
+			<if test="inspectionPlan.remarkThree != null and inspectionPlan.remarkThree != ''">
+				#{inspectionPlan.remarkThree},
+			</if>
+			<if test="inspectionPlan.equUnit != null and inspectionPlan.equUnit != ''">
+				#{inspectionPlan.equUnit},
+			</if>
+		</trim>
+	</insert>
+	
+	<!-- 更新巡检计划
+	Integer updateInspectionPlan(@Param("inspectionPlan")InspectionPlan inspectionPlan); -->
+	<update id="updateInspectionPlan"
+		parameterType="cn.zg.entity.daoEntity.InspectionPlan">
+		update CZ_INSPECTION_PLAN
+		<set>
+			<if test="inspectionPlan.planID != null and inspectionPlan.planID != ''">
+				PLAN_ID =#{inspectionPlan.planID},
+			</if>
+			<if test="inspectionPlan.planName != null and inspectionPlan.planName != ''">
+				PLAN_NAME =#{inspectionPlan.planName},
+			</if>
+			<if test="inspectionPlan.schemeID != null and inspectionPlan.schemeID != ''">
+				SCHEME_ID  =#{inspectionPlan.schemeID},
+			</if>
+			<if test="inspectionPlan.schemeName != null and inspectionPlan.schemeName != ''">
+				SCHEME_NAME =#{inspectionPlan.schemeName},
+			</if>
+			<if test="inspectionPlan.planCycle != null and inspectionPlan.planCycle != ''">
+				PLAN_CYCLE =#{inspectionPlan.planCycle},
+			</if>
+			<if test="inspectionPlan.planStartTime != null">
+				PLAN_START_TIME  = #{inspectionPlan.planStartTime},
+			</if>
+			<if test="inspectionPlan.planIntervalTime != null and inspectionPlan.planIntervalTime != ''">
+				PLAN_INTERVAL_TIME =#{inspectionPlan.planIntervalTime},
+			</if>
+			<if test="inspectionPlan.planDesc != null and inspectionPlan.planDesc != ''">
+				PLAN_DESC =#{inspectionPlan.planDesc},
+			</if>
+			<if test="inspectionPlan.planExpectTime != null and inspectionPlan.planExpectTime != ''">
+				PLAN_EXPECT_TIME =#{inspectionPlan.planExpectTime},
+			</if>
+			<if test="inspectionPlan.planNoticeTime != null and inspectionPlan.planNoticeTime != ''">
+				PLAN_NOTICE_TIME =#{inspectionPlan.planNoticeTime},
+			</if>
+			<if test="inspectionPlan.planState != null and inspectionPlan.planState != ''">
+				PLAN_STATE =#{inspectionPlan.planState},
+			</if>
+			<if test="inspectionPlan.planValue != null and planValue != ''">
+				PLAN_VALUE =#{inspectionPlan.planValue},
+			</if>
+			<if test="inspectionPlan.remark != null and inspectionPlan.remark != ''">
+				REMARK =#{inspectionPlan.remark},
+			</if>
+			<if test="inspectionPlan.remarkOne != null and inspectionPlan.remarkOne != ''">
+				REMARKONE =#{inspectionPlan.remarkOne},
+			</if>
+			<if test="inspectionPlan.remarkTwo != null and inspectionPlan.remarkTwo != ''">
+				REMARKTWO =#{inspectionPlan.remarkTwo},
+			</if>
+			<if test="inspectionPlan.remarkThree != null and inspectionPlan.remarkThree != ''">
+				REMARKTHREE =#{inspectionPlan.remarkThree},
+			</if>
+			<if test="inspectionPlan.equUnit != null and inspectionPlan.equUnit != ''">
+				EQU_UNIT =#{inspectionPlan.equUnit},
+			</if>
+		</set>
+		where PLAN_ID =#{inspectionPlan.planID}
+	</update>
+	
+	<!-- 删除巡检计划
+	Integer deleteInspectionPlan(String planId); -->
+	<delete id="deleteInspectionPlan" parameterType="String">
+		DELETE FROM CZ_INSPECTION_PLAN 
+		<where>
+			 PLAN_ID = #{planId}
+		</where>
+	</delete>
+</mapper>

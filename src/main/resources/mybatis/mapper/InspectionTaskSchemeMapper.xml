@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zg.dao.taskInspection.InspectionTaskSchemeMapper">
+
+	<!-- ++++++++++++++++++++++++++++++++ 新增  ++++++++++++++++++++++++++++++++ -->
+	<!-- 新增巡检方案实例
+	Integer insertInspectionScheme(InspectionTaskScheme inspectionTaskScheme), -->
+	<insert id="insertInspectionScheme"
+		parameterType="cn.zg.entity.taskInspection.InspectionTaskScheme">
+		
+		insert all 
+		
+		<foreach collection="inspectionTaskScheme" index="index" separator=" " item="item">
+			into CZ_TASK_INSPECTION
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="item.taskId != null and item.taskId != ''">
+					TASK_ID,
+				</if>
+				<if test="item.taskteamId != null and item.taskteamId != ''">
+					TASKTEAM_ID,
+				</if>
+				<if test="item.taskteamName != null and item.taskteamName != ''">
+					TASKTEAM_NAME,
+				</if>
+				<if test="item.schemeId != null and item.schemeId != ''">
+					SCHEME_ID,
+				</if>
+				<if test="item.equUnit != null and item.equUnit != ''">
+					EQU_UNIT,
+				</if>
+				<if test="item.schemeName != null and item.schemeName != ''">
+				 SCHEME_NAME,
+				</if>
+				<if test="item.piid != null and item.piid != ''">
+					PIID,
+				</if>
+				<if test="item.taskName != null and item.taskName != ''">
+					TASK_NAME,
+				</if>
+				<if test="item.taskDescribe != null and item.taskDescribe != ''">
+					TASK_DESCRIBE,
+				</if>
+				<if test="item.taskResult != null and item.taskResult != ''">
+					TASK_RESULT,
+				</if>
+				<if test="item.taskState != null and item.taskState != ''">
+					TASK_STATE,
+				</if>
+				<if test="item.taskDeadline != null">
+					TASK_DEADLINE,
+				</if>
+				<if test="item.isdownload != null and item.isdownload != ''">
+					ISDOWNLOAD,
+				</if>
+				<if test="item.taskStartTime != null">
+					TASK_START_TIME,
+				</if>
+				<if test="item.taskFinisher != null and item.taskFinisher != ''">
+					TASK_FINISHER,
+				</if>
+				<if test="item.taskEndworkDate != null">
+					TASK_ENDWORK_DATE,
+				</if>
+				<if test="item.plannedCompletionTime != null and item.plannedCompletionTime != ''">
+					PLANNED_COMPLETION_TIME,
+				</if>
+				<if test="item.reminderTime != null and item.reminderTime != ''">
+					REMINDER_TIME,
+				</if>
+				<if test="item.remarkone != null and item.remarkone != ''">
+					REMARKONE,
+				</if>
+				<if test="item.remarktwo != null and item.remarktwo != ''">
+					REMARKTWO,
+				</if>
+				<if test="item.remarkthree!= null and item.remarkthree!= ''">
+					REMARKTHREE,
+				</if>
+				<if test="item.remarkfour!= null and item.remarkfour!= ''">
+					REMARKFOUR,
+				</if>
+				<if test="item.schemeType!= null and item.schemeType!= ''">
+					SCHEME_TYPE,
+				</if>
+			</trim>
+		
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="item.taskId != null and item.taskId != ''">
+					#{item.taskId},
+				</if>
+				<if test="item.taskteamId != null and item.taskteamId != ''">
+					#{item.taskteamId},
+				</if>
+				<if test="item.taskteamName != null and item.taskteamName != ''">
+					#{item.taskteamName},
+				</if>
+				<if test="item.schemeId != null and item.schemeId != ''">
+					#{item.schemeId},
+				</if>
+				<if test="item.equUnit != null  and item.equUnit != ''">
+					#{item.equUnit},
+				</if>
+				<if test="item.schemeName != null and item.schemeName != ''">
+					#{item.schemeName},
+				</if>
+				<if test="item.piid != null and item.piid != ''">
+					#{item.piid},
+				</if>
+				<if test="item.taskName != null and item.taskName != ''">
+					#{item.taskName},
+				</if>
+				<if test="item.taskDescribe != null and item.taskDescribe != ''">
+					#{item.taskDescribe},
+				</if>
+				<if test="item.taskResult != null and item.taskResult != ''">
+					#{item.taskResult},
+				</if>
+				<if test="item.taskState != null and item.taskState != ''">
+					#{item.taskState},
+				</if>
+				<if test="item.taskDeadline != null">
+					#{item.taskDeadline},
+				</if>
+				<if test="item.isdownload != null and item.isdownload != ''">
+					#{item.isdownload},
+				</if>
+				<if test="item.taskStartTime != null">
+					#{item.taskStartTime},
+				</if>
+				<if test="item.taskFinisher != null and item.taskFinisher != ''">
+					#{item.taskFinisher},
+				</if>
+				<if test="item.taskEndworkDate != null">
+					#{item.taskEndworkDate},
+				</if>
+				<if test="item.plannedCompletionTime != null and item.plannedCompletionTime != ''">
+					#{item.plannedCompletionTime},
+				</if>
+				<if test="item.reminderTime != null and item.reminderTime != ''">
+					#{item.reminderTime},
+				</if>
+				<if test="item.remarkone != null and item.remarkone != ''">
+					#{item.remarkone},
+				</if>
+				<if test="item.remarktwo != null and item.remarktwo != ''">
+					#{item.remarktwo},
+				</if>
+				<if test="item.remarkthree!= null and item.remarkthree!= ''">
+					#{item.remarkthree},
+				</if>
+				<if test="item.remarkfour!= null and item.remarkfour!= ''">
+					#{item.remarkfour},
+				</if>
+				<if test="item.schemeType!= null and item.schemeType!= ''">
+					#{item.schemeType},
+				</if>
+			</trim>
+		</foreach>
+		select 1 from dual
+	</insert>
+	
+	<!-- 新增巡检点实例
+Integer insertTaskInspectionPoint(TaskInspectionPoint taskInspectionPoint), -->
+<insert id="insertTaskInspectionPoint"
+	parameterType="cn.zg.entity.taskInspection.TaskInspectionPoint">
+	
+	insert all 
+	
+	<foreach collection="taskInspectionPoint" index="index" separator=" " item="item">
+		into CZ_TASK_INSPECTION_POINT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="item.taskPointId != null and item.taskPointId != ''">
+				TASK_POINT_ID,
+			</if>
+			<if test="item.taskId != null and item.taskId != ''">
+				TASK_ID,
+			</if>
+			<if test="item.taskName != null and item.taskName != ''">
+				TASK_NAME,
+			</if>
+			<if test="item.taskPointName != null and item.taskPointName != ''">
+				TASK_POINT_NAME,
+			</if>
+			<if test="item.taskPointNum != null and item.taskPointNum != ''">
+				TASK_POINT_NUM,
+			</if>
+			<if test="item.taskPointRfid != null and item.taskPointRfid != ''">
+				TASK_POINT_RFID,
+			</if>
+			<if test="item.taskPointStarttime != null">
+				TASK_POINT_STARTTIME,
+			</if>
+			<if test="item.taskPointEndtime != null">
+				TASK_POINT_ENDTIME,
+			</if>
+			<if test="item.taskPointState != null and item.taskPointState != ''">
+				TASK_POINT_STATE,
+			</if>
+			<if test="item.taskPointOrder != null">
+				TASK_POINTORDER,
+			</if>
+			<if test="item.taskPointDesc != null and item.taskPointDesc != ''">
+				TASK_POINT_DESC,
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				REMARKONE,
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				REMARKTWO,
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				REMARKTHREE,
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				REMARKFOUR,
+			</if>
+		</trim>
+	
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="item.taskPointId != null and item.taskPointId != ''">
+				#{item.taskPointId},
+			</if>
+			<if test="item.taskId != null and item.taskId != ''">
+				#{item.taskId},
+			</if>
+			<if test="item.taskName != null and item.taskName != ''">
+				#{item.taskName},
+			</if>
+			<if test="item.taskPointName != null and item.taskPointName != ''">
+				#{item.taskPointName},
+			</if>
+			<if test="item.taskPointNum != null  and item.taskPointNum != ''">
+				#{item.taskPointNum},
+			</if>
+			<if test="item.taskPointRfid != null and item.taskPointRfid != ''">
+				#{item.taskPointRfid},
+			</if>
+			<if test="item.taskPointStarttime != null">
+				#{item.taskPointStarttime},
+			</if>
+			<if test="item.taskPointEndtime != null">
+				#{item.taskPointEndtime},
+			</if>
+			<if test="item.taskPointState != null and item.taskPointState != ''">
+				#{item.taskPointState},
+			</if>
+			<if test="item.taskPointOrder != null	">
+				#{item.taskPointOrder},
+			</if>
+			<if test="item.taskPointDesc != null and item.taskPointDesc != ''">
+				#{item.taskPointDesc},
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				#{item.remarkone},
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				#{item.remarktwo},
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				#{item.remarkthree},
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				#{item.remarkfour},
+			</if>
+		</trim>
+	</foreach>
+	select 1 from dual
+</insert>
+	
+	<!-- 新增巡检设备实例
+Integer insertTaskInspectionContent(List<TaskInspectionContent> taskInspectionContent), -->
+<insert id="insertTaskInspectionContent"
+	parameterType="cn.zg.entity.taskInspection.TaskInspectionContent">
+	
+	insert all
+	<foreach collection="taskInspectionContent" index="index" separator=" " item="item">
+	
+		into CZ_TASK_INSPECTION_CONTENT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="item.taskPointId != null and item.taskPointId != ''">
+				TASK_POINT_ID,
+			</if>
+			<if test="item.taskContentId != null and item.taskContentId != ''">
+				TASK_CONTENT_ID,
+			</if>
+			<if test="item.taskContentName != null and item.taskContentName != ''">
+				TASK_CONTENT_NAME,
+			</if>
+			<if test="item.taskPointName != null and item.taskPointName != ''">
+				TASK_POINT_NAME,
+			</if>
+			<if test="item.taskContentStarttime != null and item.taskContentStarttime != ''">
+				TASK_CONTENT_STARTTIME,
+			</if>
+			<if test="item.taskContentEndtime != null and item.taskContentEndtime != ''">
+				TASK_CONTENT_ENDTIME,
+			</if>
+			<if test="item.taskContentState != null and item.taskContentState != '' ">
+				TASK_CONTENT_STATE,
+			</if>
+			<if test="item.taskContentOrder != null">
+				TASK_CONTENT_ORDER,
+			</if>
+			<if test="item.taskContentDesc != null and item.taskContentDesc != ''">
+				TASK_CONTENT_DESC,
+			</if>
+			<if test="item.planStartTime != null and item.planStartTime != '' ">
+				PLAN_START_TIME,
+			</if>
+			<if test="item.planIntervalTime != null">
+				PLAN_INTERVAL_TIME,
+			</if>
+			<if test="item.equPositionNum != null and item.equPositionNum != ''">
+				EQU_POSITION_NUM,
+			</if>
+			<if test="item.equName != null and item.equName != ''">
+				EQU_NAME,
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				REMARKONE,
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				REMARKTWO,
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				REMARKTHREE,
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				REMARKFOUR,
+			</if>
+		</trim>
+	
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="item.taskPointId != null and item.taskPointId != ''">
+				#{item.taskPointId},
+			</if>
+			<if test="item.taskContentId != null and item.taskContentId != ''">
+				#{item.taskContentId},
+			</if>
+			<if test="item.taskContentName != null and item.taskContentName != ''">
+				#{item.taskContentName},
+			</if>
+			<if test="item.taskPointName != null and item.taskPointName != ''">
+				#{item.taskPointName},
+			</if>
+			<if test="item.taskContentStarttime != null  and item.taskContentStarttime != ''">
+				#{item.taskContentStarttime},
+			</if>
+			<if test="item.taskContentEndtime != null and item.taskContentEndtime != ''">
+				#{item.taskContentEndtime},
+			</if>
+			<if test="item.taskContentState != null and item.taskContentState != ''">
+				#{item.taskContentState},
+			</if>
+			<if test="item.taskContentOrder != null">
+				#{item.taskContentOrder},
+			</if>
+			<if test="item.taskContentDesc != null and item.taskContentDesc != ''">
+				#{item.taskContentDesc},
+			</if>
+			<if test="item.planStartTime != null and item.planStartTime != '' ">
+				#{item.planStartTime},
+			</if>
+			<if test="item.planIntervalTime != null">
+				#{item.planIntervalTime},
+			</if>
+			<if test="item.equPositionNum != null and item.equPositionNum != ''">
+				#{item.equPositionNum},
+			</if>
+			<if test="item.equName != null and item.equName != ''">
+				#{item.equName},
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				#{item.remarkone},
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				#{item.remarktwo},
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				#{item.remarkthree},
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				#{item.remarkfour},
+			</if>
+		</trim>
+	</foreach>
+	select 1 from dual 
+</insert>
+
+<!-- 新增巡检项实例
+Integer inserttaskInspectionRequires(List<TaskInspectionRequire> taskInspectionRequires), -->
+<insert id="inserttaskInspectionRequires"
+	parameterType="cn.zg.entity.taskInspection.TaskInspectionRequire">
+	
+	insert all 
+	
+	<foreach collection="taskInspectionRequires" index="index" separator=" " item="item"> 
+		into CZ_TASK_INSPECTION_REQUIRE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="item.taskRequireId != null and item.taskRequireId != ''">
+				TASK_REQUIRE_ID,
+			</if>
+			<if test="item.taskContentId != null and item.taskContentId != ''">
+				TASK_CONTENT_ID,
+			</if>
+			<if test="item.taskRequireType != null">
+				TASK_REQUIRE_TYPE,
+			</if>
+			<if test="item.taskRequireContext != null and item.taskRequireContext != ''">
+				TASK_REQUIRE_CONTEXT,
+			</if>
+			<if test="item.taskRequireResDesc != null and item.taskRequireResDesc != ''">
+				TASK_REQUIRE_RES_DESC,
+			</if>
+			<if test="item.taskCcsParaId != null and item.taskCcsParaId != ''">
+				TASK_CCS_PARA_ID,
+			</if>
+			<if test="item.taskEquPositionNum != null and item.taskEquPositionNum != '' ">
+				TASK_EQU_POSITION_NUM,
+			</if>
+			<if test="item.taskRequireItem != null and item.taskRequireItem != ''">
+				TASK_REQUIRE_ITEM,
+			</if>
+			<if test="item.taskRequireUnit != null and item.taskRequireUnit != ''">
+				TASK_REQUIRE_UNIT,
+			</if>
+			<if test="item.taskRequireMix != null and item.taskRequireMix != '' ">
+				TASK_REQUIRE_MIX,
+			</if>
+			<if test="item.taskRequireMax != null and item.taskRequireMax != ''">
+				TASK_REQUIRE_MAX,
+			</if>
+			<if test="item.taskRequireRecordtime != null and item.taskRequireRecordtime != ''">
+				TASK_REQUIRE_RECORDTIME,
+			</if>
+			<if test="item.requireDesc != null and item.requireDesc != ''">
+				REQUIRE_DESC,
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				REMARKONE,
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				REMARKTWO,
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				REMARKTHREE,
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				REMARKFOUR,
+			</if>
+			<if test="item.taskRequireResult!= null and item.taskRequireResult!= ''">
+				TASK_REQUIRE_RESULT,
+			</if>
+			<if test="item.taskRequireStarttime != null">
+				TASK_REQUIRE_STARTTIME,
+			</if>
+			<if test="item.taskRequireEndtime != null">
+				TASK_REQUIRE_ENDTIME,
+			</if>
+			<if test="item.taskRequireOrder != null">
+				TASK_REQUIRE_ORDER,
+			</if>	
+			<if test="item.taskRequireSymbol != null and item.taskRequireSymbol != ''">
+				TASK_REQUIRE_SYMBOL,
+			</if>	
+			<if test="item.taskResultStatus != null and item.taskResultStatus != ''">
+				TASK_RESULT_STATUS,
+			</if>
+			<if test="item.mulchoice != null">
+				MULCHOICE,
+			</if>		
+			<if test="item.opcValue != null and item.opcValue != ''">
+				OPC_VALUE,
+			</if>
+			<if test="item.opcPoint != null and item.opcPoint != ''">
+				OPC_POINT,
+			</if>
+		</trim>
+	
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="item.taskRequireId != null and item.taskRequireId != ''">
+				#{item.taskRequireId},
+			</if>
+			<if test="item.taskContentId != null and item.taskContentId != ''">
+				#{item.taskContentId},
+			</if>
+			<if test="item.taskRequireType != null">
+				#{item.taskRequireType},
+			</if>
+			<if test="item.taskRequireContext != null and item.taskRequireContext != ''">
+				#{item.taskRequireContext},
+			</if>
+			<if test="item.taskRequireResDesc != null  and item.taskRequireResDesc != ''">
+				#{item.taskRequireResDesc},
+			</if>
+			<if test="item.taskCcsParaId != null and item.taskCcsParaId != ''">
+				#{item.taskCcsParaId},
+			</if>
+			<if test="item.taskEquPositionNum != null and item.taskEquPositionNum != ''">
+				#{item.taskEquPositionNum},
+			</if>
+			<if test="item.taskRequireItem != null and item.taskRequireItem != ''">
+				#{item.taskRequireItem},
+			</if>
+			<if test="item.taskRequireUnit != null and item.taskRequireUnit != ''">
+				#{item.taskRequireUnit},
+			</if>
+			<if test="item.taskRequireMix != null and item.taskRequireMix != '' ">
+				#{item.taskRequireMix},
+			</if>
+			<if test="item.taskRequireMax != null and item.taskRequireMax != ''">
+				#{item.taskRequireMax},
+			</if>
+			<if test="item.taskRequireRecordtime != null and item.taskRequireRecordtime != ''">
+				#{item.taskRequireRecordtime},
+			</if>
+			<if test="item.requireDesc != null and item.requireDesc != ''">
+				#{item.requireDesc},
+			</if>
+			<if test="item.remarkone != null and item.remarkone != ''">
+				#{item.remarkone},
+			</if>
+			<if test="item.remarktwo != null and item.remarktwo != ''">
+				#{item.remarktwo},
+			</if>
+			<if test="item.remarkthree!= null and item.remarkthree!= ''">
+				#{item.remarkthree},
+			</if>
+			<if test="item.remarkfour!= null and item.remarkfour!= ''">
+				#{item.remarkfour},
+			</if>
+			<if test="item.taskRequireResult!= null and item.taskRequireResult!= ''">
+				#{item.taskRequireResult},
+			</if>
+			<if test="item.taskRequireStarttime != null">
+				#{item.taskRequireStarttime},
+			</if>
+			<if test="item.taskRequireEndtime != null">
+				#{item.taskRequireEndtime},
+			</if>
+			<if test="item.taskRequireOrder != null">
+				#{item.taskRequireOrder},
+			</if>	
+			<if test="item.taskRequireSymbol != null and item.taskRequireSymbol != ''">
+				#{item.taskRequireSymbol},
+			</if>	
+			<if test="item.taskResultStatus != null and item.taskResultStatus != ''">
+				#{item.taskResultStatus},
+			</if>
+			<if test="item.mulchoice != null">
+				#{item.mulchoice},
+			</if>			
+			<if test="item.opcValue != null and item.opcValue != ''">
+				#{item.opcValue},
+			</if>
+			<if test="item.opcPoint != null and item.opcPoint != ''">
+				#{item.opcPoint},
+			</if>
+		</trim>
+	 </foreach>
+	select 1 from dual
+</insert>
+ 
+ 
+ <!-- ++++++++++++++++++++++++++++++++ 查询  ++++++++++++++++++++++++++++++++ -->
+	<!-- 获取方案巡检点表实例
+	List<InspectionPoint> getInspectionPoint(String schemeId), -->
+	<select id="getInspectionPoint" resultType="cn.zg.entity.taskInspection.InspectionPoint">
+		select 
+			POINT_ID  pointId,
+			POINT_NAME pointName,
+			POINT_NUM pointNum,
+			POINT_RFID pointRfid,
+			POINT_CREATOR pointCreator,
+			POINT_CREATE_TIME pointCreateTime,
+			POINT_DESC pointDesc,
+			REMARKONE remarkone,
+			REMARKTWO remarktwo,
+			REMARKTHREE remarkthree,
+			REMARKFOUR remarkfour,
+			ORDERNUM ordernum
+		from 
+			CZ_INSPECTION_POINT
+		<where>
+			POINT_ID IN (
+				select POINT_ID from CZ_INSEPECTION_S_P_R 
+				<where>
+					 SCHEME_ID = #{schemeId}
+				</where>
+			)
+		</where>
+	</select>
+	
+	<!-- 获取方案巡检设备表实例
+	List<InspectionContent> getInspectionContent(List<String> pointIds), -->
+	<select id="getInspectionContent" resultType="cn.zg.entity.taskInspection.InspectionContent">
+		select 
+			b.POINT_NAME pointName,
+			a.CONTENT_ID contentId,        
+			a.CONTENT_NAME contentName,      
+			a.CONTENT_CREATOR contentCreator,   
+			a.CONTENT_CREATE_TIME contentCreateTime,
+			a.REMARK remark,           
+			a.REMARKONE remarkone,        
+			a.REMARKTWO remarktwo,        
+			a.REMARKTHREE remarkthree,      
+			a.ORDERNUM ordernum,         
+			a.EQU_POSITION_NUM equPositionNum,   
+			a.EQU_NAME equName         
+		from 
+			CZ_INSPECTION_CONTENT a,CZ_INSPECTION_POINT b,CZ_INSEPCTION_C_P_R c
+		<where>
+			a.CONTENT_ID = c.CONTENT_ID AND b.POINT_ID = c.POINT_ID AND
+			b.POINT_ID IN (
+				select POINT_ID from CZ_INSEPECTION_S_P_R 
+				<where>
+						SCHEME_ID = #{schemeId}
+				</where>
+			)
+		</where>
+	</select>
+	
+	<!-- 获取方案巡检项表实例
+	List<InspectionContent> getInspectionRequire(List<String> contentIds), -->
+	<select id="getInspectionRequire" resultType="cn.zg.entity.taskInspection.InspectionRequire">
+		select 
+			REQUIRE_ID requireId,        
+			REQUIRE_TYPE requireType,      
+			REQUIRE_CONTEXT requireContext,   
+			REQUIRE_RES_DESC requireResDesc,   
+			CCS_PARA_ID ccsParaId,        
+			EQU_POSITION_NUM equPositionNum,   
+			REQUIRE_ITEM requireItem,      
+			REQUIRE_UNIT requireUnit,      
+			REQUIRE_MIX requireMix,       
+			REQUIRE_MAX requireMax,       
+			REQUIRE_RECORDTIME requireRecordtime,
+			REQUIRE_CREATOR requireCreator,   
+			REQUIRE_CREATETIME requireCreatetime,
+			REQUIRE_DESC requireDesc,      
+			REMARKONE remarkone,        
+			REMARKTWO remarktwo,        
+			REMARKTHREE remarkthree,      
+			REMARKFOUR remarkfour,       
+			ORDERNUM ordernum,         
+			CONTENT_ID contentId,        
+			REQUIRE_SYMBOL requireSymbol,    
+			POSITION_PREFIX positionPrefix,   
+			MULCHOICE mulchoice     
+		from 
+			CZ_INSPECTION_REQUIRE
+		<where>
+			CONTENT_ID IN(
+				select CONTENT_ID from CZ_INSEPCTION_C_P_R 
+				<where>
+					 POINT_ID IN (
+					 	select POINT_ID from CZ_INSEPECTION_S_P_R 
+						<where>
+							 SCHEME_ID = #{schemeId}
+						</where>
+					 )
+				</where>
+				)
+		</where>
+	</select>
+	
+	<!-- 获取巡检设备数据，根据schemeId
+	List<TaskInspectionContent> getTaskInspectionContent(String schemeId) -->
+	<select id="getTaskInspectionContent" resultType="cn.zg.entity.taskInspection.TaskInspectionContent">
+		select 
+			a.TASK_START_TIME taskStartTime,       
+			c.TASK_CONTENT_ID taskContentId,       
+			c.TASK_CONTENT_NAME taskContentName,     
+			c.TASK_POINT_ID taskPointId,         
+			c.TASK_POINT_NAME taskPointName,       
+			c.TASK_CONTENT_STARTTIME taskContentStarttime,
+			c.TASK_CONTENT_ENDTIME taskContentEndtime,  
+			c.TASK_CONTENT_STATE taskContentState,    
+			c.TASK_CONTENT_ORDER taskContentOrder,    
+			c.TASK_CONTENT_DESC taskContentDesc,     
+			c.REMARKONE remarkone,           
+			c.REMARKTWO remarktwo,           
+			c.REMARKTHREE remarkthree,         
+			c.REMARKFOUR remarkfour,          
+			c.PLAN_START_TIME planStartTime,       
+			c.PLAN_INTERVAL_TIME planIntervalTime,    
+			c.EQU_POSITION_NUM equPositionNum,      
+			c.EQU_NAME equName       
+		from 
+			CZ_TASK_INSPECTION a,CZ_TASK_INSPECTION_POINT b,CZ_TASK_INSPECTION_CONTENT c
+			<where>
+				a.TASK_ID = b.TASK_ID 
+				AND b.TASK_POINT_ID = c.TASK_POINT_ID 
+				AND SCHEME_ID = #{schemeId}
+			</where>
+	</select>
+	
+	 <!-- ++++++++++++++++++++++++++++++++ 删除  ++++++++++++++++++++++++++++++++ -->
+	 
+	<!--  删除巡检项实例
+		Integer deleteTaskInspectionRequire(String schemeId); -->
+	 <delete id="deleteTaskInspectionRequire" parameterType="String">
+	 	DELETE FROM CZ_TASK_INSPECTION_REQUIRE 
+		<where>
+			TASK_CONTENT_ID IN (SELECT TASK_CONTENT_ID FROM CZ_TASK_INSPECTION_CONTENT 
+			<where>
+				 TASK_POINT_ID IN (SELECT TASK_POINT_ID FROM CZ_TASK_INSPECTION_POINT 
+				<where>
+				 TASK_ID IN (SELECT TASK_ID FROM CZ_TASK_INSPECTION 
+				 <where>
+					 REMARKONE = #{planId}
+				 </where>
+					)
+				</where>
+				)
+			</where>
+		)
+		</where> 
+	 </delete>
+	 
+	 <!--  删除巡检设备实例
+		Integer deleteTaskInspectionContent(String schemeId); -->
+	 <delete id="deleteTaskInspectionContent" parameterType="String">
+	 	DELETE FROM  CZ_TASK_INSPECTION_CONTENT 
+		<where>
+			 TASK_POINT_ID IN (SELECT TASK_POINT_ID FROM CZ_TASK_INSPECTION_POINT 
+			<where>
+			 TASK_ID IN (SELECT TASK_ID FROM CZ_TASK_INSPECTION 
+				 <where>
+					 REMARKONE = #{planId}
+				 </where>
+				)
+			</where>
+			)
+		</where>
+	 </delete>
+	 
+	  <!--  删除巡检点实例
+		Integer deleteTaskInspectionPoint(String schemeId); -->
+	 <delete id="deleteTaskInspectionPoint" parameterType="String">
+	 	DELETE FROM  CZ_TASK_INSPECTION_POINT 
+		<where>
+			 TASK_ID IN (SELECT TASK_ID FROM CZ_TASK_INSPECTION 
+				 <where>
+					 REMARKONE = #{planId}
+				 </where>
+				)
+		</where>
+	 </delete>
+	 
+	  <!--  删除巡检方案实例
+		Integer deleteTaskInspection(String schemeId); -->
+	 <delete id="deleteTaskInspection" parameterType="String">
+	 	DELETE FROM  CZ_TASK_INSPECTION 
+			<where>
+				 REMARKONE = #{planId}
+			</where>
+	 </delete>
+</mapper>

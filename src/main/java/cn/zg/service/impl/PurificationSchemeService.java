@@ -323,6 +323,7 @@ public class PurificationSchemeService implements PurificationSchemeInter{
 		List<InpectionValue> inpectValues = new ArrayList<InpectionValue>();
 		try {
 			inpectValues = inpectValueRepos.findByPlanidAndTime( planId, time );
+			System.err.println("---------------:"+inpectValues);
 		} catch (Exception e) {
 			e.printStackTrace(); 
 		}
