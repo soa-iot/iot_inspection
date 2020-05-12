@@ -27,8 +27,9 @@
 		select
 		<include refid="Base_Column_List"></include>
 		from IOT_USER_ORGANIZATION
-		where USERNUM not in (select userid from
+		where usernum != 'admin'
+		<!-- where USERNUM not in (select userid from
 		IOT_USER_USER_ROLE where rolid = (select ROLID from IOT_USER_ROLE
-		where NAME = '流程_问题评估_部门领导'))
+		where NAME = '流程_问题评估_部门领导')) -->
 	</select>
 </mapper>
