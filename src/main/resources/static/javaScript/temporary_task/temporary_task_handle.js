@@ -177,14 +177,22 @@ layui.use(['layer', 'form', 'laydate', 'table', 'upload'], function(){
 	            	   }
 	            	   $("#fileTable_upload").empty();
 	           		   $("#fileTable_upload").css("display", "none");
-	            	   layer.msg("完成任务成功",{icon: 1, offset:'100px', time:1500}, function(){
+	           		 /*layer.msg("完成任务成功",{icon: 1, offset:'100px', time:1500}, function(){
 	            		   if(isBack == 0){
 	            			   history.back();
 	            		   }else{
 	            			   window.parent.postMessage("close="+taskID, '*');
 	            		   }
-	            	   });
-	            	    
+	            	   });*/
+	           		   
+		           	   layer.open({
+		           		  content: '临时任务完成成功！',
+		           		  offset: 'auto',
+		           		  yes: function(index, layero){
+		           		    window.close();
+		           		  }
+		           	   });     
+
 	               }else{
 	            	   layer.msg("任务完成失败",{icon: 2, offset:'100px'}); 
 	               }

@@ -230,6 +230,17 @@ public class TemporaryTaskC {
 		log.info("-----进入接口TemporaryTaskC...finishTask-----");
 		log.info("-----临时任务信息：{}", task);
 		
+		//先检查任务是否已完成
+		TemporaryTask taskInfo = taskS.getTaskInfo(task.getTaskID());
+		
+		if(taskInfo == null) {
+			return new ResultJson<>(ResultJson.ERROR, "临时任务"+task.getTaskID()+"不存在", false);
+		}else {
+			if("FINISHED".equals(taskInfo.getTaskState())) {
+				return new ResultJson<>(ResultJson.ERROR, "临时任务"+task.getTaskID()+"状态已经完成，不能再次完成", false);
+			}
+		}
+		
 		List<TaskFileManagement> fileList = new ArrayList<>();
 		
 		//将当前上下文初始化给  CommonsMutipartResolver （多部分解析器）

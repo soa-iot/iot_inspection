@@ -11,7 +11,7 @@
     ,datatree=[]
   	,users = []
   	,role = {}
-  	,plan_role_url = "http://192.168.18.116:10238";
+  	,plan_role_url = "http://10.89.173.23:10238";
   //,plan_role_url = "";
   
   laydate.render({
@@ -104,7 +104,7 @@
 				my_ajax("post",{
 					"name":data.planName
 					,"state":0
-					,"note":data.planName},plan_role_url+"/iot_usermanager/role/addOrUpdateRole");
+					,"note":data.planName},plan_role_url+"/role/addOrUpdateRole");
 				get_role(obj);
 			}
 			oppend();
@@ -126,8 +126,8 @@
 					my_ajax("post",{
 						"list[]":[""]
 						,rolid: role.rolid
-						},plan_role_url+"/iot_usermanager/role/addOrUpdateUserRole");
-					my_ajax("get",{"ids":role.rolid},plan_role_url+"/iot_usermanager/role/deleteRoles");
+						},plan_role_url+"/role/addOrUpdateUserRole");
+					my_ajax("get",{"ids":role.rolid},plan_role_url+"/role/deleteRoles");
 				}
 				
 				var res = my_ajax("post",null,"/iot_inspection/inspectionplan/deleteplan/"+obj.data.planID);
@@ -297,13 +297,13 @@
 						my_ajax("post",{
 							"name":submit_data["planName"]
 						,"state":0
-						,"note":submit_data["planName"]},plan_role_url+"/iot_usermanager/role/addOrUpdateRole");
+						,"note":submit_data["planName"]},plan_role_url+"/role/addOrUpdateRole");
 					}else{
 						my_ajax("get",{
 							"rolid":role.rolid
 							,"name":submit_data["planName"]
 						,"state":0
-						,"note":submit_data["planName"]},plan_role_url+"/iot_usermanager/role/addOrUpdateRole");
+						,"note":submit_data["planName"]},plan_role_url+"/role/addOrUpdateRole");
 					}
 				}
 			},
@@ -374,7 +374,7 @@
 				var role_add_user = my_ajax("post",{
 					"list[]":user_list
 					,rolid: role.rolid
-					},plan_role_url+"/iot_usermanager/role/addOrUpdateUserRole");
+					},plan_role_url+"/role/addOrUpdateUserRole");
 				console.log(role_add_user);
 				
 			},
@@ -387,7 +387,7 @@
 	function get_role(d){
 		var roles = my_ajax("get",{
 			"roleName":d.data.planName
-			},plan_role_url+"/iot_usermanager/role/rolename");
+			},plan_role_url+"/role/rolename");
 		
 		if(roles.data.length>0){
 			$(roles.data).each(function(index,element){

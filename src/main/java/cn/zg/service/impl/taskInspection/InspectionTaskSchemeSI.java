@@ -110,6 +110,7 @@ public class InspectionTaskSchemeSI implements InspectionTaskSchemeS{
 			if (i==0) {
 				taskId = getTaskId();
 			}else {
+				log.debug("taskIds.get(i-1): {}", taskIds.get(i-1));
 				Long tmp = Long.valueOf(taskIds.get(i-1))+i;
 				taskId = tmp+"";
 			}
@@ -136,6 +137,7 @@ public class InspectionTaskSchemeSI implements InspectionTaskSchemeS{
 			inspectionTaskScheme.setTaskStartTime(startTime);
 			inspectionTaskScheme.setPlannedCompletionTime(inspectionPlan.getPlanExpectTime());
 			
+			log.debug("startTime: {}", startTime);
 			if (startTime != null) {
 				taskIds.add(taskId);
 				inspectionTaskSchemes.add(inspectionTaskScheme);

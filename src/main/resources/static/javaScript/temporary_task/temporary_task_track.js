@@ -94,7 +94,7 @@ layui.use(['layer', 'form', 'laydate', 'table'], function(){
 	    ,cols: [[ //表头
 	      {field: 'id', title: '编号', width:'5%', sort:false, type:'numbers', fixed:'left', align:'center'}
 	      ,{field:'taskName', title:'任务名称', width:'12%', sort:true, align:'center'}
-	      ,{field:'createPerson', title:'下达人', width:'9%', sort:true, align:'center'}
+	      ,{field:'createPerson', title:'下达人', width:'8.5%', sort:true, align:'center'}
 	      ,{field:'departmentName', title:'下达部门', width:'12%', sort:true, align:'center'}
 	      ,{field:'createTime', title:'下达日期', width:'10.4%', sort:true, align:'center'}
 	      ,{field:'requireFinishTime', title:'要求完成日期', width:'12%', sort:true, align:'center'}
